@@ -1,0 +1,38 @@
+<div class="pagehead"><div class="wrap">
+    <p class="eyebrow">Contato</p>
+    <h1>Fale com a oficina</h1>
+    <p class="lead">O jeito mais rápido é o WhatsApp com fotos da peça. Se preferir, venha direto: atendemos sem agendamento.</p>
+  </div></div>
+  <section style="padding-top:40px">
+    <div class="wrap contact">
+      <div class="cards">
+        <div class="ccard"><small>WhatsApp e telefone</small><span class="v" id="tel">(47) 98802-4265</span><button type="button" data-copy="tel">Copiar</button></div>
+        <div class="ccard"><small>E-mail</small><span class="v" id="mail">reinertsoldas@gmail.com</span><button type="button" data-copy="mail">Copiar</button></div>
+        <div class="ccard"><small>Endereço</small><span class="v plain">Rua Leopoldo Beninca, 108<br>Vila Nova · Joinville/SC · 89237-150</span><a class="mini" href="https://www.google.com/maps/search/Reinert+Solu%C3%A7%C3%B5es+em+Solda+Joinville" target="_blank" rel="noopener">Rota</a></div>
+        <div class="ccard"><small>Horário de atendimento</small><div class="hours"><span>Segunda a sexta · 08h às 12h</span><span>Segunda a sexta · 13h às 17h</span><span style="color:var(--accent)">Sem agendamento</span></div></div>
+        <div class="ccard"><small>Redes</small><span class="v plain">Instagram e Facebook</span><a class="mini" href="https://www.instagram.com/reinert.soldas/" target="_blank" rel="noopener">@reinert.soldas</a></div>
+      </div>
+      <form id="orc" novalidate>
+        <h3>Pedido de orçamento</h3>
+        <p class="form-note">Preencha e a mensagem fica pronta para enviar no WhatsApp da oficina.</p>
+        <div class="row2">
+          <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" autocomplete="name" required></div>
+          <div class="field"><label for="f-emp">Empresa (opcional)</label><input id="f-emp" name="empresa" autocomplete="organization"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="f-tipo">Tipo de serviço</label>
+            <select id="f-tipo" name="tipo"><option>Recuperação de peça</option><option>Solda especial</option><option>Estrutura sob medida</option><option>Móvel estilo industrial</option><option>Reparo automotivo ou náutico</option><option>Serralheria</option><option>Outro</option></select></div>
+          <div class="field"><label for="f-mat">Material</label>
+            <select id="f-mat" name="material"><option>Não sei</option><option>Aço carbono</option><option>Aço inox</option><option>Alumínio</option><option>Ferro fundido</option><option>Aço ferramenta</option><option>Outro</option></select></div>
+        </div>
+        <div class="field"><label for="f-desc">Descreva a peça ou o projeto</label><textarea id="f-desc" name="descricao" placeholder="Ex.: olhal de cilindro hidráulico trincado, Ø 60 mm, preciso até sexta." required></textarea></div>
+        <button class="btn btn-accent" type="submit" style="justify-self:start">Gerar mensagem</button>
+        <p class="form-note" id="f-err" hidden style="color:#ff9a7a">Preencha seu nome e a descrição da peça para gerar a mensagem.</p>
+        <div class="out" id="out" hidden>
+          <pre id="msg"></pre>
+          <div class="cta-row"><a class="btn btn-accent" id="waLink" href="https://wa.me/5547988024265" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Abrir no WhatsApp</a><button type="button" class="btn btn-ghost" id="copyMsg">Copiar mensagem</button></div>
+          <p class="form-note">Lembre de anexar fotos da peça na conversa.</p>
+        </div>
+      </form>
+    </div>
+  </section>
