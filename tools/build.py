@@ -50,7 +50,7 @@ SERVICES = [
         "slug": "recuperacao-de-pecas",
         "name": "Recuperação de peças",
         "short": "Recuperação de peças para usinagem",
-        "tag": "Indústria · Manutenção",
+        "tag": "Indústria e manutenção",
         "img": "C4jSvkarUD0.webp",
         "alt": "Molde de injeção em recuperação por solda",
         "title": "Recuperação de peças para usinagem em Joinville/SC",
@@ -84,7 +84,7 @@ SERVICES = [
         "slug": "soldas-especiais",
         "name": "Soldas especiais",
         "short": "Soldas especiais em alumínio, inox e aço ferramenta",
-        "tag": "Técnica · Precisão",
+        "tag": "Técnica e precisão",
         "img": "CYr9VUSLAgD.webp",
         "alt": "Solda TIG em aço carbono com cores de revenimento",
         "title": "Soldas especiais: TIG em alumínio, inox e aço ferramenta em Joinville/SC",
@@ -152,7 +152,7 @@ SERVICES = [
         "slug": "moveis-estilo-industrial",
         "name": "Móveis estilo industrial",
         "short": "Móveis em aço e metalon, estilo industrial",
-        "tag": "Projetos · Residencial e comercial",
+        "tag": "Projetos residenciais e comerciais",
         "img": "DVMtWookW2N.webp",
         "alt": "Estante estilo industrial em aço com prateleiras de madeira",
         "title": "Móveis estilo industrial em aço e metalon em Joinville/SC",
@@ -178,7 +178,7 @@ SERVICES = [
         "slug": "reparos-e-serralheria",
         "name": "Reparos e serralheria",
         "short": "Reparos automotivos, náuticos e serralheria",
-        "tag": "Automotivo · Náutico · Serralheria",
+        "tag": "Automotivo, náutico e serralheria",
         "img": "C6EWpD9rqHY.webp",
         "alt": "Embarcação de alumínio em reparo",
         "title": "Reparos automotivos, náuticos e serralheria em Joinville/SC",
@@ -296,7 +296,7 @@ def jsonld_breadcrumb(items):
     }
 
 
-def head(title, desc, path, ld):
+def head(title, desc, path, ld, extra=""):
     full_title = title if path == "" else f"{title} · {NAME}"
     if path == "":
         full_title = f"{NAME} · {title}"
@@ -333,6 +333,7 @@ def head(title, desc, path, ld):
 <link rel="preload" as="style" href="{FONTS}" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{FONTS}"></noscript>
 <link rel="stylesheet" href="/assets/style.css">
+{extra}
 {scripts}
 </head>
 <body>
@@ -376,8 +377,8 @@ def footer(ctx):
     </div>
     <div><h4>Serviços</h4><ul>{svc_links}</ul></div>
     <div><h4>Site</h4><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
-    <div><h4>Oficina</h4><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]} · {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Seg a sex · 08h–12h · 13h–17h</li></ul></div>
-    <div class="legal"><span>Reinert – Soluções em Solda LTDA · CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
+    <div><h4>Oficina</h4><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li></ul></div>
+    <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
 <div class="dock" id="dock">
@@ -469,7 +470,7 @@ def build_home():
     body += parts[-1]
     body = body.replace('<a href="/servicos">móveis estilo industrial, serralheria e reparos automotivos e náuticos</a>',
                         '<a href="/moveis-estilo-industrial">móveis estilo industrial</a>, <a href="/reparos-e-serralheria">serralheria e reparos automotivos e náuticos</a>')
-    html = head(meta[0], meta[1], "", [jsonld_business()]) + header("/") + body + "\n" + footer(ctx)
+    html = head(meta[0], meta[1], "", [jsonld_business()], extra='<link rel="preload" as="image" href="/img/Cxz5OvfOaRE.webp" fetchpriority="high">') + header("/") + body + "\n" + footer(ctx)
     write("", html)
 
 
