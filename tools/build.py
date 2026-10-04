@@ -269,7 +269,7 @@ def jsonld_business():
     }
     if SITE_URL:
         data["url"] = SITE_URL + "/"
-        data["image"] = SITE_URL + "/img/Cxz5OvfOaRE.webp"
+        data["image"] = SITE_URL + "/img/og.jpg"
     return data
 
 
@@ -301,7 +301,7 @@ def head(title, desc, path, ld, extra=""):
     if path == "":
         full_title = f"{NAME} · {title}"
     canon = url(path)
-    og_img = (SITE_URL + "/img/Cxz5OvfOaRE.webp") if SITE_URL else ""
+    og_img = (SITE_URL + "/img/og.jpg") if SITE_URL else ""
     canon_tag = ""
     if canon and path != "404":
         canon_tag = f'<link rel="canonical" href="{canon}">' if path else f'<link rel="canonical" href="{SITE_URL}/">'
@@ -327,7 +327,8 @@ def head(title, desc, path, ld, extra=""):
 {f'<meta property="og:image" content="{og_img}">' if og_img else ''}
 {f'<meta property="og:url" content="{canon}">' if canon and path != "404" else ''}
 <meta name="twitter:card" content="{'summary_large_image' if og_img else 'summary'}">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="{FONTS}" onload="this.onload=null;this.rel='stylesheet'">
@@ -350,8 +351,7 @@ def header(active):
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="{NAME}, página inicial">
-      <svg><use href="#mask"/></svg>
-      <span><b>REINERT</b><small>Soluções em Solda</small></span>
+      <img class="logo" src="/img/logo-horizontal.webp" alt="" width="591" height="120">
     </a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
     <nav class="nav" id="nav" aria-label="Principal">
@@ -371,7 +371,7 @@ def footer(ctx):
 <footer class="foot">
   <div class="wrap">
     <div style="display:grid;gap:12px">
-      <a class="brand" href="/"><svg><use href="#mask"/></svg><span><b>REINERT</b><small>Soluções em Solda</small></span></a>
+      <a class="brand" href="/" aria-label="{NAME}, página inicial"><img class="logo" src="/img/logo-horizontal.webp" alt="" width="591" height="120" loading="lazy"></a>
       <p>Soldagem especial, recuperação de peças e estruturas sob medida em Joinville e região.</p>
       <p><a href="{INSTA}" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
@@ -620,13 +620,6 @@ def build_404():
 
 
 def build_misc():
-    (ROOT / "favicon.svg").write_text(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="8" fill="#0d0f11"/>'
-        '<path d="M8 8.5C8 5.5 10.5 3 13.5 3h13C29.5 3 32 5.5 32 8.5V27c0 5.5-5.4 10-12 10S8 32.5 8 27V8.5Z" fill="none" stroke="#f4c20d" stroke-width="2.6"/>'
-        '<rect x="12.5" y="10.5" width="15" height="7.5" rx="1.6" fill="#f4c20d"/><rect x="14.5" y="12.4" width="11" height="3.7" rx=".8" fill="#0d0f11"/>'
-        '<path d="M14 24.5h12M15.5 28.5h9" stroke="#f4c20d" stroke-width="2.2" stroke-linecap="round"/></svg>',
-        encoding="utf-8",
-    )
     paths = ["", "servicos", "guia-de-soldas", "portfolio", "sobre", "contato"] + [s["slug"] for s in SERVICES]
     if SITE_URL:
         urls = "".join(f"  <url><loc>{SITE_URL}/{p}</loc></url>\n" for p in paths)

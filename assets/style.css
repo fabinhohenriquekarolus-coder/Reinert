@@ -478,3 +478,8 @@ input,select,textarea{background:#fff;border-color:var(--line-strong);color:var(
 .top{background:#0d0f11}
 .foot{background:var(--bg);color:var(--muted);border-top:0}
 .foot a:hover{color:#fff}
+
+/* Logo */
+.brand img.logo{display:block;height:44px;width:auto}
+.foot .brand img.logo{height:52px}
+@media (max-width:760px){.brand img.logo{height:36px}.foot .brand img.logo{height:44px}}
