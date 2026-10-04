@@ -252,7 +252,6 @@ def jsonld_business():
         "description": PAGES_META[""][1],
         "telephone": PHONE_E164,
         "email": EMAIL,
-        "image": (SITE_URL + "/img/Cxz5OvfOaRE.webp") if SITE_URL else "/img/Cxz5OvfOaRE.webp",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": ADDRESS["street"],
@@ -265,12 +264,12 @@ def jsonld_business():
             {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00"},
             {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "17:00"},
         ],
-        "aggregateRating": {"@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "19", "bestRating": "5"},
         "sameAs": [INSTA],
         "areaServed": {"@type": "City", "name": "Joinville"},
     }
     if SITE_URL:
         data["url"] = SITE_URL + "/"
+        data["image"] = SITE_URL + "/img/Cxz5OvfOaRE.webp"
     return data
 
 
@@ -285,6 +284,8 @@ def jsonld_faq(faq):
 
 
 def jsonld_breadcrumb(items):
+    if not SITE_URL:
+        return None
     return {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -300,10 +301,15 @@ def head(title, desc, path, ld):
     if path == "":
         full_title = f"{NAME} · {title}"
     canon = url(path)
-    og_img = (SITE_URL + "/img/Cxz5OvfOaRE.webp") if SITE_URL else "/img/Cxz5OvfOaRE.webp"
+    og_img = (SITE_URL + "/img/Cxz5OvfOaRE.webp") if SITE_URL else ""
+    canon_tag = ""
+    if canon and path != "404":
+        canon_tag = f'<link rel="canonical" href="{canon}">' if path else f'<link rel="canonical" href="{SITE_URL}/">'
     scripts = "\n".join(
-        f'<script type="application/ld+json">{json.dumps(d, ensure_ascii=False)}</script>' for d in ld
+        '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False).replace("</", "<\\/") + "</script>"
+        for d in ld if d
     )
+    FONTS = "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap"
     return f"""<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -312,19 +318,20 @@ def head(title, desc, path, ld):
 <title>{esc(full_title)}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="theme-color" content="#0d0f11">
-{f'<link rel="canonical" href="{canon}/">' if canon and path else (f'<link rel="canonical" href="{SITE_URL}/">' if canon else '')}
+{canon_tag}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="{NAME}">
 <meta property="og:title" content="{esc(full_title)}">
 <meta property="og:description" content="{esc(desc)}">
-<meta property="og:image" content="{og_img}">
-{f'<meta property="og:url" content="{canon}">' if canon else ''}
-<meta name="twitter:card" content="summary_large_image">
+{f'<meta property="og:image" content="{og_img}">' if og_img else ''}
+{f'<meta property="og:url" content="{canon}">' if canon and path != "404" else ''}
+<meta name="twitter:card" content="{'summary_large_image' if og_img else 'summary'}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="preload" as="style" href="{FONTS}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{FONTS}"></noscript>
 <link rel="stylesheet" href="/assets/style.css">
 {scripts}
 </head>
@@ -348,8 +355,9 @@ def header(active):
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
     <nav class="nav" id="nav" aria-label="Principal">
       {chr(10).join('      ' + l for l in links).strip()}
+      <a class="btn btn-accent nav-cta" href="{wa('menu')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento</a>
     </nav>
-    <a class="btn btn-accent" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Orçamento</a>
+    <a class="btn btn-accent hd-cta" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Orçamento</a>
   </div>
 </header>
 <main id="main">
@@ -372,9 +380,9 @@ def footer(ctx):
     <div class="legal"><span>Reinert – Soluções em Solda LTDA · CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
-<div class="fab">
-  <a class="fab-call" href="tel:{PHONE_E164}" aria-label="Ligar para a Reinert"><svg><use href="#ph"/></svg></a>
-  <a class="fab-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg><use href="#wa"/></svg></a>
+<div class="dock" id="dock">
+  <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
+  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
 </div>
 <script src="/assets/site.js" defer></script>
 </body>
@@ -383,12 +391,12 @@ def footer(ctx):
 
 
 def band(title, text, ctx, btn="Pedir orçamento no WhatsApp"):
-    return f"""  <div class="band">
+    return f"""  <div class="band" data-cta>
     <div class="wrap">
       <div style="display:grid;gap:14px"><h2>{title}</h2><p>{text}</p></div>
       <div style="display:grid;gap:16px;justify-items:start">
         <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{btn}</a>
-        <div class="meta"><span>{ADDRESS["street"]} · {ADDRESS["district"]} · {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>Seg a sex · 08h–12h · 13h–17h · Sem agendamento</span></div>
+        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>Segunda a sexta, 8h às 12h e 13h às 17h. Sem agendamento.</span></div>
       </div>
     </div>
   </div>
@@ -425,11 +433,18 @@ def read(name):
     return (CONTENT / f"{name}.html").read_text(encoding="utf-8")
 
 
-def pagehead(crumbs, eyebrow, h1, lead=""):
+def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
     bc = " ".join(
-        f'<a href="{p}">{n}</a>' if p else f"<span>{n}</span>" for n, p in crumbs
+        f'<a href="{p}">{n}</a>' if p else f'<span aria-current="page">{n}</span>' for n, p in crumbs
     )
     lead_html = f'<p class="lead">{lead}</p>' if lead else ""
+    if cta:
+        lead_html += f"""
+    <div class="cta-row" data-cta>
+      <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento no WhatsApp</a>
+      <a class="btn btn-ghost only-m" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar agora</a>
+    </div>
+    <p class="trust"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google, com 19 avaliações. Envie fotos da peça e a descrição do serviço.</p>"""
     return f"""  <div class="pagehead"><div class="wrap">
     <nav class="crumbs" aria-label="Você está em">{bc}</nav>
     <p class="eyebrow">{eyebrow}</p>
@@ -445,12 +460,12 @@ def build_home():
     meta = PAGES_META[""]
     body = fix_links(read("inicio"), ctx)
     # links dos três pilares para as páginas de serviço
-    targets = ["/recuperacao-de-pecas", "/soldas-especiais", "/estruturas-metalicas"]
+    targets = [("/recuperacao-de-pecas", "Ver recuperação de peças"), ("/soldas-especiais", "Ver soldas especiais"), ("/estruturas-metalicas", "Ver estruturas sob medida")]
     parts = body.split("</ul>\n          </div>\n        </article>")
     assert len(parts) == 4, len(parts)
     body = ""
     for i, p in enumerate(parts[:-1]):
-        body += p + f'</ul>\n            <a class="more" href="{targets[i]}">Saber mais</a>\n          </div>\n        </article>'
+        body += p + f'</ul>\n            <a class="more" href="{targets[i][0]}">{targets[i][1]}</a>\n          </div>\n        </article>'
     body += parts[-1]
     body = body.replace('<a href="/servicos">móveis estilo industrial, serralheria e reparos automotivos e náuticos</a>',
                         '<a href="/moveis-estilo-industrial">móveis estilo industrial</a>, <a href="/reparos-e-serralheria">serralheria e reparos automotivos e náuticos</a>')
@@ -476,7 +491,7 @@ def build_servicos():
 """
     seg = '<div class="segments"><span>Metalurgia e usinagem</span><span>Ferramentarias e injeção plástica</span><span>Hidráulica e agronegócio</span><span>Transportadoras</span><span>Indústria moveleira e marcenarias</span><span>Arquitetura e design</span><span>Náutico</span><span>Automotivo</span></div>'
     html = (
-        head(meta[0], meta[1], "servicos", [jsonld_business(), jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos")])])
+        head(meta[0], meta[1], "servicos", [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos")])])
         + header("/servicos")
         + pagehead([("Início", "/"), ("Serviços", None)], "Serviços", "Soldagem para quem não pode parar",
                    "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina, sem agendamento, e serviços no local quando a peça não pode sair da máquina.")
@@ -500,17 +515,15 @@ def build_service(s):
         for o in SERVICES if o["slug"] != s["slug"]
     )
     html = (
-        head(s["title"], s["desc"], s["slug"], [jsonld_business(), jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]), jsonld_faq(s["faq"])])
-        + header("/servicos")
-        + pagehead(crumbs, s["tag"], s["h1"], s["lead"])
+        head(s["title"], s["desc"], s["slug"], [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]) ])
+        + header(None)
+        + pagehead(crumbs, s["tag"], s["h1"], s["lead"], cta=ctx)
         + f"""  <section style="padding-top:36px">
     <div class="wrap svc-top">
       <figure><img src="/img/{s['img']}" alt="{esc(s['alt'])}" width="800" height="600"></figure>
       <div class="txt">
         <h2>O que fazemos</h2>
         <ul class="ticks">{''.join('<li>' + b + '</li>' for b in s['bullets'])}</ul>
-        <div class="cta-row"><a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento no WhatsApp</a><a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a></div>
-        <p class="mono hint">No WhatsApp, envie fotos e a descrição do serviço.</p>
       </div>
     </div>
   </section>
@@ -560,7 +573,7 @@ def build_guia():
         ("Preciso saber o material da peça para pedir orçamento?", "Não. Se você não souber, mande as fotos e a descrição, e identificamos o material na avaliação."),
     ]
     html = (
-        head(meta[0], meta[1], "guia-de-soldas", [jsonld_business(), jsonld_breadcrumb([("Início", "/"), ("Guia de soldas", "/guia-de-soldas")]), jsonld_faq(faq)])
+        head(meta[0], meta[1], "guia-de-soldas", [jsonld_breadcrumb([("Início", "/"), ("Guia de soldas", "/guia-de-soldas")]) ])
         + header("/guia-de-soldas")
         + body.replace('  <div class="band">', faq_html(faq) + '  <div class="band">', 1)
         + "\n"
@@ -570,13 +583,21 @@ def build_guia():
 
 
 def build_simple(slug, active, h_eyebrow, h1, lead, ctx, title_key=None, extra_ld=None):
+    quick = ""
+    if slug == "contato":
+        quick = f"""  <div class="wrap quick" data-cta>
+    <a class="btn btn-accent" href="{wa('contato')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Chamar no WhatsApp</a>
+    <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar {PHONE_FMT}</a>
+    <a class="btn btn-ghost" href="{MAPS}" target="_blank" rel="noopener">Como chegar</a>
+  </div>
+"""
     meta = PAGES_META[slug]
     body = fix_links(read(slug), ctx)
     body = re.sub(r'<div class="pagehead">.*?</div></div>\n',
                   pagehead([("Início", "/"), (h_eyebrow, None)], h_eyebrow, h1, lead), body, count=1, flags=re.S)
     html = (
-        head(meta[0], meta[1], slug, [jsonld_business(), jsonld_breadcrumb([("Início", "/"), (h_eyebrow, "/" + slug)])] + (extra_ld or []))
-        + header(active) + body + "\n" + footer(ctx)
+        head(meta[0], meta[1], slug, ([jsonld_business()] if slug == "contato" else []) + [jsonld_breadcrumb([("Início", "/"), (h_eyebrow, "/" + slug)])] + (extra_ld or []))
+        + header(active) + body.replace("</div></div>\n", "</div></div>\n" + quick, 1) + "\n" + footer(ctx)
     )
     write(slug, html)
 
