@@ -210,7 +210,7 @@ SERVICES = [
 ]
 
 PAGES_META = {
-    "": ("Soldagem especial e recuperação de peças em Joinville/SC", "Soldagem especial, recuperação de peças e estruturas metálicas sob medida em Joinville/SC. TIG, MIG/MAG, eletrodo e oxiacetileno em alumínio, inox, aço carbono e ferro fundido. Nota 5,0 no Google."),
+    "": ("Solda, reparo e fabricação em metal em Joinville/SC", "Recuperação de peças, soldas especiais e fabricação de estruturas e móveis metálicos sob medida em Joinville/SC. TIG, MIG/MAG e eletrodo em alumínio, inox, aço carbono e ferro fundido. Nota 5,0 no Google."),
     "servicos": ("Serviços de solda e serralheria em Joinville/SC", "Recuperação de peças, soldas especiais, estruturas metálicas sob medida, móveis estilo industrial e reparos em Joinville/SC. Atendimento sem agendamento."),
     "guia-de-soldas": ("Guia de soldas: TIG, MIG/MAG, eletrodo e oxiacetileno", "Entenda qual processo de solda usar em cada metal: alumínio, inox, aço carbono, ferro fundido e aço ferramenta. Defeitos comuns, glossário e como pedir orçamento."),
     "portfolio": ("Portfólio de soldas e estruturas metálicas", "Trabalhos realizados pela Reinert em Joinville/SC: recuperação de peças, estruturas em inox, proteções em alumínio, móveis estilo industrial e reparos."),
