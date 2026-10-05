@@ -2,7 +2,7 @@
 :root{
   --bg:#ffffff; --panel:#ffffff; --panel-2:#f4f2ed; --line:#e2dfd6; --line-strong:#c9c5b8;
   --fg:#15181b; --soft:#3a4147; --muted:#5a6169;
-  --accent:#f4c20d; --accent-ink:#141200; --accent-text:#7a5a00; --star:#b27a00; --focus:#141200;
+  --accent:#e8e308; --accent-ink:#141200; --accent-text:#6d6a00; --star:#b27a00; --focus:#141200;
   --tint:linear-gradient(90deg,#e9cf86 0%,#c98b3f 28%,#8a4f93 58%,#3f6fb9 82%,#9fb6cf 100%);
   --f-display:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
   --f-body:"Barlow","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -12,8 +12,8 @@
 }
 /* Áreas escuras: cabeçalho e rodapé */
 .top,.foot,.spec{
-  --bg:#0d0f11; --panel:#15181b; --panel-2:#1c2024; --line:#2a2f35; --line-strong:#3a4047;
-  --fg:#ecebe6; --soft:#c9ccd0; --muted:#9aa2aa; --accent-text:#f4c20d; --focus:#f4c20d; color-scheme:dark;
+  --bg:#100f0d; --panel:#171614; --panel-2:#1c2024; --line:#2a2f35; --line-strong:#3a4047;
+  --fg:#ecebe6; --soft:#c9ccd0; --muted:#9aa2aa; --accent-text:#e8e308; --focus:#e8e308; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -48,7 +48,7 @@ p{margin:0}
 .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-body);font-weight:600;font-size:1rem;text-decoration:none;border-radius:var(--r);padding:14px 20px;border:1px solid transparent;cursor:pointer;line-height:1.1;transition:transform .15s ease,background .15s ease}
 .btn:hover{transform:translateY(-1px)}
 .btn-accent{background:var(--accent);color:var(--accent-ink)}
-.btn-accent:hover{background:#ffd63a}
+.btn-accent:hover{background:#f1ec3d}
 .btn-ghost{border-color:var(--line-strong);color:var(--fg);background:transparent}
 .btn-ghost:hover{border-color:var(--muted)}
 .btn svg{width:18px;height:18px}
@@ -286,7 +286,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent-t
 .crumbs a::after{content:"/";margin-left:6px;color:var(--line-strong)}
 .pagehead .wrap{gap:14px}
 .more{justify-self:start;margin-top:6px;font-family:var(--f-mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
-.more:hover{color:#ffd63a}
+.more:hover{color:#f1ec3d}
 
 /* Botões flutuantes: WhatsApp e ligar */
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:grid;gap:10px}
@@ -475,7 +475,7 @@ input,select,textarea{background:#fff;border-color:var(--line-strong);color:var(
 .cols2 .bad li::before{background:#b3261e}
 .insta .btn-ghost{background:#fff}
 ::selection{background:var(--accent);color:var(--accent-ink)}
-.top{background:#0d0f11}
+.top{background:#100f0d}
 .foot{background:var(--bg);color:var(--muted);border-top:0}
 .foot a:hover{color:#fff}
 
