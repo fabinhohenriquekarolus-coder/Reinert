@@ -5,6 +5,7 @@ Uso: python3 tools/build.py
 Depois de definir SITE_URL (domínio final), o build também gera canonical,
 og:url e sitemap.xml.
 """
+import hashlib
 import json
 import re
 import sys
@@ -305,7 +306,6 @@ def head(title, desc, path, ld, extra=""):
         '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False).replace("</", "<\\/") + "</script>"
         for d in ld if d
     )
-    FONTS = "https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap"
     return f"""<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -330,11 +330,10 @@ def head(title, desc, path, ld, extra=""):
 {f'<meta name="twitter:image" content="{og_img}">' if og_img else ''}
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="{FONTS}" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="{FONTS}"></noscript>
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/style.min.css?v={_ver("assets/style.min.css")}">
 {extra}
 {scripts}
 </head>
@@ -376,9 +375,9 @@ def footer(ctx):
       <p>Soldagem especial, recuperação de peças e estruturas sob medida em Joinville e região.</p>
       <p><a href="{INSTA}" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
-    <div><h4>Serviços</h4><ul>{svc_links}</ul></div>
-    <div><h4>Site</h4><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
-    <div><h4>Oficina</h4><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li>{"".join("<li>" + l + "</li>" for l in config.hours_lines())}</ul></div>
+    <div><p class="foot-title">Serviços</p><ul>{svc_links}</ul></div>
+    <div><p class="foot-title">Site</p><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
+    <div><p class="foot-title">Oficina</p><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li>{"".join("<li>" + l + "</li>" for l in config.hours_lines())}</ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
@@ -386,9 +385,9 @@ def footer(ctx):
   <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
   <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
 </div>
-<script src="/assets/config.js" defer></script>
-<script src="/assets/track.js" defer></script>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/config.js?v={_ver("assets/config.js")}" defer></script>
+<script src="/assets/track.js?v={_ver("assets/track.js")}" defer></script>
+<script src="/assets/site.js?v={_ver("assets/site.js")}" defer></script>
 </body>
 </html>
 """
@@ -429,7 +428,54 @@ def fix_links(h, ctx):
     )
 
 
+def webp_size(path):
+    """Largura e altura de um .webp (VP8, VP8L ou VP8X), sem dependências."""
+    d = path.read_bytes()[:40]
+    kind = d[12:16]
+    if kind == b"VP8 ":
+        w = int.from_bytes(d[26:28], "little") & 0x3FFF
+        h = int.from_bytes(d[28:30], "little") & 0x3FFF
+    elif kind == b"VP8L":
+        b = int.from_bytes(d[21:25], "little")
+        w, h = (b & 0x3FFF) + 1, ((b >> 14) & 0x3FFF) + 1
+    elif kind == b"VP8X":
+        w = int.from_bytes(d[24:27], "little") + 1
+        h = int.from_bytes(d[27:30], "little") + 1
+    else:
+        return None
+    return w, h
+
+
+_DIMS = {}
+
+
+def set_img_dims(html):
+    """Troca width/height de cada <img> local pelas dimensões reais do arquivo."""
+    def fix(m):
+        tag = m.group(0)
+        src = re.search(r'src="/img/([^"]+)"', tag)
+        if not src or not src.group(1).endswith(".webp"):
+            return tag
+        name = src.group(1)
+        if name not in _DIMS:
+            _DIMS[name] = webp_size(ROOT / "img" / name)
+        if not _DIMS[name]:
+            return tag
+        w, h = _DIMS[name]
+        tag = re.sub(r'\s(width|height)="[^"]*"', "", tag)
+        return tag.replace("<img ", f'<img width="{w}" height="{h}" ', 1)
+
+    html = re.sub(r"<img\b[^>]*>", fix, html)
+    # versão no endereço das imagens locais (cache longo seguro, inclusive no preload do hero)
+    def ver(m):
+        rel = "img/" + m.group(2)
+        return f'{m.group(1)}"/{rel}?v={_ver(rel)}"' if (ROOT / rel).exists() else m.group(0)
+
+    return re.sub(r'(src=|href=)"/img/([^"?]+)"', ver, html)
+
+
 def write(path, html):
+    html = set_img_dims(html)
     out = ROOT / (path or "index")
     if path:
         out = ROOT / f"{path}.html"
@@ -627,7 +673,20 @@ def build_404():
     (ROOT / "404.html").write_text(html, encoding="utf-8")
 
 
-def build_misc():
+def _ver(rel):
+    """Hash curto do conteúdo, para cache longo sem risco de arquivo velho."""
+    return hashlib.sha1((ROOT / rel).read_bytes()).hexdigest()[:8]
+
+
+def minify_css(src):
+    src = re.sub(r"/\*.*?\*/", "", src, flags=re.S)
+    src = re.sub(r"\s+", " ", src)
+    src = re.sub(r"\s*([{};,>])\s*", r"\1", src)
+    src = re.sub(r";}", "}", src)
+    return src.strip()
+
+
+def build_assets():
     cfg = {
         "ga": config.GA_ID,
         "ads": config.ADS_ID,
@@ -635,8 +694,13 @@ def build_misc():
         "adsPhoneLabel": config.ADS_PHONE_LABEL,
     }
     (ROOT / "assets" / "config.js").write_text(
-        "window.REINERT_TRACK=" + json.dumps(cfg, ensure_ascii=False) + ";\n", encoding="utf-8"
+        "window.REINERT_TRACK=" + json.dumps(cfg, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8"
     )
+    css = (ROOT / "assets" / "style.css").read_text(encoding="utf-8")
+    (ROOT / "assets" / "style.min.css").write_text(minify_css(css) + "\n", encoding="utf-8")
+
+
+def build_misc():
     paths = ["", "servicos", "guia-de-soldas", "portfolio", "sobre", "contato"] + [s["slug"] for s in SERVICES]
     if SITE_URL:
         urls = "".join(f"  <url><loc>{SITE_URL}/{p}</loc></url>\n" for p in paths)
@@ -653,6 +717,7 @@ def build_misc():
 
 
 def main():
+    build_assets()
     build_home()
     build_servicos()
     for s in SERVICES:

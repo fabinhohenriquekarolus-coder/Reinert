@@ -22,11 +22,10 @@
 <meta name="twitter:image" content="https://www.reinertsoldas.com.br/img/og.jpg">
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/style.min.css?v=e8f877bf">
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://www.reinertsoldas.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Sobre", "item": "https://www.reinertsoldas.com.br/sobre"}]}</script>
 </head>
@@ -41,7 +40,7 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial">
-      <img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60">
+      <img class="logo" src="/img/logo-fundo-escuro.svg?v=8e70385b" alt="Reinert Soluções em Solda" width="273" height="60">
     </a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
     <nav class="nav" id="nav" aria-label="Principal">
@@ -79,9 +78,9 @@
         </div>
       </div>
       <div class="about-pics">
-        <img class="a" src="/img/DcUKDsGqjK3.webp" alt="Fachada da nova sede da Reinert Soldas" loading="lazy">
-        <img class="b" src="/img/CYr9VUSLAgD.webp" alt="Detalhe de solda TIG com coloração de revenimento" loading="lazy" width="600" height="600">
-        <img class="c" src="/img/DajNU8eKJRk.webp" alt="Estrutura em aço com iluminação, feita sob medida" loading="lazy" width="600" height="600">
+        <img width="560" height="560" class="a" src="/img/DcUKDsGqjK3.webp?v=d3aa0d0b" alt="Fachada da nova sede da Reinert Soldas" loading="lazy">
+        <img width="560" height="560" class="b" src="/img/CYr9VUSLAgD.webp?v=0cfc0674" alt="Detalhe de solda TIG com coloração de revenimento" loading="lazy">
+        <img width="560" height="560" class="c" src="/img/DajNU8eKJRk.webp?v=664e4f15" alt="Estrutura em aço com iluminação, feita sob medida" loading="lazy">
       </div>
     </div>
   </section>
@@ -100,13 +99,13 @@
 <footer class="foot">
   <div class="wrap">
     <div style="display:grid;gap:12px">
-      <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60" loading="lazy"></a>
+      <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg?v=8e70385b" alt="Reinert Soluções em Solda" width="273" height="60" loading="lazy"></a>
       <p>Soldagem especial, recuperação de peças e estruturas sob medida em Joinville e região.</p>
       <p><a href="https://www.instagram.com/reinert.soldas/" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
-    <div><h4>Serviços</h4><ul><li><a href="/recuperacao-de-pecas">Recuperação de peças</a></li><li><a href="/soldas-especiais">Soldas especiais</a></li><li><a href="/estruturas-metalicas">Estruturas metálicas</a></li><li><a href="/moveis-estilo-industrial">Móveis estilo industrial</a></li><li><a href="/reparos-e-serralheria">Reparos e serralheria</a></li></ul></div>
-    <div><h4>Site</h4><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
-    <div><h4>Oficina</h4><ul><li>Rua Leopoldo Beninca, 108</li><li>Vila Nova, Joinville/SC</li><li><a href="tel:+5547988024265">(47) 98802-4265</a></li><li><a href="mailto:reinertsoldas@gmail.com">reinertsoldas@gmail.com</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li><li>Sábado e domingo: fechado</li></ul></div>
+    <div><p class="foot-title">Serviços</p><ul><li><a href="/recuperacao-de-pecas">Recuperação de peças</a></li><li><a href="/soldas-especiais">Soldas especiais</a></li><li><a href="/estruturas-metalicas">Estruturas metálicas</a></li><li><a href="/moveis-estilo-industrial">Móveis estilo industrial</a></li><li><a href="/reparos-e-serralheria">Reparos e serralheria</a></li></ul></div>
+    <div><p class="foot-title">Site</p><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
+    <div><p class="foot-title">Oficina</p><ul><li>Rua Leopoldo Beninca, 108</li><li>Vila Nova, Joinville/SC</li><li><a href="tel:+5547988024265">(47) 98802-4265</a></li><li><a href="mailto:reinertsoldas@gmail.com">reinertsoldas@gmail.com</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li><li>Sábado e domingo: fechado</li></ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
@@ -114,8 +113,8 @@
   <a class="dock-call" href="tel:+5547988024265"><svg><use href="#ph"/></svg><span>Ligar</span></a>
   <a class="dock-wa" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20sobre%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
 </div>
-<script src="/assets/config.js" defer></script>
-<script src="/assets/track.js" defer></script>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/config.js?v=8a70b615" defer></script>
+<script src="/assets/track.js?v=a851f690" defer></script>
+<script src="/assets/site.js?v=9d4bce5a" defer></script>
 </body>
 </html>

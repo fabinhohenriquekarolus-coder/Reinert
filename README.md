@@ -4,7 +4,7 @@ Site institucional estático (HTML + CSS + JS, sem framework). Joinville/SC.
 
 ## Estrutura
 - `*.html`: páginas geradas (início, serviços, 5 páginas de serviço, guia de soldas, portfólio, sobre, contato, 404)
-- `assets/`: `style.css` e `site.js`
+- `assets/`: `style.css` (fonte), `style.min.css` (gerado, é o que as páginas usam), `site.js`, `track.js`, `config.js` (gerado) e `fonts/` (Big Shoulders Display e Barlow, licença SIL OFL, hospedadas no próprio site)
 - `img/`: imagens WebP
 - `tools/build.py`: gera todas as páginas. Rode `python3 tools/build.py` depois de editar textos ou serviços
 - `tools/content/`: blocos de conteúdo usados pelo gerador
@@ -30,3 +30,8 @@ Onde colocar os IDs (qualquer um dos dois jeitos, depois rode `python3 tools/bui
 2. Por variável de ambiente na hora do build: `GA_ID`, `ADS_ID`, `ADS_LABEL`, `ADS_PHONE_LABEL`.
 
 O build grava `assets/config.js`. Com os IDs vazios nenhum script de medição é carregado e o site funciona normalmente.
+
+## Desempenho
+- `python3 tools/build.py` minifica o CSS, coloca dimensões reais nas imagens `.webp` e adiciona `?v=hash` nos arquivos de `assets/` e `img/`; por isso o cache é de 1 ano e uma troca de arquivo aparece na hora.
+- Para trocar uma imagem, substitua o arquivo em `img/` e rode o build.
+- Lighthouse mobile (simulado, servidor local): desempenho 97 a 98, acessibilidade 98 a 99, boas práticas 100, SEO 100.

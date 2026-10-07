@@ -22,11 +22,10 @@
 <meta name="twitter:image" content="https://www.reinertsoldas.com.br/img/og.jpg">
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="preload" href="/assets/fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/barlow-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/style.min.css?v=e8f877bf">
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://www.reinertsoldas.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Portfólio", "item": "https://www.reinertsoldas.com.br/portfolio"}]}</script>
 </head>
@@ -41,7 +40,7 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial">
-      <img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60">
+      <img class="logo" src="/img/logo-fundo-escuro.svg?v=8e70385b" alt="Reinert Soluções em Solda" width="273" height="60">
     </a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
     <nav class="nav" id="nav" aria-label="Principal">
@@ -73,18 +72,18 @@
         <button type="button" data-f="reparos" aria-pressed="false">Reparos</button>
       </div>
       <div class="grid" id="grid">
-        <article class="case" data-cat="industria"><div class="ph"><img src="/img/Cxz5OvfOaRE.webp" alt="Fabricação em SAE 1045 com solda TIG" decoding="async"></div><div class="body"><h3>Fabricação em SAE 1045, Ø 220 mm</h3><p>Deposição TIG com corrente de 320 A em peça cilíndrica.</p><div class="tags"><span>TIG</span><span>SAE 1045</span><span>320 A</span></div></div></article>
-        <article class="case" data-cat="industria"><div class="ph"><img src="/img/C4jSvkarUD0.webp" alt="Molde de injeção recuperado" decoding="async"></div><div class="body"><h3>Recuperação de molde de injeção</h3><p>Preenchimento dos canais para nova usinagem.</p><div class="tags"><span>TIG</span><span>Aço ferramenta</span><span>Recuperação</span></div></div></article>
-        <article class="case" data-cat="industria"><div class="ph"><img src="/img/CYr9VUSLAgD.webp" alt="Solda TIG circular em aço carbono" decoding="async"></div><div class="body"><h3>TIG com bocal colado</h3><p>Solda com corrente pulsada em aço carbono 1045.</p><div class="tags"><span>TIG pulsado</span><span>SAE 1045</span></div></div></article>
-        <article class="case" data-cat="estruturas"><div class="ph"><img src="/img/C84gK0HOsKE.webp" alt="Mesas em inox 304" loading="lazy"></div><div class="body"><h3>Mesas em inox 304</h3><p>Estrutura com acabamento sanitário para ambiente de produção.</p><div class="tags"><span>TIG</span><span>Inox 304</span></div></div></article>
-        <article class="case" data-cat="estruturas"><div class="ph"><img src="/img/DRxaIpFjmlM.webp" alt="Proteções em alumínio para condensadoras de ar-condicionado" loading="lazy"></div><div class="body"><h3>100 proteções para condensadoras</h3><p>Lote sob medida em alumínio, com opções em aço carbono e inox.</p><div class="tags"><span>Alumínio</span><span>Lote</span></div></div></article>
-        <article class="case" data-cat="estruturas"><div class="ph"><img src="/img/C5TFwunrSkL.webp" alt="Grade de bueiro reforçada" loading="lazy"></div><div class="body"><h3>Grades de bueiro para 5 t</h3><p>Grades reforçadas para tráfego pesado.</p><div class="tags"><span>Aço carbono</span><span>Alta carga</span></div></div></article>
-        <article class="case" data-cat="estruturas"><div class="ph"><img src="/img/CcfiNlfrwlP.webp" alt="Coifa em aço inox" loading="lazy"></div><div class="body"><h3>Coifa em inox 0,8 mm</h3><p>Montagem e soldagem em chapa fina sem deformar.</p><div class="tags"><span>TIG</span><span>Inox</span><span>0,8 mm</span></div></div></article>
-        <article class="case" data-cat="estruturas"><div class="ph"><img src="/img/C-LZ9BwPJiG.webp" alt="Estruturas metálicas para marcenaria" loading="lazy"></div><div class="body"><h3>Estruturas para marcenaria</h3><p>Bases metálicas sob medida, pintadas e prontas para montagem.</p><div class="tags"><span>MIG/MAG</span><span>Aço carbono</span></div></div></article>
-        <article class="case" data-cat="moveis"><div class="ph"><img src="/img/DVMtWookW2N.webp" alt="Estante estilo industrial" loading="lazy"></div><div class="body"><h3>Estante estilo industrial</h3><p>Estrutura em aço com prateleiras em madeira.</p><div class="tags"><span>Metalon</span><span>Sob medida</span></div></div></article>
-        <article class="case" data-cat="moveis"><div class="ph"><img src="/img/DajNU8eKJRk.webp" alt="Cristaleira estilo industrial com LED" loading="lazy"></div><div class="body"><h3>Cristaleira com LED</h3><p>Tubos de aço carbono, prateleiras em vidro e iluminação embutida.</p><div class="tags"><span>Aço carbono</span><span>Vidro</span><span>LED</span></div></div></article>
-        <article class="case" data-cat="reparos"><div class="ph"><img src="/img/Czgo5ZlrjbI.webp" alt="Rodas de liga leve recuperadas" loading="lazy"></div><div class="body"><h3>Recuperação de rodas</h3><p>Aros de liga leve e de ferro com trincas e amassados.</p><div class="tags"><span>TIG AC</span><span>Alumínio</span></div></div></article>
-        <article class="case" data-cat="reparos"><div class="ph"><img src="/img/C6EWpD9rqHY.webp" alt="Reparo em embarcação" loading="lazy"></div><div class="body"><h3>Reparos em embarcações</h3><p>Soldagem em alumínio, inox e aço carbono no casco e acessórios.</p><div class="tags"><span>Alumínio</span><span>Inox</span></div></div></article>
+        <article class="case" data-cat="industria"><div class="ph"><img width="560" height="560" src="/img/Cxz5OvfOaRE.webp?v=e5016ea7" alt="Fabricação em SAE 1045 com solda TIG" decoding="async"></div><div class="body"><h2>Fabricação em SAE 1045, Ø 220 mm</h2><p>Deposição TIG com corrente de 320 A em peça cilíndrica.</p><div class="tags"><span>TIG</span><span>SAE 1045</span><span>320 A</span></div></div></article>
+        <article class="case" data-cat="industria"><div class="ph"><img width="560" height="559" src="/img/C4jSvkarUD0.webp?v=56e42ae1" alt="Molde de injeção recuperado" decoding="async"></div><div class="body"><h2>Recuperação de molde de injeção</h2><p>Preenchimento dos canais para nova usinagem.</p><div class="tags"><span>TIG</span><span>Aço ferramenta</span><span>Recuperação</span></div></div></article>
+        <article class="case" data-cat="industria"><div class="ph"><img width="560" height="560" src="/img/CYr9VUSLAgD.webp?v=0cfc0674" alt="Solda TIG circular em aço carbono" decoding="async"></div><div class="body"><h2>TIG com bocal colado</h2><p>Solda com corrente pulsada em aço carbono 1045.</p><div class="tags"><span>TIG pulsado</span><span>SAE 1045</span></div></div></article>
+        <article class="case" data-cat="estruturas"><div class="ph"><img width="560" height="560" src="/img/C84gK0HOsKE.webp?v=2aecd407" alt="Mesas em inox 304" loading="lazy"></div><div class="body"><h2>Mesas em inox 304</h2><p>Estrutura com acabamento sanitário para ambiente de produção.</p><div class="tags"><span>TIG</span><span>Inox 304</span></div></div></article>
+        <article class="case" data-cat="estruturas"><div class="ph"><img width="560" height="560" src="/img/DRxaIpFjmlM.webp?v=c28fe378" alt="Proteções em alumínio para condensadoras de ar-condicionado" loading="lazy"></div><div class="body"><h2>100 proteções para condensadoras</h2><p>Lote sob medida em alumínio, com opções em aço carbono e inox.</p><div class="tags"><span>Alumínio</span><span>Lote</span></div></div></article>
+        <article class="case" data-cat="estruturas"><div class="ph"><img width="560" height="560" src="/img/C5TFwunrSkL.webp?v=a5a2ced4" alt="Grade de bueiro reforçada" loading="lazy"></div><div class="body"><h2>Grades de bueiro para 5 t</h2><p>Grades reforçadas para tráfego pesado.</p><div class="tags"><span>Aço carbono</span><span>Alta carga</span></div></div></article>
+        <article class="case" data-cat="estruturas"><div class="ph"><img width="640" height="640" src="/img/CcfiNlfrwlP.webp?v=bb584038" alt="Coifa em aço inox" loading="lazy"></div><div class="body"><h2>Coifa em inox 0,8 mm</h2><p>Montagem e soldagem em chapa fina sem deformar.</p><div class="tags"><span>TIG</span><span>Inox</span><span>0,8 mm</span></div></div></article>
+        <article class="case" data-cat="estruturas"><div class="ph"><img width="560" height="560" src="/img/C-LZ9BwPJiG.webp?v=3582cb1a" alt="Estruturas metálicas para marcenaria" loading="lazy"></div><div class="body"><h2>Estruturas para marcenaria</h2><p>Bases metálicas sob medida, pintadas e prontas para montagem.</p><div class="tags"><span>MIG/MAG</span><span>Aço carbono</span></div></div></article>
+        <article class="case" data-cat="moveis"><div class="ph"><img width="560" height="560" src="/img/DVMtWookW2N.webp?v=d1fad883" alt="Estante estilo industrial" loading="lazy"></div><div class="body"><h2>Estante estilo industrial</h2><p>Estrutura em aço com prateleiras em madeira.</p><div class="tags"><span>Metalon</span><span>Sob medida</span></div></div></article>
+        <article class="case" data-cat="moveis"><div class="ph"><img width="560" height="560" src="/img/DajNU8eKJRk.webp?v=664e4f15" alt="Cristaleira estilo industrial com LED" loading="lazy"></div><div class="body"><h2>Cristaleira com LED</h2><p>Tubos de aço carbono, prateleiras em vidro e iluminação embutida.</p><div class="tags"><span>Aço carbono</span><span>Vidro</span><span>LED</span></div></div></article>
+        <article class="case" data-cat="reparos"><div class="ph"><img width="560" height="560" src="/img/Czgo5ZlrjbI.webp?v=33be5b17" alt="Rodas de liga leve recuperadas" loading="lazy"></div><div class="body"><h2>Recuperação de rodas</h2><p>Aros de liga leve e de ferro com trincas e amassados.</p><div class="tags"><span>TIG AC</span><span>Alumínio</span></div></div></article>
+        <article class="case" data-cat="reparos"><div class="ph"><img width="560" height="560" src="/img/C6EWpD9rqHY.webp?v=11429ff3" alt="Reparo em embarcação" loading="lazy"></div><div class="body"><h2>Reparos em embarcações</h2><p>Soldagem em alumínio, inox e aço carbono no casco e acessórios.</p><div class="tags"><span>Alumínio</span><span>Inox</span></div></div></article>
       </div>
       <p class="insta">Mais trabalhos são publicados toda semana no Instagram. <a class="btn btn-ghost" href="https://www.instagram.com/reinert.soldas/" target="_blank" rel="noopener">@reinert.soldas</a></p>
     </div>
@@ -94,13 +93,13 @@
 <footer class="foot">
   <div class="wrap">
     <div style="display:grid;gap:12px">
-      <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60" loading="lazy"></a>
+      <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg?v=8e70385b" alt="Reinert Soluções em Solda" width="273" height="60" loading="lazy"></a>
       <p>Soldagem especial, recuperação de peças e estruturas sob medida em Joinville e região.</p>
       <p><a href="https://www.instagram.com/reinert.soldas/" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
-    <div><h4>Serviços</h4><ul><li><a href="/recuperacao-de-pecas">Recuperação de peças</a></li><li><a href="/soldas-especiais">Soldas especiais</a></li><li><a href="/estruturas-metalicas">Estruturas metálicas</a></li><li><a href="/moveis-estilo-industrial">Móveis estilo industrial</a></li><li><a href="/reparos-e-serralheria">Reparos e serralheria</a></li></ul></div>
-    <div><h4>Site</h4><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
-    <div><h4>Oficina</h4><ul><li>Rua Leopoldo Beninca, 108</li><li>Vila Nova, Joinville/SC</li><li><a href="tel:+5547988024265">(47) 98802-4265</a></li><li><a href="mailto:reinertsoldas@gmail.com">reinertsoldas@gmail.com</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li><li>Sábado e domingo: fechado</li></ul></div>
+    <div><p class="foot-title">Serviços</p><ul><li><a href="/recuperacao-de-pecas">Recuperação de peças</a></li><li><a href="/soldas-especiais">Soldas especiais</a></li><li><a href="/estruturas-metalicas">Estruturas metálicas</a></li><li><a href="/moveis-estilo-industrial">Móveis estilo industrial</a></li><li><a href="/reparos-e-serralheria">Reparos e serralheria</a></li></ul></div>
+    <div><p class="foot-title">Site</p><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
+    <div><p class="foot-title">Oficina</p><ul><li>Rua Leopoldo Beninca, 108</li><li>Vila Nova, Joinville/SC</li><li><a href="tel:+5547988024265">(47) 98802-4265</a></li><li><a href="mailto:reinertsoldas@gmail.com">reinertsoldas@gmail.com</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li><li>Sábado e domingo: fechado</li></ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
@@ -108,8 +107,8 @@
   <a class="dock-call" href="tel:+5547988024265"><svg><use href="#ph"/></svg><span>Ligar</span></a>
   <a class="dock-wa" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20portf%C3%B3lio%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
 </div>
-<script src="/assets/config.js" defer></script>
-<script src="/assets/track.js" defer></script>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/config.js?v=8a70b615" defer></script>
+<script src="/assets/track.js?v=a851f690" defer></script>
+<script src="/assets/site.js?v=9d4bce5a" defer></script>
 </body>
 </html>
