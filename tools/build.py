@@ -257,10 +257,7 @@ def jsonld_business():
             "postalCode": ADDRESS["zip"],
             "addressCountry": "BR",
         },
-        "openingHoursSpecification": [
-            {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "08:00", "closes": "12:00"},
-            {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "13:00", "closes": "17:00"},
-        ],
+        "openingHoursSpecification": config.opening_spec(),
         "sameAs": [INSTA],
         "areaServed": {"@type": "City", "name": "Joinville"},
     }
@@ -374,7 +371,7 @@ def footer(ctx):
     </div>
     <div><h4>Serviços</h4><ul>{svc_links}</ul></div>
     <div><h4>Site</h4><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
-    <div><h4>Oficina</h4><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li></ul></div>
+    <div><h4>Oficina</h4><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li>{"".join("<li>" + l + "</li>" for l in config.hours_lines())}</ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
@@ -396,7 +393,7 @@ def band(title, text, ctx, btn="Pedir orçamento no WhatsApp"):
       <div style="display:grid;gap:14px"><h2>{title}</h2><p>{text}</p></div>
       <div style="display:grid;gap:16px;justify-items:start">
         <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{btn}</a>
-        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>Segunda a sexta, 8h às 12h e 13h às 17h. Sem agendamento.</span></div>
+        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_inline()} Sem agendamento.</span></div>
       </div>
     </div>
   </div>
@@ -417,7 +414,12 @@ def faq_html(faq):
 
 
 def fix_links(h, ctx):
-    return h.replace("{WA}", wa(ctx))
+    spans = "".join("<span>" + l + "</span>" for l in config.hours_lines())
+    return (
+        h.replace("{WA}", wa(ctx))
+        .replace("{HOURS_INLINE}", config.hours_inline())
+        .replace("{HOURS_SPANS}", spans)
+    )
 
 
 def write(path, html):
