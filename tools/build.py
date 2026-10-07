@@ -7,10 +7,13 @@ og:url e sitemap.xml.
 """
 import json
 import re
+import sys
 import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import config  # noqa: E402
 CONTENT = ROOT / "tools" / "content"
 
 # Preencher com o domínio final, ex.: "https://reinert.seudominio.com.br"
@@ -379,6 +382,8 @@ def footer(ctx):
   <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
   <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
 </div>
+<script src="/assets/config.js" defer></script>
+<script src="/assets/track.js" defer></script>
 <script src="/assets/site.js" defer></script>
 </body>
 </html>
@@ -614,6 +619,15 @@ def build_404():
 
 
 def build_misc():
+    cfg = {
+        "ga": config.GA_ID,
+        "ads": config.ADS_ID,
+        "adsLabel": config.ADS_LABEL,
+        "adsPhoneLabel": config.ADS_PHONE_LABEL,
+    }
+    (ROOT / "assets" / "config.js").write_text(
+        "window.REINERT_TRACK=" + json.dumps(cfg, ensure_ascii=False) + ";\n", encoding="utf-8"
+    )
     paths = ["", "servicos", "guia-de-soldas", "portfolio", "sobre", "contato"] + [s["slug"] for s in SERVICES]
     if SITE_URL:
         urls = "".join(f"  <url><loc>{SITE_URL}/{p}</loc></url>\n" for p in paths)
