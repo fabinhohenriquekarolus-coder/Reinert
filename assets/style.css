@@ -23,10 +23,10 @@ img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--focus);outline-offset:3px}
 .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gut)}
-h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.02;letter-spacing:.005em;text-transform:uppercase;text-wrap:balance;margin:0}
-h1{font-size:clamp(2.7rem,7.2vw,5.6rem)}
-h2{font-size:clamp(2rem,4.4vw,3.3rem)}
-h3{font-size:1.55rem;font-weight:800}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:1.1;letter-spacing:.005em;text-transform:uppercase;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.25rem,4.5vw,4rem);line-height:1.08}
+h2{font-size:clamp(1.75rem,3vw,2.5rem)}
+h3{font-size:1.5rem;font-weight:800;line-height:1.12}
 p{margin:0}
 .eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.7em}
 .eyebrow::before{content:"";width:28px;height:3px;background:var(--tint);border-radius:2px}
@@ -222,7 +222,7 @@ figure{margin:0}
 .ccard button,.ccard a.mini{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;background:transparent;color:var(--fg);border:1px solid var(--line-strong);border-radius:4px;padding:7px 10px;cursor:pointer;text-decoration:none;white-space:nowrap}
 .hours{font-family:var(--f-mono);font-size:.9rem;display:grid;gap:4px;grid-column:1/-1;color:var(--soft)}
 form{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,3vw,32px);display:grid;gap:16px}
-form h3{font-size:1.7rem}
+form h3{font-size:1.5rem}
 .field{display:grid;gap:6px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:560px){.row2{grid-template-columns:1fr}}
@@ -378,8 +378,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 
   /* textos */
   body{font-size:17px}
-  h1{font-size:clamp(2.25rem,10.5vw,3rem);overflow-wrap:break-word}
-  h2{font-size:clamp(1.8rem,8vw,2.4rem)}
+  h1{font-size:clamp(2.25rem,9.6vw,2.75rem);overflow-wrap:break-word}
   .hero{padding-block:28px 40px}
   .hero-copy{gap:18px}
   section{padding-block:48px}
@@ -440,7 +439,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   .pillar:first-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
   .pillar:first-child img{height:100%;min-height:340px;aspect-ratio:auto}
   .pillar:first-child .body{padding:32px 34px;align-content:center}
-  .pillar:first-child h3{font-size:2.1rem}
 }
 .more{text-transform:none;letter-spacing:0;font-family:var(--f-body);font-weight:600;font-size:1rem}
 
@@ -483,3 +481,14 @@ input,select,textarea{background:#fff;border-color:var(--line-strong);color:var(
 .brand img.logo{display:block;height:44px;width:auto}
 .foot .brand img.logo{height:52px}
 @media (max-width:760px){.brand img.logo{height:36px}.foot .brand img.logo{height:44px}}
+
+/* ===== Tipografia: piso de leitura e medida ===== */
+main p,main li,main dd,main td,main summary,.foot p,.foot li,.foot a,.hint,.form-note,.proof small,.proc span,.gloss span,.timeline span,.ccard .v,.hours span,.band .meta,.values p,.pillar li,.step p,.case p,.svc li,.cols2 li,.pcard dd,.review p{font-size:max(1rem,var(--fs-floor,1rem))}
+.eyebrow,.svc .tag,.pcard .sub,.pcard dt,.tbl th,.ccard small,.crumbs,.crumbs span,.filters button,.ccard button,.ccard a.mini,.menu-btn,.more,.mat-group h4{font-size:1rem}
+label,.review footer,.quote cite,.tags span{font-size:.9rem}
+.chip,.proc small,.foot .legal{font-size:.875rem}
+.tags span{padding:4px 8px}
+main p{max-width:68ch}
+.lead{max-width:62ch}
+.pillar:first-child h3{font-size:1.5rem}
+.gloss b,.ocard span,.proc b,.case h3,.step h3{font-size:1.4rem}

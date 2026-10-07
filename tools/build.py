@@ -437,7 +437,7 @@ def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
         lead_html += f"""
     <div class="cta-row" data-cta>
       <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento no WhatsApp</a>
-      <a class="btn btn-ghost only-m" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar agora</a>
+      <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar agora</a>
     </div>
     <p class="trust"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google, com 19 avaliações. Envie fotos da peça e a descrição do serviço.</p>"""
     return f"""  <div class="pagehead"><div class="wrap">
