@@ -16,8 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import config  # noqa: E402
 CONTENT = ROOT / "tools" / "content"
 
-# Preencher com o domínio final, ex.: "https://reinert.seudominio.com.br"
-SITE_URL = ""
+SITE_URL = config.SITE_URL  # domínio público, definido em tools/config.py
 
 NAME = "Reinert Soluções em Solda"
 PHONE_E164 = "+5547988024265"
@@ -57,7 +56,7 @@ SERVICES = [
         "img": "C4jSvkarUD0.webp",
         "alt": "Molde de injeção em recuperação por solda",
         "title": "Recuperação de peças para usinagem em Joinville/SC",
-        "desc": "Recuperação de peças desgastadas ou trincadas por solda TIG, MIG e eletrodo em Joinville/SC: cilindros hidráulicos, eixos, moldes e ferro fundido. Orçamento por foto no WhatsApp.",
+        "desc": "Recuperação de peças desgastadas ou trincadas por solda em Joinville/SC: cilindros hidráulicos, eixos, moldes e ferro fundido. Orçamento por foto no WhatsApp.",
         "h1": "Recuperação de peças para usinagem",
         "lead": "Preenchemos desgaste, trincas e quebras com o material de adição correto, deixando sobremetal para a usinagem devolver a medida de projeto. É o caminho mais rápido e barato quando a peça nova demora ou custa caro.",
         "bullets": [
@@ -90,8 +89,8 @@ SERVICES = [
         "tag": "Técnica e precisão",
         "img": "CYr9VUSLAgD.webp",
         "alt": "Solda TIG em aço carbono com cores de revenimento",
-        "title": "Soldas especiais: TIG em alumínio, inox e aço ferramenta em Joinville/SC",
-        "desc": "Solda TIG em alumínio, inox 304, magnésio, titânio e aços ferramenta (P20, D2, D6, H13) em Joinville/SC. Peças de precisão e fora de padrão. Orçamento por foto no WhatsApp.",
+        "title": "Soldas especiais em alumínio, inox e aço, em Joinville/SC",
+        "desc": "Solda TIG em alumínio, inox 304, titânio e aços ferramenta (P20, D2, D6, H13) em Joinville/SC. Peças de precisão e fora de padrão. Orçamento por foto.",
         "h1": "Soldas especiais",
         "lead": "Soldagem TIG em materiais sensíveis ao calor e em peças onde o acabamento conta. Alumínio com corrente alternada, inox sem contaminação, aço ferramenta com o cuidado que ele exige.",
         "bullets": [
@@ -125,7 +124,7 @@ SERVICES = [
         "img": "C-LZ9BwPJiG.webp",
         "alt": "Estruturas metálicas brancas fabricadas sob medida",
         "title": "Estruturas metálicas sob medida em Joinville/SC",
-        "desc": "Fabricação de estruturas metálicas sob medida em aço carbono, metalon, inox e alumínio para indústrias, arquitetos e marcenarias em Joinville/SC. Do protótipo ao lote.",
+        "desc": "Fabricação de estruturas metálicas sob medida em aço carbono, metalon, inox e alumínio para indústrias, arquitetos e marcenarias em Joinville/SC.",
         "h1": "Estruturas metálicas sob medida",
         "lead": "Fabricação de estruturas para empresas do ramo industrial, arquitetos, designers e marcenarias, em aço carbono, metalon, inox e alumínio. Do protótipo à produção em lote.",
         "bullets": [
@@ -159,7 +158,7 @@ SERVICES = [
         "img": "DVMtWookW2N.webp",
         "alt": "Estante estilo industrial em aço com prateleiras de madeira",
         "title": "Móveis estilo industrial em aço e metalon em Joinville/SC",
-        "desc": "Estruturas de móveis estilo industrial em aço inox e metalon sob medida, em Joinville/SC: estantes, cristaleiras, vitrines, mesas e bares. Em parceria com marcenarias.",
+        "desc": "Estruturas de móveis estilo industrial em aço inox e metalon sob medida, em Joinville/SC: estantes, cristaleiras, vitrines, mesas e bares. Com marcenarias.",
         "h1": "Móveis estilo industrial",
         "lead": "Estruturas sob medida em aço inox e metalon com acabamento de alto padrão, feitas em parceria com marcenarias ou a partir do projeto do arquiteto.",
         "bullets": ["Estantes e cristaleiras", "Vitrines e expositores de loja", "Mesas e bancadas", "Bares e adegas"],
@@ -185,7 +184,7 @@ SERVICES = [
         "img": "C6EWpD9rqHY.webp",
         "alt": "Embarcação de alumínio em reparo",
         "title": "Reparos automotivos, náuticos e serralheria em Joinville/SC",
-        "desc": "Reparo em rodas de liga leve, cárter e cabeçote em alumínio, embarcações em alumínio e inox, quadros de bicicleta e serralheria em Joinville/SC. Orçamento por foto.",
+        "desc": "Reparo de rodas de liga leve, cárter e cabeçote em alumínio, embarcações, quadros de bicicleta e serralheria em Joinville/SC. Orçamento por foto.",
         "h1": "Reparos e serralheria",
         "lead": "Manutenção de peças automotivas, reparos em embarcações e serviços de serralheria com o mesmo cuidado aplicado na indústria.",
         "bullets": [
@@ -213,9 +212,9 @@ SERVICES = [
 ]
 
 PAGES_META = {
-    "": ("Solda, reparo e fabricação em metal em Joinville/SC", "Recuperação de peças, soldas especiais e fabricação de estruturas e móveis metálicos sob medida em Joinville/SC. TIG, MIG/MAG e eletrodo em alumínio, inox, aço carbono e ferro fundido. Nota 5,0 no Google."),
+    "": ("Solda, reparo e fabricação em metal em Joinville/SC", "Recuperação de peças, soldas especiais e estruturas metálicas sob medida em Joinville/SC. TIG, MIG/MAG e eletrodo em alumínio, inox e aço. Nota 5,0 no Google."),
     "servicos": ("Serviços de solda e serralheria em Joinville/SC", "Recuperação de peças, soldas especiais, estruturas metálicas sob medida, móveis estilo industrial e reparos em Joinville/SC. Atendimento sem agendamento."),
-    "guia-de-soldas": ("Guia de soldas: TIG, MIG/MAG, eletrodo e oxiacetileno", "Entenda qual processo de solda usar em cada metal: alumínio, inox, aço carbono, ferro fundido e aço ferramenta. Defeitos comuns, glossário e como pedir orçamento."),
+    "guia-de-soldas": ("Guia de soldas: TIG, MIG/MAG, eletrodo e oxiacetileno", "Qual solda usar em cada metal: alumínio, inox, aço carbono, ferro fundido e aço ferramenta. Processos TIG, MIG/MAG e eletrodo, defeitos comuns e glossário."),
     "portfolio": ("Portfólio de soldas e estruturas metálicas", "Trabalhos realizados pela Reinert em Joinville/SC: recuperação de peças, estruturas em inox, proteções em alumínio, móveis estilo industrial e reparos."),
     "sobre": ("Sobre a Reinert Soluções em Solda", "Conheça a Reinert: oficina de soldagem em Joinville/SC fundada por Rafael Reinert, com mais de 15 anos de profissão, nova sede na Vila Nova."),
     "contato": ("Contato e orçamento", "Fale com a Reinert pelo WhatsApp (47) 98802-4265 ou venha à oficina na Rua Leopoldo Beninca, 108, Vila Nova, Joinville/SC. Sem agendamento."),
@@ -243,7 +242,7 @@ def url(path):
 def jsonld_business():
     data = {
         "@context": "https://schema.org",
-        "@type": ["LocalBusiness", "ProfessionalService"],
+        "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
         "name": NAME,
         "legalName": "Reinert – Soluções em Solda LTDA",
         "description": PAGES_META[""][1],
@@ -258,12 +257,16 @@ def jsonld_business():
             "addressCountry": "BR",
         },
         "openingHoursSpecification": config.opening_spec(),
-        "sameAs": [INSTA],
+        "aggregateRating": {"@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "19", "bestRating": "5", "worstRating": "1"},
         "areaServed": {"@type": "City", "name": "Joinville"},
+        "contactPoint": {"@type": "ContactPoint", "telephone": PHONE_E164, "contactType": "customer service", "availableLanguage": "pt-BR"},
+        "hasMap": MAPS,
+        "sameAs": [INSTA],
     }
     if SITE_URL:
         data["url"] = SITE_URL + "/"
-        data["image"] = SITE_URL + "/img/og.jpg"
+        data["logo"] = SITE_URL + "/img/logo-512.png"
+        data["image"] = [SITE_URL + "/img/og.jpg", SITE_URL + "/img/Cxz5OvfOaRE.webp"]
     return data
 
 
@@ -291,14 +294,13 @@ def jsonld_breadcrumb(items):
 
 
 def head(title, desc, path, ld, extra=""):
-    full_title = title if path == "" else f"{title} · {NAME}"
-    if path == "":
-        full_title = f"{NAME} · {title}"
+    full_title = f"{title} · Reinert"
     canon = url(path)
     og_img = (SITE_URL + "/img/og.jpg") if SITE_URL else ""
-    canon_tag = ""
-    if canon and path != "404":
-        canon_tag = f'<link rel="canonical" href="{canon}">' if path else f'<link rel="canonical" href="{SITE_URL}/">'
+    canon_url = ""
+    if SITE_URL and path != "404":
+        canon_url = f"{SITE_URL}/{path}" if path else f"{SITE_URL}/"
+    canon_tag = f'<link rel="canonical" href="{canon_url}">' if canon_url else ""
     scripts = "\n".join(
         '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False).replace("</", "<\\/") + "</script>"
         for d in ld if d
@@ -319,8 +321,13 @@ def head(title, desc, path, ld, extra=""):
 <meta property="og:title" content="{esc(full_title)}">
 <meta property="og:description" content="{esc(desc)}">
 {f'<meta property="og:image" content="{og_img}">' if og_img else ''}
-{f'<meta property="og:url" content="{canon}">' if canon and path != "404" else ''}
-<meta name="twitter:card" content="{'summary_large_image' if og_img else 'summary'}">
+{'<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">' if og_img else ''}
+{f'<meta property="og:image:alt" content="Reinert Soluções em Solda: solda, reparo e fabricação em metal em Joinville/SC">' if og_img else ''}
+{f'<meta property="og:url" content="{canon_url}">' if canon_url else ''}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(full_title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+{f'<meta name="twitter:image" content="{og_img}">' if og_img else ''}
 <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -345,7 +352,7 @@ def header(active):
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="{NAME}, página inicial">
-      <img class="logo" src="/img/logo-fundo-escuro.svg" alt="" width="273" height="60">
+      <img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60">
     </a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
     <nav class="nav" id="nav" aria-label="Principal">
@@ -365,7 +372,7 @@ def footer(ctx):
 <footer class="foot">
   <div class="wrap">
     <div style="display:grid;gap:12px">
-      <a class="brand" href="/" aria-label="{NAME}, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg" alt="" width="273" height="60" loading="lazy"></a>
+      <a class="brand" href="/" aria-label="{NAME}, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60" loading="lazy"></a>
       <p>Soldagem especial, recuperação de peças e estruturas sob medida em Joinville e região.</p>
       <p><a href="{INSTA}" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
@@ -513,7 +520,7 @@ def build_service(s):
         f'<img src="/img/{g}" alt="{esc(s["name"])}: trabalho realizado" loading="lazy" width="800" height="800">' for g in s["gallery"]
     )
     others = "".join(
-        f'<a class="ocard" href="/{o["slug"]}"><img src="/img/{o["img"]}" alt="" loading="lazy" width="400" height="300"><span>{o["name"]}</span></a>'
+        f'<a class="ocard" href="/{o["slug"]}"><img src="/img/{o["img"]}" alt="{esc(o["alt"])}" loading="lazy" width="400" height="300"><span>{o["name"]}</span></a>'
         for o in SERVICES if o["slug"] != s["slug"]
     )
     html = (

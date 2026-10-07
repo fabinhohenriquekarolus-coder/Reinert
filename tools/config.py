@@ -11,6 +11,9 @@ def _env(name, default=""):
     return (os.environ.get(name) or default).strip()
 
 
+# Endereço público do site (usado em canonical, og:url, sitemap e dados estruturados)
+SITE_URL = _env("SITE_URL", "https://www.reinertsoldas.com.br").rstrip("/")
+
 # Google Analytics 4, no formato G-XXXXXXXXXX
 GA_ID = _env("GA_ID", "")
 # Google Ads, no formato AW-XXXXXXXXX
