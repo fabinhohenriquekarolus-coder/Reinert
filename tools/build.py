@@ -218,7 +218,7 @@ PAGES_META = {
     "servicos": ("Serviços de solda e serralheria em Joinville/SC", "Recuperação de peças, soldas especiais, estruturas metálicas sob medida, móveis estilo industrial e reparos em Joinville/SC. Atendimento sem agendamento."),
     "guia-de-soldas": ("Guia de soldas: TIG, MIG/MAG, eletrodo e oxiacetileno", "Qual solda usar em cada metal: alumínio, inox, aço carbono, ferro fundido e aço ferramenta. Processos TIG, MIG/MAG e eletrodo, defeitos comuns e glossário."),
     "portfolio": ("Portfólio de soldas e estruturas metálicas", "Trabalhos realizados pela Reinert em Joinville/SC: recuperação de peças, estruturas em inox, proteções em alumínio, móveis estilo industrial e reparos."),
-    "sobre": ("Sobre a Reinert Soluções em Solda", "Conheça a Reinert: oficina de soldagem em Joinville/SC fundada por Rafael Reinert, com mais de 15 anos de profissão, nova sede na Vila Nova."),
+    "sobre": ("Sobre a Reinert Soluções em Solda", "Conheça a Reinert: oficina de soldagem em Joinville/SC criada a partir de mais de 15 anos de profissão em soldagem industrial, nova sede na Vila Nova."),
     "contato": ("Contato e orçamento", "Fale com a Reinert pelo WhatsApp (47) 98802-4265 ou venha à oficina na Rua Leopoldo Beninca, 108, Vila Nova, Joinville/SC. Sem agendamento."),
 }
 

@@ -34,7 +34,7 @@ Todos os botões abrem `wa.me/5547988024265` com mensagem que pede fotos da peç
 
 ## Horário de funcionamento
 Única fonte: `tools/config.py` (`SEMANA_FECHA`, `SEXTA_FECHA`, `HORARIO`). Alimenta hero, faixa de chamada, rodapé, contato e dados estruturados. Dias com o mesmo horário são agrupados sozinhos.
-Pendente de confirmação: a sexta fecha às 17h ou às 16h? Hoje está 17h.
+Sexta confirmada às 17h. Se algum dia mudar, altere só `SEXTA_FECHA`.
 
 ## Medição de cliques (GA4 e Google Ads)
 Todo link `wa.me`, `api.whatsapp.com` e `tel:` dispara, por delegação de eventos (`assets/track.js`):

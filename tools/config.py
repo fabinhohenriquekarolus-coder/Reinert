@@ -27,12 +27,12 @@ ADS_PHONE_LABEL = _env("ADS_PHONE_LABEL", "")
 # ---------------------------------------------------------------------------
 # Horário de funcionamento: ÚNICA fonte para hero, rodapé, contato e dados estruturados.
 # Para mudar, edite só aqui e rode `python3 tools/build.py`.
-# CONFIRMAR: a sexta fecha às 17h ou às 16h? Hoje está 17h. Se for 16h, troque SEXTA_FECHA.
+# Sexta confirmada: fecha às 17h, como os outros dias úteis.
 # ---------------------------------------------------------------------------
 MANHA = ("08:00", "12:00")
 TARDE_ABRE = "13:00"
 SEMANA_FECHA = "17:00"
-SEXTA_FECHA = "17:00"  # CONFIRMAR (17:00 ou 16:00)
+SEXTA_FECHA = "17:00"
 
 # dia -> faixas de atendimento (lista vazia = fechado)
 HORARIO = [
