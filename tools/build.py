@@ -2,8 +2,9 @@
 """Gera as páginas estáticas do site da Reinert.
 
 Uso: python3 tools/build.py
-Depois de definir SITE_URL (domínio final), o build também gera canonical,
-og:url e sitemap.xml.
+
+Configuração (domínio, horário, IDs de medição): tools/config.py.
+Gera: *.html, assets/style.min.css, assets/config.js, sitemap.xml e robots.txt.
 """
 import hashlib
 import json
@@ -269,16 +270,6 @@ def jsonld_business():
         data["logo"] = SITE_URL + "/img/logo-512.png"
         data["image"] = [SITE_URL + "/img/og.jpg", SITE_URL + "/img/Cxz5OvfOaRE.webp"]
     return data
-
-
-def jsonld_faq(faq):
-    return {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq
-        ],
-    }
 
 
 def jsonld_breadcrumb(items):
