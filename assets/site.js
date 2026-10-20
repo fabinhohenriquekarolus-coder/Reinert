@@ -26,6 +26,54 @@
     document.querySelectorAll("#grid .case").forEach(function(c){c.hidden=!(f==="todos"||c.dataset.cat===f)});
   })});
 
+  var grid=document.getElementById("grid"), lb=document.getElementById("lb");
+  if(grid&&lb&&typeof lb.showModal==="function"){
+    var fig=lb.querySelector(".lb-fig"), big=document.createElement("img"), cur=null, opener=null;
+    var lc=document.getElementById("lb-c"), lt=document.getElementById("lb-t"), ld=document.getElementById("lb-d"), ln=document.getElementById("lb-n");
+    big.decoding="async";
+    fig.appendChild(big);
+    var visible=function(){return Array.prototype.filter.call(grid.querySelectorAll(".case"),function(c){return !c.hidden})};
+    var show=function(c){
+      var im=c.querySelector(".ph img"), list=visible(), i=list.indexOf(c);
+      cur=c;
+      big.removeAttribute("src");
+      big.width=+im.getAttribute("width")||0;
+      big.height=+im.getAttribute("height")||0;
+      big.alt=im.alt;
+      big.src=im.currentSrc||im.src;
+      lb.dataset.cat=c.dataset.cat;
+      lc.textContent=c.querySelector(".badge").textContent;
+      lt.textContent=c.querySelector("h2").textContent;
+      ld.textContent=c.querySelector(".desc").textContent;
+      ln.textContent=(i+1)+" de "+list.length;
+      lb.classList.toggle("is-single",list.length<2);
+      var nx=list[(i+1)%list.length];
+      if(nx&&nx!==c){var pre=new Image();pre.src=nx.querySelector(".ph img").src}
+    };
+    var step=function(d){var list=visible(), i=list.indexOf(cur);if(list.length>1)show(list[(i+d+list.length)%list.length])};
+    grid.addEventListener("click",function(e){
+      var b=e.target.closest(".ph");
+      if(!b)return;
+      opener=b;
+      show(b.closest(".case"));
+      document.documentElement.classList.add("lb-open");
+      lb.showModal();
+    });
+    lb.addEventListener("click",function(e){
+      var a=e.target.closest("[data-lb]");
+      if(a){if(a.dataset.lb==="close")lb.close();else step(a.dataset.lb==="next"?1:-1);return}
+      if(e.target===lb||e.target.classList.contains("lb-in")||e.target===fig)lb.close();
+    });
+    lb.addEventListener("keydown",function(e){
+      if(e.key==="ArrowRight"){e.preventDefault();step(1)}
+      else if(e.key==="ArrowLeft"){e.preventDefault();step(-1)}
+    });
+    lb.addEventListener("close",function(){
+      document.documentElement.classList.remove("lb-open");
+      if(opener)opener.focus();
+    });
+  }
+
   // Copiar: seleciona o texto certo como alternativa e avisa o resultado
   function flash(btn,txt){var t=btn.dataset.label||btn.textContent;btn.dataset.label=t;btn.textContent=txt;setTimeout(function(){btn.textContent=t},1800)}
   function select(el){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
