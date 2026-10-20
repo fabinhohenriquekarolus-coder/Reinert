@@ -634,7 +634,7 @@ def build_service(s):
     </div>
   </section>
 """
-        + band("Tem uma peça para avaliar?", "Mande as fotos e a descrição pelo WhatsApp. Ou traga direto na oficina, sem precisar agendar.", ctx)
+        + band("Tem uma peça para avaliar?", "Mande as fotos e a descrição pelo WhatsApp. Ou traga direto na oficina, sem precisar agendar.", ctx, btn="Mandou a foto da peça, a gente já avalia")
         + footer(ctx)
     )
     write(s["slug"], html)
@@ -667,21 +667,13 @@ def build_guia():
 
 
 def build_simple(slug, active, h_eyebrow, h1, lead, ctx, title_key=None, extra_ld=None):
-    quick = ""
-    if slug == "contato":
-        quick = f"""  <div class="wrap quick" data-cta>
-    <a class="btn btn-accent" href="{wa('contato')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Chamar no WhatsApp</a>
-    <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar {PHONE_FMT}</a>
-    <a class="btn btn-ghost" href="{MAPS}" target="_blank" rel="noopener">Como chegar</a>
-  </div>
-"""
     meta = PAGES_META[slug]
     body = fix_links(read(slug), ctx)
     body = re.sub(r'<div class="pagehead">.*?</div></div>\n',
                   pagehead([("Início", "/"), (h_eyebrow, None)], h_eyebrow, h1, lead), body, count=1, flags=re.S)
     html = (
         head(meta[0], meta[1], slug, ([jsonld_business()] if slug == "contato" else []) + [jsonld_breadcrumb([("Início", "/"), (h_eyebrow, "/" + slug)])] + (extra_ld or []))
-        + header(active) + body.replace("</div></div>\n", "</div></div>\n" + quick, 1) + "\n" + footer(ctx)
+        + header(active) + body + "\n" + footer(ctx)
     )
     write(slug, html)
 
