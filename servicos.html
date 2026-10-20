@@ -25,7 +25,7 @@
 <link rel="preload" href="/assets/fonts/big-shoulders-display-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/barlow-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/style.min.css?v=e2f46f7d">
+<link rel="stylesheet" href="/assets/style.min.css?v=a8cf9d87">
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://www.reinertsoldas.com.br/"}, {"@type": "ListItem", "position": 2, "name": "Serviços", "item": "https://www.reinertsoldas.com.br/servicos"}]}</script>
 </head>
@@ -42,85 +42,62 @@
     <a class="brand" href="/" aria-label="Reinert Soluções em Solda, página inicial">
       <img class="logo" src="/img/logo-fundo-escuro.svg?v=8e70385b" alt="Reinert Soluções em Solda" width="273" height="60">
     </a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav"><span class="menu-open">MENU</span><span class="menu-close">FECHAR</span></button>
     <nav class="nav" id="nav" aria-label="Principal">
-      <a href="/">Início</a>
-      <a href="/servicos" aria-current="page">Serviços</a>
-      <a href="/guia-de-soldas">Guia</a>
-      <a href="/portfolio">Portfólio</a>
-      <a href="/sobre">Sobre</a>
+      <div class="nav-top">
+        <a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20menu%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a>
+        <a class="btn btn-ghost" href="tel:+5547988024265"><svg><use href="#ph"/></svg>Ligar</a>
+      </div>
+      <div class="has-sub is-current"><a class="sub-link" href="/servicos" aria-current="page">Serviços</a><button type="button" class="sub-btn" aria-expanded="false" aria-controls="sub" aria-label="Abrir lista de serviços"><svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg></button><div class="sub" id="sub"><a class="sub-all" href="/servicos">Todos os serviços</a><a href="/recuperacao-de-pecas">Recuperação de peças</a><a href="/soldas-especiais">Soldas especiais</a><a href="/estruturas-metalicas">Estruturas metálicas</a><a href="/moveis-estilo-industrial">Móveis estilo industrial</a><a href="/reparos-e-serralheria">Reparos e serralheria</a></div></div>
+      <a href="/portfolio">Trabalhos</a>
+      <a href="/guia-de-soldas">Guia de soldas</a>
+      <a href="/sobre">A oficina</a>
       <a href="/contato">Contato</a>
-      <a class="btn btn-accent nav-cta" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20menu%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a>
     </nav>
     <a class="btn btn-accent hd-cta" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20cabe%C3%A7alho%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a>
   </div>
 </header>
 <main id="main">
-  <div class="pagehead"><div class="wrap">
-    <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> <span aria-current="page">Serviços</span></nav>
-    <p class="eyebrow">Serviços</p>
-    <h1>Soldagem para quem não pode parar</h1>
-    <p class="lead">Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina, sem agendamento, e serviços no local quando a peça não pode sair da máquina.</p>
-  </div></div>
-  <section style="padding-top:40px">
+  <section class="svchero dark">
     <div class="wrap">
-      <article class="svc">
-        <figure><a href="/recuperacao-de-pecas"><img width="560" height="559" src="/img/C4jSvkarUD0.webp?v=56e42ae1" alt="Molde de injeção em recuperação por solda" loading="lazy"></a></figure>
-        <div class="txt">
-          <p class="tag">Indústria e manutenção</p>
-          <h2><a href="/recuperacao-de-pecas" style="text-decoration:none">Recuperação de peças para usinagem</a></h2>
-          <p class="lead">Preenchemos desgaste, trincas e quebras com o material de adição correto, deixando sobremetal para a usinagem devolver a medida de projeto. É o caminho mais rápido e barato quando a peça nova demora ou custa caro.</p>
-          <ul><li>Cilindros hidráulicos: olhais, tampas e hastes</li><li>Eixos em SAE 1045 e 4140</li><li>Canais e cavidades de moldes e matrizes</li><li>Olhais e alojamentos de rolamento</li></ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/recuperacao-de-pecas">Ver detalhes</a><a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20Recupera%C3%A7%C3%A3o%20de%20pe%C3%A7as%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a></div>
+      <div class="svchero-copy">
+        <nav class="crumbs" aria-label="Você está em"><a href="/">Início</a> <span aria-current="page">Serviços</span></nav>
+        <p class="eyebrow">Serviços</p>
+        <h1>Soldagem para quem não pode parar</h1>
+        <p class="lead">Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina, sem agendamento, e serviços no local quando a peça não pode sair da máquina.</p>
+        <div class="cta-row" data-cta>
+          <a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20servi%C3%A7os%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a>
+          <a class="btn btn-ghost" href="tel:+5547988024265"><svg><use href="#ph"/></svg>Ligar</a>
         </div>
-      </article>
-      <article class="svc flip">
-        <figure><a href="/soldas-especiais"><img width="560" height="560" src="/img/CYr9VUSLAgD.webp?v=0cfc0674" alt="Solda TIG em aço carbono com cores de revenimento" loading="lazy"></a></figure>
-        <div class="txt">
-          <p class="tag">Técnica e precisão</p>
-          <h2><a href="/soldas-especiais" style="text-decoration:none">Soldas especiais em alumínio, inox e aço ferramenta</a></h2>
-          <p class="lead">Soldagem TIG em materiais sensíveis ao calor e em peças onde o acabamento conta. Alumínio com corrente alternada, inox sem contaminação, aço ferramenta com o cuidado que ele exige.</p>
-          <ul><li>Alumínio, magnésio e titânio</li><li>Aço inox com acabamento polido</li><li>Aços P20, D2, D6 e H13</li><li>Latão e cobre</li></ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/soldas-especiais">Ver detalhes</a><a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20Soldas%20especiais%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a></div>
-        </div>
-      </article>
-      <article class="svc">
-        <figure><a href="/estruturas-metalicas"><img width="560" height="560" src="/img/C-LZ9BwPJiG.webp?v=3582cb1a" alt="Estruturas metálicas brancas fabricadas sob medida" loading="lazy"></a></figure>
-        <div class="txt">
-          <p class="tag">Fabricação</p>
-          <h2><a href="/estruturas-metalicas" style="text-decoration:none">Estruturas metálicas sob medida</a></h2>
-          <p class="lead">Fabricação de estruturas para empresas do ramo industrial, arquitetos, designers e marcenarias, em aço carbono, metalon, inox e alumínio. Do protótipo à produção em lote.</p>
-          <ul><li>Mesas em inox 304 com acabamento sanitário</li><li>Bases e estruturas para móveis</li><li>Proteções para condensadoras</li><li>Grades de bueiro para 5 toneladas</li></ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/estruturas-metalicas">Ver detalhes</a><a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20Estruturas%20met%C3%A1licas%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a></div>
-        </div>
-      </article>
-      <article class="svc flip">
-        <figure><a href="/moveis-estilo-industrial"><img width="560" height="560" src="/img/DVMtWookW2N.webp?v=d1fad883" alt="Estante estilo industrial em aço com prateleiras de madeira" loading="lazy"></a></figure>
-        <div class="txt">
-          <p class="tag">Projetos residenciais e comerciais</p>
-          <h2><a href="/moveis-estilo-industrial" style="text-decoration:none">Móveis em aço e metalon, estilo industrial</a></h2>
-          <p class="lead">Estruturas sob medida em aço inox e metalon com acabamento de alto padrão, feitas em parceria com marcenarias ou a partir do projeto do arquiteto.</p>
-          <ul><li>Estantes e cristaleiras</li><li>Vitrines e expositores de loja</li><li>Mesas e bancadas</li><li>Bares e adegas</li></ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/moveis-estilo-industrial">Ver detalhes</a><a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20M%C3%B3veis%20estilo%20industrial%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a></div>
-        </div>
-      </article>
-      <article class="svc">
-        <figure><a href="/reparos-e-serralheria"><img width="560" height="560" src="/img/C6EWpD9rqHY.webp?v=11429ff3" alt="Embarcação de alumínio em reparo" loading="lazy"></a></figure>
-        <div class="txt">
-          <p class="tag">Automotivo, náutico e serralheria</p>
-          <h2><a href="/reparos-e-serralheria" style="text-decoration:none">Reparos automotivos, náuticos e serralheria</a></h2>
-          <p class="lead">Manutenção de peças automotivas, reparos em embarcações e serviços de serralheria com o mesmo cuidado aplicado na indústria.</p>
-          <ul><li>Rodas de liga leve e de ferro</li><li>Cárter e cabeçote em alumínio</li><li>Embarcações em alumínio e inox</li><li>Quadros de bicicleta</li></ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/reparos-e-serralheria">Ver detalhes</a><a class="btn btn-accent" href="https://wa.me/5547988024265?text=Ol%C3%A1%2C%20Reinert%21%20Vim%20pelo%20site%20%28p%C3%A1gina%3A%20Reparos%20e%20serralheria%29%20e%20gostaria%20de%20um%20or%C3%A7amento.%0A%0AVou%20enviar%20aqui%20na%20conversa%3A%0A1%29%20Fotos%20da%20pe%C3%A7a%20ou%20do%20local%20%28de%20v%C3%A1rios%20%C3%A2ngulos%29%0A2%29%20Descri%C3%A7%C3%A3o%20do%20que%20precisa%20ser%20feito%20%28material%2C%20medidas%20e%20prazo%29%0A%0AMeu%20nome%3A%20" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Enviar foto no WhatsApp</a></div>
-        </div>
-      </article>
+        <p class="proof-line"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google · 19 avaliações · Sem agendamento</p>
+      </div>
+      
     </div>
   </section>
-  <section style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Para quem trabalhamos</p><h2>Segmentos atendidos</h2></div>
-      <div class="segments"><span>Metalurgia e usinagem</span><span>Ferramentarias e injeção plástica</span><span>Hidráulica e agronegócio</span><span>Transportadoras</span><span>Indústria moveleira e marcenarias</span><span>Arquitetura e design</span><span>Náutico</span><span>Automotivo</span></div>
+  <section class="svc-sec svc-all" aria-label="Serviços">
+    <div class="tiles">
+      <a class="tile" href="/recuperacao-de-pecas">
+        <img width="788" height="1400" src="/img/portfolio/componente-mecanico-reparo-01.webp?v=f803ea48" alt="" loading="lazy" decoding="async">
+        <span class="tile-body"><span class="tile-name">Recuperação de peças</span><span class="tile-more"><span><span class="tile-desc">Reconstruímos peças desgastadas ou trincadas, com sobremetal para usinar.</span><span class="tile-go">Ver serviço</span></span></span></span>
+      </a>
+      <a class="tile" href="/soldas-especiais">
+        <img width="1050" height="1400" src="/img/portfolio/cordao-solda-macro-01.webp?v=3fd15a72" alt="" loading="lazy" decoding="async">
+        <span class="tile-body"><span class="tile-name">Soldas especiais</span><span class="tile-more"><span><span class="tile-desc">TIG em alumínio, inox, titânio e aço ferramenta, onde o acabamento conta.</span><span class="tile-go">Ver serviço</span></span></span></span>
+      </a>
+      <a class="tile" href="/estruturas-metalicas">
+        <img width="1400" height="1050" src="/img/portfolio/mesas-rodizio-lote-01.webp?v=c5f470df" alt="" loading="lazy" decoding="async">
+        <span class="tile-body"><span class="tile-name">Estruturas metálicas</span><span class="tile-more"><span><span class="tile-desc">Estruturas sob medida em aço, inox e alumínio, do protótipo ao lote.</span><span class="tile-go">Ver serviço</span></span></span></span>
+      </a>
+      <a class="tile" href="/moveis-estilo-industrial">
+        <img width="560" height="560" src="/img/DVMtWookW2N.webp?v=d1fad883" alt="" loading="lazy" decoding="async">
+        <span class="tile-body"><span class="tile-name">Móveis estilo industrial</span><span class="tile-more"><span><span class="tile-desc">Estruturas em aço e metalon para estantes, mesas e vitrines.</span><span class="tile-go">Ver serviço</span></span></span></span>
+      </a>
+      <a class="tile" href="/reparos-e-serralheria">
+        <img width="560" height="560" src="/img/C6EWpD9rqHY.webp?v=11429ff3" alt="" loading="lazy" decoding="async">
+        <span class="tile-body"><span class="tile-name">Reparos e serralheria</span><span class="tile-more"><span><span class="tile-desc">Rodas, embarcações, quadros e serralheria com solda de oficina.</span><span class="tile-go">Ver serviço</span></span></span></span>
+      </a>
     </div>
+    <div class="wrap"><p class="seg-line">Atendemos metalurgia e usinagem, ferramentarias e injeção plástica, hidráulica e agronegócio, transportadoras, indústria moveleira, arquitetura e design, náutico e automotivo.</p></div>
   </section>
   <div class="band" data-cta>
     <div class="wrap">
@@ -141,7 +118,7 @@
       <p><a href="https://www.instagram.com/reinert.soldas/" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
     <div><p class="foot-title">Serviços</p><ul><li><a href="/recuperacao-de-pecas">Recuperação de peças</a></li><li><a href="/soldas-especiais">Soldas especiais</a></li><li><a href="/estruturas-metalicas">Estruturas metálicas</a></li><li><a href="/moveis-estilo-industrial">Móveis estilo industrial</a></li><li><a href="/reparos-e-serralheria">Reparos e serralheria</a></li></ul></div>
-    <div><p class="foot-title">Site</p><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
+    <div><p class="foot-title">Site</p><ul><li><a href="/portfolio">Trabalhos</a></li><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/sobre">A oficina</a></li><li><a href="/contato">Contato</a></li></ul></div>
     <div><p class="foot-title">Oficina</p><ul><li>Rua Leopoldo Beninca, 108</li><li>Vila Nova, Joinville/SC</li><li><a href="tel:+5547988024265">(47) 98802-4265</a></li><li><a href="mailto:reinertsoldas@gmail.com">reinertsoldas@gmail.com</a></li><li>Segunda a sexta, 8h às 12h e 13h às 17h</li><li>Sábado e domingo: fechado</li></ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
@@ -152,6 +129,6 @@
 </div>
 <script src="/assets/config.js?v=8a70b615" defer></script>
 <script src="/assets/track.js?v=398105e8" defer></script>
-<script src="/assets/site.js?v=469578cd" defer></script>
+<script src="/assets/site.js?v=f6fe03e7" defer></script>
 </body>
 </html>
