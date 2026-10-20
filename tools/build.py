@@ -690,6 +690,22 @@ def build_service(s):
     write(s["slug"], html)
 
 
+def build_sobre():
+    ctx = "sobre"
+    meta = PAGES_META["sobre"]
+    lead = "A Reinert Soluções em Solda nasceu da experiência de um soldador especializado em soldagem industrial multiprocesso, com mais de 15 anos de profissão e trabalhos em diversos segmentos."
+    html = (
+        head(meta[0], meta[1], "sobre", [jsonld_breadcrumb([("Início", "/"), ("A oficina", "/sobre")])])
+        + header("/sobre")
+        + svchero([("Início", "/"), ("A oficina", None)], "A oficina", "Uma oficina feita por quem vive a solda", lead, ctx,
+                  "DcUKDsGqjK3.webp", "Fachada da nova sede da Reinert Soldas")
+        + fix_links(read("sobre"), ctx)
+        + band("Quer conhecer a oficina?", "Mande a foto da peça pelo WhatsApp ou venha até a Vila Nova, sem precisar agendar.", ctx)
+        + footer(ctx)
+    )
+    write("sobre", html)
+
+
 def build_guia():
     ctx = "guia de soldas"
     meta = PAGES_META["guia-de-soldas"]
@@ -796,7 +812,7 @@ def main():
     build_guia()
     build_simple("portfolio", "/portfolio", "Trabalhos", "Trabalhos realizados",
                  "Uma parte do que passou pela oficina. Toque numa foto para ampliar e ver o processo usado.", "portfólio")
-    build_simple("sobre", "/sobre", "A oficina", "Uma oficina feita por quem vive a solda", "", "sobre")
+    build_sobre()
     build_simple("contato", "/contato", "Contato", "Fale com a oficina",
                  "O jeito mais rápido é o WhatsApp com fotos da peça e a descrição do serviço. Se preferir, venha direto: atendemos sem agendamento.", "contato")
     build_404()
