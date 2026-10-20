@@ -1,4 +1,3 @@
-/* Medição de cliques: GA4 e Google Ads. Só carrega se houver ID em assets/config.js. */
 (function(){
   var C=window.REINERT_TRACK||{};
   var ga=C.ga||"", ads=C.ads||"";
@@ -12,7 +11,6 @@
   if(ga)gtag("config",ga);
   if(ads)gtag("config",ads);
 
-  // carrega o gtag.js sem bloquear a página (depois do load)
   function inject(){
     var s=document.createElement("script");
     s.async=true;
@@ -22,7 +20,6 @@
   if(document.readyState==="complete")inject();
   else window.addEventListener("load",function(){(window.requestIdleCallback||function(f){setTimeout(f,200)})(inject)});
 
-  // de onde veio o clique
   function where(a){
     if(a.dataset.loc)return a.dataset.loc;
     if(a.closest(".dock"))return window.matchMedia("(max-width:760px)").matches?"barra_fixa":"botao_flutuante";
@@ -37,7 +34,6 @@
     if(a.closest(".svc"))return "servicos";
     return "conteudo";
   }
-  // texto "(página: X)" da mensagem pré-preenchida do WhatsApp
   function origem(href){
     try{
       var t=new URL(href).searchParams.get("text")||"";
@@ -59,7 +55,6 @@
     var label=isWa?C.adsLabel:phoneLabel;
     if(ads&&label)gtag("event","conversion",{send_to:ads+"/"+label});
   }
-  // captura antes da navegação; auxclick cobre o botão do meio
   document.addEventListener("click",onClick,true);
   document.addEventListener("auxclick",onClick,true);
 })();

@@ -11,6 +11,7 @@ import json
 import re
 import sys
 import urllib.parse
+from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -241,7 +242,39 @@ def url(path):
     return (SITE_URL + "/" + path).rstrip("/") if SITE_URL else None
 
 
-def jsonld_business():
+def plain_text(s):
+    return unescape(re.sub(r"<[^>]+>", "", s)).strip()
+
+
+def reviews_from(body):
+    """Avaliações exibidas na página (blocos .review), na mesma ordem e com o mesmo texto."""
+    out = []
+    for block in re.findall(r'<blockquote class="review">(.*?)</blockquote>', body, flags=re.S):
+        stars = re.search(r'aria-label="(\d) estrelas"', block)
+        text = re.search(r'</p><p>(.*?)</p>', block, flags=re.S)
+        author = re.search(r"<footer>(.*?), avaliação no Google</footer>", block, flags=re.S)
+        assert stars and text and author, block
+        out.append({
+            "@type": "Review",
+            "author": {"@type": "Person", "name": plain_text(author.group(1))},
+            "reviewRating": {"@type": "Rating", "ratingValue": stars.group(1), "bestRating": "5", "worstRating": "1"},
+            "reviewBody": plain_text(text.group(1)).strip("“”\""),
+        })
+    return out
+
+
+def jsonld_faq(faq):
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": plain_text(q), "acceptedAnswer": {"@type": "Answer", "text": plain_text(a)}}
+            for q, a in faq
+        ],
+    }
+
+
+def jsonld_business(reviews=None):
     data = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
@@ -265,6 +298,8 @@ def jsonld_business():
         "hasMap": MAPS,
         "sameAs": [INSTA],
     }
+    if reviews:
+        data["review"] = reviews
     if SITE_URL:
         data["url"] = SITE_URL + "/"
         data["logo"] = SITE_URL + "/img/logo-512.png"
@@ -517,7 +552,7 @@ def build_home():
                         '<a href="/moveis-estilo-industrial">móveis estilo industrial</a>, <a href="/reparos-e-serralheria">serralheria e reparos automotivos e náuticos</a>')
     body = body.replace("{THREE_SRC}", f"/assets/vendor/three.min.js?v={_ver('assets/vendor/three.min.js')}")
     body = body.replace("{SCENE_SRC}", f"/assets/weld-scene.js?v={_ver('assets/weld-scene.js')}")
-    html = head(meta[0], meta[1], "", [jsonld_business()], extra='<link rel="preload" as="image" href="/img/Cxz5OvfOaRE.webp" fetchpriority="high">') + header("/") + body + "\n" + footer(ctx)
+    html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))], extra='<link rel="preload" as="image" href="/img/Cxz5OvfOaRE.webp" fetchpriority="high">') + header("/") + body + "\n" + footer(ctx)
     html = html.replace("</body>", f'<script src="/assets/hero3d.js?v={_ver("assets/hero3d.js")}" defer></script>\n</body>', 1)
     write("", html)
 
@@ -564,7 +599,7 @@ def build_service(s):
         for o in SERVICES if o["slug"] != s["slug"]
     )
     html = (
-        head(s["title"], s["desc"], s["slug"], [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]) ])
+        head(s["title"], s["desc"], s["slug"], [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]), jsonld_faq(s["faq"])])
         + header(None)
         + pagehead(crumbs, s["tag"], s["h1"], s["lead"], cta=ctx)
         + f"""  <section style="padding-top:36px">

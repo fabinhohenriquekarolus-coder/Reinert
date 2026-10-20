@@ -7,7 +7,6 @@
     document.addEventListener("keydown",function(e){if(e.key==="Escape"&&nav.classList.contains("open")){closeMenu();menuBtn.focus()}});
   }
 
-  // Barra de contato do celular: some enquanto já existe um botão de orçamento na tela
   var dock=document.getElementById("dock"), ctas=document.querySelectorAll("[data-cta]");
   if(dock&&ctas.length&&"IntersectionObserver" in window){
     var vis=new Set();
@@ -18,7 +17,6 @@
     ctas.forEach(function(c){io.observe(c)});
   }
 
-  // Filtros do portfólio
   var fb=document.querySelectorAll(".filters button");
   fb.forEach(function(b){b.addEventListener("click",function(){
     fb.forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});
@@ -74,7 +72,6 @@
     });
   }
 
-  // Copiar: seleciona o texto certo como alternativa e avisa o resultado
   function flash(btn,txt){var t=btn.dataset.label||btn.textContent;btn.dataset.label=t;btn.textContent=txt;setTimeout(function(){btn.textContent=t},1800)}
   function select(el){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r)}
   function copy(el,btn){
@@ -84,7 +81,6 @@
   }
   document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copy(document.getElementById(b.dataset.copy),b)})});
 
-  // Formulário -> mensagem de WhatsApp
   var form=document.getElementById("orc");
   if(form){
     var nome=document.getElementById("f-nome"), desc=document.getElementById("f-desc");
