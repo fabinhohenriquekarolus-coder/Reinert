@@ -91,6 +91,14 @@ section{padding-block:clamp(56px,8vw,104px)}
 .hero-fig .spec::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--tint);border-radius:4px 4px 0 0}
 .spec-title{grid-column:1/-1;color:var(--fg);font-weight:500;margin-bottom:4px}
 @media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-fig .spec{left:12px}.hero-fig img{aspect-ratio:4/3.4}}
+.hero-media{position:relative;border-radius:var(--r);overflow:hidden;background:#15130f}
+.hero-media .w3d-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .9s ease}
+.hero-media.is-live .w3d-canvas{opacity:1}
+.hero-media .w3d-fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none}
+.w3d-btn{position:absolute;top:12px;right:12px;z-index:2;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(16,15,13,.72);color:#fff;font:600 .9rem var(--f-body);cursor:pointer}
+.w3d-btn:focus-visible{outline:2px solid #e8e308;outline-offset:2px}
+.spec[hidden]{display:none}
+@media (max-width:560px){.hero-fig .spec{position:relative;left:auto;bottom:auto;min-width:0;margin-top:10px;box-shadow:none}}
 
 /* Proof strip */
 .proof{border-block:1px solid var(--line);background:var(--panel)}
