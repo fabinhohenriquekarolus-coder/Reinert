@@ -740,7 +740,7 @@ def main():
         build_service(s)
     build_guia()
     build_simple("portfolio", "/portfolio", "Portfólio", "Trabalhos realizados",
-                 "Uma parte do que passou pela oficina. Cada trabalho traz o material e o processo usados.", "portfólio")
+                 "Uma parte do que passou pela oficina. Toque numa foto para ampliar e ver o processo usado.", "portfólio")
     build_simple("sobre", "/sobre", "Sobre", "Uma oficina feita por quem vive a solda", "", "sobre")
     build_simple("contato", "/contato", "Contato", "Fale com a oficina",
                  "O jeito mais rápido é o WhatsApp com fotos da peça e a descrição do serviço. Se preferir, venha direto: atendemos sem agendamento.", "contato")
