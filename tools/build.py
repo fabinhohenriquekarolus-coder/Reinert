@@ -35,6 +35,7 @@ ADDRESS = {
 }
 MAPS = "https://www.google.com/maps/search/Reinert+Solu%C3%A7%C3%B5es+em+Solda+Joinville"
 INSTA = "https://www.instagram.com/reinert.soldas/"
+WA_LABEL = "Enviar foto no WhatsApp"
 
 # ---------------------------------------------------------------- WhatsApp
 def wa(context=None):
@@ -382,9 +383,9 @@ def header(active):
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
     <nav class="nav" id="nav" aria-label="Principal">
       {chr(10).join('      ' + l for l in links).strip()}
-      <a class="btn btn-accent nav-cta" href="{wa('menu')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento</a>
+      <a class="btn btn-accent nav-cta" href="{wa('menu')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
     </nav>
-    <a class="btn btn-accent hd-cta" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Orçamento</a>
+    <a class="btn btn-accent hd-cta" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
   </div>
 </header>
 <main id="main">
@@ -409,7 +410,7 @@ def footer(ctx):
 </footer>
 <div class="dock" id="dock">
   <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
-  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
+  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="{WA_LABEL}"><svg><use href="#wa"/></svg><span class="t-long">{WA_LABEL}</span><span class="t-short" aria-hidden="true">Enviar foto</span></a>
 </div>
 <script src="/assets/config.js?v={_ver("assets/config.js")}" defer></script>
 <script src="/assets/track.js?v={_ver("assets/track.js")}" defer></script>
@@ -419,13 +420,14 @@ def footer(ctx):
 """
 
 
-def band(title, text, ctx, btn="Pedir orçamento no WhatsApp"):
+def band(title, text, ctx):
     return f"""  <div class="band" data-cta>
     <div class="wrap">
-      <div style="display:grid;gap:14px"><h2>{title}</h2><p>{text}</p></div>
-      <div style="display:grid;gap:16px;justify-items:start">
-        <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{btn}</a>
-        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_inline()} Sem agendamento.</span></div>
+      <div class="band-copy"><h2>{title}</h2><p>{text}</p></div>
+      <div class="band-act">
+        <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+        <a class="band-call" href="tel:{PHONE_E164}">Ligar {PHONE_FMT}</a>
+        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_lines()[0]}. Sem agendamento.</span></div>
       </div>
     </div>
   </div>
@@ -449,7 +451,9 @@ def fix_links(h, ctx):
     spans = "".join("<span>" + l + "</span>" for l in config.hours_lines())
     return (
         h.replace("{WA}", wa(ctx))
+        .replace("{WA_LABEL}", WA_LABEL)
         .replace("{HOURS_INLINE}", config.hours_inline())
+        .replace("{HOURS_FIRST}", config.hours_lines()[0])
         .replace("{HOURS_SPANS}", spans)
     )
 
@@ -521,9 +525,10 @@ def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
     lead_html = f'<p class="lead">{lead}</p>' if lead else ""
     if cta:
         lead_html += f"""
+    <p class="support">Mandou a foto da peça, a gente já avalia.</p>
     <div class="cta-row" data-cta>
-      <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Mandou a foto da peça, a gente já avalia</a>
-      <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar agora</a>
+      <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+      <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
     </div>
     <p class="trust"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google, com 19 avaliações. Envie fotos da peça e a descrição do serviço.</p>"""
     return f"""  <div class="pagehead"><div class="wrap">
@@ -540,19 +545,9 @@ def build_home():
     ctx = "início"
     meta = PAGES_META[""]
     body = fix_links(read("inicio"), ctx)
-    # links dos três pilares para as páginas de serviço
-    targets = [("/recuperacao-de-pecas", "Ver recuperação de peças"), ("/soldas-especiais", "Ver soldas especiais"), ("/estruturas-metalicas", "Ver estruturas sob medida")]
-    parts = body.split("</ul>\n          </div>\n        </article>")
-    assert len(parts) == 4, len(parts)
-    body = ""
-    for i, p in enumerate(parts[:-1]):
-        body += p + f'</ul>\n            <a class="more" href="{targets[i][0]}">{targets[i][1]}</a>\n          </div>\n        </article>'
-    body += parts[-1]
-    body = body.replace('<a href="/servicos">móveis estilo industrial, serralheria e reparos automotivos e náuticos</a>',
-                        '<a href="/moveis-estilo-industrial">móveis estilo industrial</a>, <a href="/reparos-e-serralheria">serralheria e reparos automotivos e náuticos</a>')
     body = body.replace("{THREE_SRC}", f"/assets/vendor/three.min.js?v={_ver('assets/vendor/three.min.js')}")
     body = body.replace("{SCENE_SRC}", f"/assets/weld-scene.js?v={_ver('assets/weld-scene.js')}")
-    html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))], extra='<link rel="preload" as="image" href="/img/Cxz5OvfOaRE.webp" fetchpriority="high">') + header("/") + body + "\n" + footer(ctx)
+    html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))]) + header("/") + body + "\n" + footer(ctx)
     html = html.replace("</body>", f'<script src="/assets/hero3d.js?v={_ver("assets/hero3d.js")}" defer></script>\n</body>', 1)
     write("", html)
 
@@ -569,7 +564,7 @@ def build_servicos():
           <h2><a href="/{s['slug']}" style="text-decoration:none">{s['short']}</a></h2>
           <p class="lead">{s['lead']}</p>
           <ul>{''.join('<li>' + b + '</li>' for b in s['bullets'][:4])}</ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/{s['slug']}">Ver detalhes</a><a class="btn btn-accent" href="{wa(s['name'])}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Orçamento</a></div>
+          <div class="cta-row"><a class="btn btn-ghost" href="/{s['slug']}">Ver detalhes</a><a class="btn btn-accent" href="{wa(s['name'])}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a></div>
         </div>
       </article>
 """
@@ -634,7 +629,7 @@ def build_service(s):
     </div>
   </section>
 """
-        + band("Tem uma peça para avaliar?", "Mande as fotos e a descrição pelo WhatsApp. Ou traga direto na oficina, sem precisar agendar.", ctx, btn="Mandou a foto da peça, a gente já avalia")
+        + band("Tem uma peça para avaliar?", "Mandou a foto da peça, a gente já avalia. Ou traga direto na oficina, sem precisar agendar.", ctx)
         + footer(ctx)
     )
     write(s["slug"], html)
@@ -659,7 +654,7 @@ def build_guia():
     html = (
         head(meta[0], meta[1], "guia-de-soldas", [jsonld_breadcrumb([("Início", "/"), ("Guia de soldas", "/guia-de-soldas")]) ])
         + header("/guia-de-soldas")
-        + body.replace('  <div class="band">', faq_html(faq) + '  <div class="band">', 1)
+        + body.replace('  <div class="band" data-cta>', faq_html(faq) + '  <div class="band" data-cta>', 1)
         + "\n"
         + footer(ctx)
     )
@@ -686,7 +681,7 @@ def build_404():
         + f"""  <section><div class="wrap" style="display:grid;gap:20px;justify-items:start">
     <p class="eyebrow">Erro 404</p><h1>Essa página não existe</h1>
     <p class="lead">O endereço pode ter mudado. Volte ao início ou fale direto com a oficina.</p>
-    <div class="cta-row"><a class="btn btn-ghost" href="/">Ir para o início</a><a class="btn btn-accent" href="{wa('404')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>WhatsApp</a></div>
+    <div class="cta-row"><a class="btn btn-ghost" href="/">Ir para o início</a><a class="btn btn-accent" href="{wa('404')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a></div>
   </div></section>
 """
         + footer("404")

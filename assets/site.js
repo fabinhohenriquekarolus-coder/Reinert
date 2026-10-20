@@ -8,13 +8,40 @@
   }
 
   var dock=document.getElementById("dock"), ctas=document.querySelectorAll("[data-cta]");
-  if(dock&&ctas.length&&"IntersectionObserver" in window){
-    var vis=new Set();
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){e.isIntersecting?vis.add(e.target):vis.delete(e.target)});
-      dock.classList.toggle("is-hidden",vis.size>0&&window.matchMedia("(max-width:760px)").matches);
-    },{threshold:0.6});
-    ctas.forEach(function(c){io.observe(c)});
+  if(dock){
+    var vis=new Set(), mobile=window.matchMedia("(max-width:760px)"), tick=false;
+    var update=function(){
+      var seen=vis.size>0;
+      if(mobile.matches){dock.classList.remove("is-shown");dock.classList.toggle("is-hidden",seen)}
+      else{dock.classList.remove("is-hidden");dock.classList.toggle("is-shown",!seen&&window.scrollY>window.innerHeight)}
+    };
+    if("IntersectionObserver" in window&&ctas.length){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){e.isIntersecting?vis.add(e.target):vis.delete(e.target)});
+        update();
+      },{threshold:0.6});
+      ctas.forEach(function(c){io.observe(c)});
+    }
+    window.addEventListener("scroll",function(){
+      if(tick)return;
+      tick=true;
+      requestAnimationFrame(function(){tick=false;update()});
+    },{passive:true});
+    window.addEventListener("resize",update);
+    update();
+  }
+
+  var tiles=document.querySelectorAll(".tile");
+  if(tiles.length){
+    var noHover=window.matchMedia("(hover: none)");
+    var closeTiles=function(except){tiles.forEach(function(x){if(x!==except)x.classList.remove("is-open")})};
+    tiles.forEach(function(t){t.addEventListener("click",function(e){
+      if(!noHover.matches||t.classList.contains("is-open"))return;
+      e.preventDefault();
+      closeTiles(t);
+      t.classList.add("is-open");
+    })});
+    document.addEventListener("click",function(e){if(!e.target.closest(".tile"))closeTiles(null)});
   }
 
   var fb=document.querySelectorAll(".filters button");
