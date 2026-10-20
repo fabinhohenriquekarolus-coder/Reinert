@@ -24,7 +24,7 @@
     var vis=new Set(), mobile=window.matchMedia("(max-width:760px)"), tick=false;
     var update=function(){
       var seen=vis.size>0;
-      if(mobile.matches){dock.classList.remove("is-shown");dock.classList.toggle("is-hidden",seen)}
+      if(mobile.matches){dock.classList.remove("is-shown","is-hidden")}
       else{dock.classList.remove("is-hidden");dock.classList.toggle("is-shown",!seen&&window.scrollY>window.innerHeight)}
     };
     if("IntersectionObserver" in window&&ctas.length){

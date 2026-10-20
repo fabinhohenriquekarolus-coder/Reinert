@@ -35,7 +35,7 @@ ADDRESS = {
 }
 MAPS = "https://www.google.com/maps/search/Reinert+Solu%C3%A7%C3%B5es+em+Solda+Joinville"
 INSTA = "https://www.instagram.com/reinert.soldas/"
-WA_LABEL = "Enviar foto no WhatsApp"
+WA_LABEL = "Fazer orçamento"
 
 # ---------------------------------------------------------------- WhatsApp
 def wa(context=None):
@@ -425,7 +425,7 @@ def footer(ctx):
 </footer>
 <div class="dock" id="dock">
   <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
-  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="{WA_LABEL}"><svg><use href="#wa"/></svg><span class="t-long">{WA_LABEL}</span><span class="t-short" aria-hidden="true">Enviar foto</span></a>
+  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="{WA_LABEL}"><svg><use href="#wa"/></svg><span class="t-long">{WA_LABEL}</span><span class="t-short" aria-hidden="true">{WA_LABEL}</span></a>
 </div>
 <script src="/assets/config.js?v={_ver("assets/config.js")}" defer></script>
 <script src="/assets/track.js?v={_ver("assets/track.js")}" defer></script>
