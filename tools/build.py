@@ -599,7 +599,7 @@ def build_home():
     ctx = "início"
     meta = PAGES_META[""]
     body = fix_links(read("inicio"), ctx)
-    body = body.replace("{TILES}", tiles_html())
+    body = body.replace("{TILES}", tiles_html()).replace("{HERO_WEBM}", f"/assets/weld-hero.webm?v={_ver('assets/weld-hero.webm')}").replace("{HERO_VIDEO}", f"/assets/weld-hero.mp4?v={_ver('assets/weld-hero.mp4')}").replace("{HERO_POSTER}", f"/img/hero-poster.webp?v={_ver('img/hero-poster.webp')}")
     html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))]) + header("/") + body + "\n" + footer(ctx)
     write("", html)
 
