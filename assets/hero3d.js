@@ -26,27 +26,11 @@
       .then(function () { return load(host.dataset.scene); })
       .then(function () {
         var scene = window.createWeldScene(host, { hfov: 50 });
-        var btn = host.querySelector(".w3d-btn");
-        var ctl = scene.autoplay(3);
-        var label = function () {
-          btn.textContent = ctl.isPaused() ? "Reproduzir animação" : "Pausar animação";
-        };
+        scene.autoplay(3);
         scene.onFirstFrame(function () {
           host.classList.add("is-live");
           var img = host.querySelector("img");
           if (img) img.alt = host.dataset.alt;
-          var fig = host.closest(".hero-fig");
-          if (fig) {
-            Array.prototype.forEach.call(fig.querySelectorAll("[data-spec]"), function (d) {
-              d.hidden = d.getAttribute("data-spec") !== "cena";
-            });
-          }
-          label();
-          btn.hidden = false;
-        });
-        btn.addEventListener("click", function () {
-          ctl.toggle();
-          label();
         });
       })
       .catch(function () {});
