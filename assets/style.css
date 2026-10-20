@@ -521,3 +521,12 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 }
 .quote{border-left:3px solid var(--accent);padding:6px 0 6px 20px;font-family:var(--f-display);font-weight:600;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.15;text-transform:uppercase;color:var(--fg)}
 .quote cite{display:block;font-family:var(--f-mono);font-size:.9rem;font-style:normal;text-transform:none;color:var(--muted);margin-top:10px;letter-spacing:.04em}
+
+.nf-body,.nf-body.nf-body{background:#100f0d;color:#fff;padding-bottom:0}
+.nf{min-height:100vh;min-height:100dvh;display:grid;grid-template-rows:auto 1fr;padding:clamp(16px,3vw,32px) var(--gut);background:radial-gradient(90% 70% at 50% 55%,#262420 0%,#171614 60%,#100f0d 100%)}
+.nf-brand{justify-self:start}
+.nf-brand img{display:block;height:44px;width:auto}
+.nf-box{display:grid;place-items:center;align-content:center;gap:clamp(4px,1vw,12px);text-align:center;padding-bottom:6vh}
+.nf-code{font-family:var(--f-display);font-weight:800;font-size:clamp(8rem,46vw,26rem);line-height:.82;letter-spacing:.02em;color:var(--accent);margin:0}
+.nf-text{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,8vw,5.5rem);line-height:1;letter-spacing:.12em;color:#fff;margin:0}
+.nf-bead{width:min(520px,70vw);height:22px;margin-top:clamp(16px,3vw,32px);background:radial-gradient(ellipse 11px 10px at 11px 11px,#8d877b 0%,#6e695f 38%,#4a463f 62%,transparent 64%) 0 0/16px 22px repeat-x;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);opacity:.7}

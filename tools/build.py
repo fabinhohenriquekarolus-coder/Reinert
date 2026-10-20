@@ -224,7 +224,7 @@ PAGES_META = {
     "contato": ("Contato e orçamento", "Fale com a Reinert pelo WhatsApp (47) 98802-4265 ou venha à oficina na Rua Leopoldo Beninca, 108, Vila Nova, Joinville/SC. Sem agendamento."),
 }
 
-NAV = [("/servicos", "Serviços"), ("/portfolio", "Trabalhos"), ("/guia-de-soldas", "Guia de soldas"), ("/sobre", "A oficina"), ("/contato", "Contato")]
+NAV = [("/servicos", "Serviços"), ("/portfolio", "Trabalhos"), ("/guia-de-soldas", "Guia de soldas"), ("/sobre", "Sobre"), ("/contato", "Contato")]
 
 SVG_DEFS = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -418,7 +418,7 @@ def footer(ctx):
       <p><a href="{INSTA}" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
     <div><p class="foot-title">Serviços</p><ul>{svc_links}</ul></div>
-    <div><p class="foot-title">Site</p><ul><li><a href="/portfolio">Trabalhos</a></li><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/sobre">A oficina</a></li><li><a href="/contato">Contato</a></li></ul></div>
+    <div><p class="foot-title">Site</p><ul><li><a href="/portfolio">Trabalhos</a></li><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
     <div><p class="foot-title">Oficina</p><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li>{"".join("<li>" + l + "</li>" for l in config.hours_lines())}</ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
@@ -693,9 +693,9 @@ def build_sobre():
     meta = PAGES_META["sobre"]
     lead = "A Reinert Soluções em Solda nasceu da experiência de um soldador especializado em soldagem industrial multiprocesso, com mais de 15 anos de profissão e trabalhos em diversos segmentos."
     html = (
-        head(meta[0], meta[1], "sobre", [jsonld_breadcrumb([("Início", "/"), ("A oficina", "/sobre")])])
+        head(meta[0], meta[1], "sobre", [jsonld_breadcrumb([("Início", "/"), ("Sobre", "/sobre")])])
         + header("/sobre")
-        + svchero([("Início", "/"), ("A oficina", None)], "A oficina", "Uma oficina feita por quem vive a solda", lead, ctx,
+        + svchero([("Início", "/"), ("Sobre", None)], "Sobre", "Uma oficina feita por quem vive a solda", lead, ctx,
                   "DcUKDsGqjK3.webp", "Fachada da nova sede da Reinert Soldas")
         + fix_links(read("sobre"), ctx)
         + band("Quer conhecer a oficina?", "Mande a foto da peça pelo WhatsApp ou venha até a Vila Nova, sem precisar agendar.", ctx)
@@ -746,14 +746,18 @@ def build_404():
     html = (
         head("Página não encontrada", "Página não encontrada.", "404", [])
         .replace('<meta name="description"', '<meta name="robots" content="noindex">\n<meta name="description"')
-        + header("")
-        + f"""  <section><div class="wrap" style="display:grid;gap:20px;justify-items:start">
-    <p class="eyebrow">Erro 404</p><h1>Essa página não existe</h1>
-    <p class="lead">O endereço pode ter mudado. Volte ao início ou fale direto com a oficina.</p>
-    <div class="cta-row"><a class="btn btn-ghost" href="/">Ir para o início</a><a class="btn btn-accent" href="{wa('404')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a></div>
-  </div></section>
+        .replace("<body", '<body class="nf-body"', 1)
+        + f"""<main class="nf" id="main">
+  <a class="nf-brand" href="/" aria-label="{NAME}, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60"></a>
+  <div class="nf-box">
+    <h1 class="nf-code">404</h1>
+    <p class="nf-text">Not found</p>
+    <div class="nf-bead" aria-hidden="true"></div>
+  </div>
+</main>
+</body>
+</html>
 """
-        + footer("404")
     )
     (ROOT / "404.html").write_text(html, encoding="utf-8")
 
