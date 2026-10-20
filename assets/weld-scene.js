@@ -75,26 +75,39 @@
       return t;
     })();
 
-    const wallTex = canvasTex(128, 128, (g, w, h) => {
-      g.fillStyle = '#2b2926';
+    const wallTex = canvasTex(256, 256, (g, w, h) => {
+      const r = mulberry32(11);
+      g.fillStyle = '#25231f';
       g.fillRect(0, 0, w, h);
-      for (let r = 0; r < 2; r++) {
+      for (let row = 0; row < 4; row++) {
         for (let c = -1; c < 3; c++) {
-          g.fillStyle = (r + c) % 2 ? '#5a554d' : '#514c45';
-          g.fillRect(c * w / 2 + (r ? w / 4 : 0) + 2, r * h / 2 + 2, w / 2 - 4, h / 2 - 4);
+          const l = 66 + Math.floor(r() * 22);
+          g.fillStyle = 'rgb(' + (l + 14) + ',' + (l + 8) + ',' + l + ')';
+          g.fillRect(c * w / 2 + (row % 2 ? w / 4 : 0) + 3, row * h / 4 + 3, w / 2 - 6, h / 4 - 6);
         }
       }
-    }, [14, 12]);
-    const floorTex = canvasTex(128, 128, (g, w, h) => {
-      g.fillStyle = '#46433e';
+      for (let i = 0; i < 900; i++) {
+        g.fillStyle = r() > 0.5 ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.09)';
+        g.fillRect(r() * w, r() * h, 2 + r() * 3, 2);
+      }
+      g.fillStyle = 'rgba(0,0,0,0.16)';
+      g.fillRect(0, h - 40, w, 40);
+    }, [7, 6]);
+    const floorTex = canvasTex(256, 256, (g, w, h) => {
+      const r = mulberry32(5);
+      g.fillStyle = '#4a4742';
       g.fillRect(0, 0, w, h);
-      g.fillStyle = '#3d3b36';
-      g.fillRect(0, 0, w / 2, h / 2);
-      g.fillRect(w / 2, h / 2, w / 2, h / 2);
+      for (let i = 0; i < 1800; i++) {
+        const l = 40 + Math.floor(r() * 40);
+        g.fillStyle = 'rgba(' + l + ',' + l + ',' + (l - 4) + ',0.5)';
+        g.fillRect(r() * w, r() * h, 1 + r() * 3, 1 + r() * 3);
+      }
+      g.fillStyle = 'rgba(20,18,16,0.28)';
+      g.beginPath(); g.ellipse(70, 160, 42, 24, 0.4, 0, Math.PI * 2); g.fill();
       g.fillStyle = '#2a2825';
       g.fillRect(0, 0, w, 3);
       g.fillRect(0, 0, 3, h);
-    }, [10, 10]);
+    }, [5, 5]);
     const hazardTex = canvasTex(256, 32, (g, w, h) => {
       g.fillStyle = '#e8e308';
       g.fillRect(0, 0, w, h);
@@ -136,41 +149,43 @@
       g.font = 'bold 18px Arial, sans-serif';
       g.fillText('Ø 3,25 mm', 150, 40);
     });
-    const machineSideTex = canvasTex(512, 352, (g, w, h) => {
-      g.fillStyle = '#1e63c0';
+    const ESAB_OR = '#f0680f', ESAB_DK = '#1d1f23';
+    const machineSideTex = canvasTex(512, 256, (g, w, h) => {
+      g.fillStyle = '#2c2f34';
       g.fillRect(0, 0, w, h);
+      g.fillStyle = ESAB_OR;
+      g.fillRect(0, h - 34, w, 34);
+      g.fillStyle = '#17181b';
+      for (let i = 0; i < 9; i++) g.fillRect(300 + i * 20, 40, 9, 120);
       g.fillStyle = '#ffffff';
-      g.font = 'bold italic 92px Arial, sans-serif';
-      g.fillText('BOXER', 24, 150);
-      g.fillStyle = '#ffd400';
-      g.fillRect(28, 176, 250, 12);
-      g.fillStyle = '#ffffff';
-      g.font = 'bold 42px Arial, sans-serif';
-      g.fillText('FLAMA 161', 28, 250);
-      g.fillStyle = '#0d3a7a';
-      for (let i = 0; i < 7; i++) g.fillRect(300, 60 + i * 36, 190, 14);
+      g.font = 'bold 74px Arial, sans-serif';
+      g.fillText('ESAB', 24, 118);
+      g.fillStyle = '#c8cbd0';
+      g.font = 'bold 24px Arial, sans-serif';
+      g.fillText('ROGUE ES 180i', 28, 164);
     });
-    const machinePanelTex = canvasTex(256, 384, (g, w, h) => {
-      g.fillStyle = '#17191c';
+    const machinePanelTex = canvasTex(256, 400, (g, w, h) => {
+      g.fillStyle = '#1b1d21';
       g.fillRect(0, 0, w, h);
+      g.fillStyle = ESAB_OR;
+      g.fillRect(0, 0, w, 62);
       g.fillStyle = '#ffffff';
-      g.font = 'bold italic 40px Arial, sans-serif';
-      g.fillText('BOXER', 22, 56);
-      g.fillStyle = '#ffd400';
-      g.fillRect(24, 66, 110, 6);
+      g.font = 'bold 50px Arial, sans-serif';
+      g.fillText('ESAB', 18, 48);
       g.fillStyle = '#050505';
-      g.fillRect(40, 96, 176, 90);
-      g.fillStyle = '#ff3b1f';
-      g.font = 'bold 74px "Courier New", monospace';
+      g.fillRect(34, 84, 188, 84);
+      g.fillStyle = '#ff6a1f';
+      g.font = 'bold 72px "Courier New", monospace';
       g.textAlign = 'center';
-      g.fillText('125', 128, 168);
-      g.textAlign = 'left';
-      g.fillStyle = '#cfd3d8';
-      g.font = 'bold 20px Arial, sans-serif';
-      g.fillText('MMA', 40, 226);
-      g.fillText('TIG', 40, 254);
-      g.fillText('HOT START', 120, 226);
-      g.fillText('ARC FORCE', 120, 254);
+      g.fillText('125', 118, 152);
+      g.fillStyle = '#d5d8dd';
+      g.font = 'bold 17px Arial, sans-serif';
+      g.fillText('A', 206, 112);
+      g.font = 'bold 15px Arial, sans-serif';
+      g.fillText('STICK', 72, 198);
+      g.fillText('LIFT TIG', 176, 198);
+      g.fillText('AMPS', 70, 312);
+      g.fillText('ARC FORCE', 190, 312);
     });
     const helmetTex = canvasTex(512, 256, (g, w, h) => {
       g.fillStyle = '#17181b';
@@ -398,82 +413,76 @@
     N.add(box(1.32, 0.05, 0.02), '#2a3039', { p: [0, TOP - 0.065, 0.335] });
     N.add(box(1.32, 0.05, 0.02), '#2a3039', { p: [0, TOP - 0.065, -0.335] });
 
-    const PZ = -0.05, BP = TOP + 0.016, TS = 0.1, TH = 0.4;
-    N.add(box(0.3, 0.016, 0.3), '#8b9bb0', { p: [0, TOP + 0.008, PZ] });
-    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach((p) => N.add(cyl(0.011, 0.011, 0.002, 12), '#0f1012', { p: [p[0] * 0.11, BP + 0.001, PZ + p[1] * 0.11] }));
-    N.add(box(TS, TH, TS), '#62758c', { p: [0, BP + TH / 2, PZ] });
-    N.add(box(TS - 0.012, 0.002, TS - 0.012), '#0f1012', { p: [0, BP + TH + 0.001, PZ] });
-    const gShape = new THREE.Shape();
-    gShape.moveTo(0, 0); gShape.lineTo(0.085, 0); gShape.lineTo(0.012, 0.12); gShape.lineTo(0, 0.12); gShape.closePath();
-    const gGeo = new THREE.ExtrudeGeometry(gShape, { depth: 0.008, bevelEnabled: false });
-    N.add(gGeo, '#8b9bb0', { p: [0.004, BP, PZ + TS / 2], r: [0, -Math.PI / 2, 0] });
-    N.add(gGeo, '#8b9bb0', { p: [-0.004, BP, PZ - TS / 2], r: [0, Math.PI / 2, 0] });
-    N.add(gGeo, '#8b9bb0', { p: [TS / 2, BP, PZ - 0.004] });
+    const PZ = -0.05, BP = TOP + 0.016, TS = 0.012, TH = 0.13, PL = 0.22;
+    N.add(box(0.32, 0.016, 0.32), '#7c8896', { p: [0, TOP + 0.008, PZ] });
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach((p) => N.add(cyl(0.011, 0.011, 0.002, 12), '#0f1012', { p: [p[0] * 0.13, BP + 0.001, PZ + p[1] * 0.13] }));
+    N.add(box(TS, TH, PL), '#66727f', { p: [0, BP + TH / 2, PZ] });
+    N.add(box(TS + 0.002, 0.0016, PL + 0.002), '#8e99a6', { p: [0, BP + TH + 0.0008, PZ] });
+    [PZ - PL / 2 + 0.03, PZ + PL / 2 - 0.03].forEach((zz) => N.add(box(0.075, 0.016, 0.014), '#2a2f36', { p: [0.04, BP + 0.008, zz] }));
+    N.add(box(0.008, 0.07, 0.14), '#2a2f36', { p: [TS / 2 + 0.004, BP + 0.04, PZ] });
+    N.add(box(0.04, 0.012, 0.14), '#2a2f36', { p: [TS / 2 + 0.02, BP + 0.006, PZ] });
+    N.add(cyl(0.007, 0.007, 0.03, 10), '#c9331f', { p: [TS / 2 + 0.017, BP + 0.027, PZ], r: [0, 0, Math.PI / 2] });
 
     const coldSegs = [];
     const cold = (a, b) => coldSegs.push([a, b]);
-    [PZ + TS / 2, PZ - TS / 2].forEach((fz) => {
-      const s = Math.sign(fz - PZ);
-      [-0.0065, 0.0065].forEach((ox) => {
-        cold(V(ox, BP + 0.004, fz + s * 0.004), V(ox, BP + 0.105, fz + s * 0.004));
-        cold(V(ox, BP + 0.003, fz + s * 0.01), V(ox, BP + 0.003, fz + s * 0.078));
-      });
-    });
-    [PZ - 0.0105, PZ + 0.0025].forEach((oz) => {
-      cold(V(TS / 2 + 0.004, BP + 0.004, oz), V(TS / 2 + 0.004, BP + 0.105, oz));
-      cold(V(TS / 2 + 0.01, BP + 0.003, oz), V(TS / 2 + 0.078, BP + 0.003, oz));
+    [PZ + PL / 2, PZ - PL / 2].forEach((ez) => {
+      const sg = Math.sign(ez - PZ);
+      cold(V(-TS / 2 - 0.004, BP + 0.004, ez - sg * 0.002), V(-TS / 2 - 0.004, BP + 0.004, ez - sg * 0.012));
+      cold(V(TS / 2 + 0.004, BP + 0.004, ez - sg * 0.002), V(TS / 2 + 0.004, BP + 0.004, ez - sg * 0.012));
     });
     const bs = sph(1, 6, 4);
     coldSegs.forEach((sg) => {
       const n = Math.max(2, Math.floor(sg[0].distanceTo(sg[1]) / 0.0036));
       for (let k = 0; k < n; k++) {
         const p = new THREE.Vector3().lerpVectors(sg[0], sg[1], k / (n - 1));
-        BEADS.add(bs, '#a88a5c', { p: [p.x, p.y, p.z], s: [0.0042, 0.0042, 0.0042] });
+        BEADS.add(bs, '#8a7556', { p: [p.x, p.y, p.z], s: [0.0046, 0.0046, 0.0046] });
       }
     });
 
-    const BOX = V(-0.3, TOP, -0.27);
+    const BOX = V(-0.36, TOP, -0.25);
     N.push(BOX.x, BOX.y, BOX.z, 0);
-    N.add(box(0.36, 0.004, 0.09), '#b98a52', { p: [0, 0.002, 0] });
-    N.add(box(0.36, 0.05, 0.004), '#b98a52', { p: [0, 0.025, 0.043] });
-    N.add(box(0.36, 0.05, 0.004), '#b98a52', { p: [0, 0.025, -0.043] });
-    N.add(box(0.004, 0.05, 0.09), '#b98a52', { p: [0.178, 0.025, 0] });
-    N.add(box(0.004, 0.05, 0.09), '#b98a52', { p: [-0.178, 0.025, 0] });
-    N.add(box(0.36, 0.004, 0.09), '#a37744', { p: [0, 0.07, -0.088], r: [-1.2, 0, 0] });
-    for (let i = 0; i < 7; i++) BEADS.add(cyl(0.0034, 0.0034, 0.35, 6), '#e1d5ac', { p: [BOX.x, BOX.y + 0.0075 + (i % 2) * 0.006, BOX.z - 0.03 + i * 0.01], r: [0, 0, Math.PI / 2] });
+    N.add(box(0.3, 0.004, 0.06), '#b98a52', { p: [0, 0.002, 0] });
+    N.add(box(0.3, 0.036, 0.004), '#b98a52', { p: [0, 0.02, 0.028] });
+    N.add(box(0.3, 0.036, 0.004), '#b98a52', { p: [0, 0.02, -0.028] });
+    N.add(box(0.004, 0.036, 0.06), '#b98a52', { p: [0.148, 0.02, 0] });
+    N.add(box(0.004, 0.036, 0.06), '#b98a52', { p: [-0.148, 0.02, 0] });
+    N.add(box(0.3, 0.004, 0.06), '#a37744', { p: [0, 0.062, -0.056], r: [-1.25, 0, 0] });
     N.pop();
+    for (let i = 0; i < 6; i++) BEADS.add(cyl(0.0032, 0.0032, 0.292, 6), '#e1d5ac', { p: [BOX.x, BOX.y + 0.0075 + (i % 2) * 0.006, BOX.z - 0.022 + i * 0.0085], r: [0, 0, Math.PI / 2] });
 
-    N.add(cyl(0.011, 0.011, 0.26, 8), '#8a5a30', { p: [0.22, TOP + 0.012, 0.24], r: [0, 0.3, Math.PI / 2] });
-    N.add(box(0.022, 0.022, 0.15), '#aab4bf', { p: [0.31, TOP + 0.012, 0.19], r: [0, 0.3, 0] });
-    N.add(box(0.14, 0.03, 0.12), '#3d4c5e', { p: [0.58, TOP + 0.015, -0.2] });
-    N.add(box(0.12, 0.08, 0.05), '#3d4c5e', { p: [0.58, TOP + 0.07, -0.23] });
-    N.add(box(0.12, 0.08, 0.05), '#3d4c5e', { p: [0.58, TOP + 0.07, -0.16] });
-    N.add(cyl(0.008, 0.008, 0.14, 8), '#aab4bf', { p: [0.58, TOP + 0.05, -0.08], r: [Math.PI / 2, 0, 0] });
-    N.add(cyl(0.006, 0.006, 0.12, 8), '#aab4bf', { p: [0.58, TOP + 0.05, -0.01], r: [0, 0, Math.PI / 2] });
+    N.add(cyl(0.011, 0.011, 0.24, 8), '#8a5a30', { p: [0.3, TOP + 0.012, 0.24], r: [0, 0.3, Math.PI / 2] });
+    N.add(box(0.022, 0.022, 0.15), '#aab4bf', { p: [0.4, TOP + 0.012, 0.19], r: [0, 0.3, 0] });
+    N.add(box(0.012, 0.012, 0.13), '#2a2f36', { p: [0.2, TOP + 0.006, 0.28], r: [0, 0.5, 0] });
+    N.add(box(0.034, 0.014, 0.02), '#c9a24a', { p: [0.178, TOP + 0.012, 0.222], r: [0, 0.5, 0] });
 
-    const MW = 0.14, MH = 0.22, MD = 0.32, MACH = V(-0.66, TOP, -0.42), MRY = -0.55;
+    const MW = 0.153, MH = 0.26, MD = 0.36, MACH = V(0.5, TOP, -0.21), MRY = -0.9;
     const machineM = new THREE.Matrix4().compose(MACH, new THREE.Quaternion().setFromEuler(new THREE.Euler(0, MRY, 0)), V(1, 1, 1));
     N.push(MACH.x, MACH.y, MACH.z, MRY);
-    N.add(box(MW, MH, MD), '#1e63c0', { p: [0, 0.016 + MH / 2, 0] });
-    N.add(box(MW + 0.018, MH + 0.02, 0.03), '#17191c', { p: [0, 0.016 + MH / 2, MD / 2 + 0.006] });
-    N.add(box(MW + 0.018, MH + 0.02, 0.03), '#17191c', { p: [0, 0.016 + MH / 2, -MD / 2 - 0.006] });
-    N.add(box(MW + 0.004, 0.012, MD + 0.004), '#e8e308', { p: [0, 0.016 + MH + 0.006, 0] });
-    N.add(box(0.034, 0.022, 0.22), '#17191c', { p: [0, 0.016 + MH + 0.028, 0] });
-    N.add(box(0.03, 0.03, 0.03), '#17191c', { p: [0, 0.016 + MH + 0.016, 0.085] });
-    N.add(box(0.03, 0.03, 0.03), '#17191c', { p: [0, 0.016 + MH + 0.016, -0.085] });
-    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach((p) => N.add(cyl(0.01, 0.012, 0.016, 8), '#101012', { p: [p[0] * 0.05, 0.008, p[1] * 0.12] }));
+    const MB = 0.016;
+    N.add(box(MW, MH, MD), '#2c2f34', { p: [0, MB + MH / 2, 0] });
+    N.add(box(MW + 0.012, MH + 0.012, 0.03), '#1b1d21', { p: [0, MB + MH / 2, MD / 2 + 0.006] });
+    N.add(box(MW + 0.012, MH + 0.012, 0.03), '#1b1d21', { p: [0, MB + MH / 2, -MD / 2 - 0.006] });
+    N.add(box(MW + 0.004, 0.012, MD + 0.004), '#3a3e44', { p: [0, MB + MH + 0.006, 0] });
+    N.add(box(0.03, 0.036, 0.024), '#1b1d21', { p: [0, MB + MH + 0.018, 0.1] });
+    N.add(box(0.03, 0.036, 0.024), '#1b1d21', { p: [0, MB + MH + 0.018, -0.1] });
+    N.add(box(0.036, 0.022, 0.224), '#1b1d21', { p: [0, MB + MH + 0.04, 0] });
+    N.add(box(0.032, 0.006, 0.226), ESAB_OR, { p: [0, MB + MH + 0.0525, 0] });
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach((q) => N.add(cyl(0.01, 0.012, MB, 8), '#101012', { p: [q[0] * 0.05, MB / 2, q[1] * 0.14] }));
     const FZ = MD / 2 + 0.006 + 0.015;
-    N.add(cyl(0.02, 0.021, 0.018, 14), '#17191c', { p: [0, 0.016 + MH / 2 - 0.045, FZ + 0.009], r: [Math.PI / 2, 0, 0] });
-    N.add(cyl(0.015, 0.015, 0.004, 14), '#aab4bf', { p: [0, 0.016 + MH / 2 - 0.045, FZ + 0.02], r: [Math.PI / 2, 0, 0] });
-    N.add(box(0.003, 0.012, 0.003), '#e8e308', { p: [0, 0.016 + MH / 2 - 0.037, FZ + 0.023] });
+    N.add(cyl(0.025, 0.026, 0.02, 16), '#101012', { p: [-0.034, 0.122, FZ + 0.01], r: [Math.PI / 2, 0, 0] });
+    N.add(cyl(0.021, 0.021, 0.006, 16), '#aab4bf', { p: [-0.034, 0.122, FZ + 0.023], r: [Math.PI / 2, 0, 0] });
+    N.add(box(0.004, 0.016, 0.004), ESAB_OR, { p: [-0.034, 0.131, FZ + 0.027] });
+    N.add(cyl(0.016, 0.017, 0.016, 14), '#101012', { p: [0.036, 0.122, FZ + 0.008], r: [Math.PI / 2, 0, 0] });
+    N.add(cyl(0.012, 0.012, 0.004, 14), '#aab4bf', { p: [0.036, 0.122, FZ + 0.018], r: [Math.PI / 2, 0, 0] });
+    N.add(box(0.003, 0.011, 0.003), ESAB_OR, { p: [0.036, 0.1285, FZ + 0.021] });
     [-0.04, 0.04].forEach((x) => {
-      N.add(cyl(0.016, 0.017, 0.016, 14), '#101012', { p: [x, 0.051, FZ + 0.008], r: [Math.PI / 2, 0, 0] });
-      N.add(cyl(0.0075, 0.0075, 0.004, 10), '#c9a24a', { p: [x, 0.051, FZ + 0.017], r: [Math.PI / 2, 0, 0] });
+      N.add(cyl(0.017, 0.018, 0.016, 14), '#101012', { p: [x, 0.05, FZ + 0.008], r: [Math.PI / 2, 0, 0] });
+      N.add(cyl(0.0095, 0.0095, 0.004, 10), '#c9a24a', { p: [x, 0.05, FZ + 0.017], r: [Math.PI / 2, 0, 0] });
     });
     const panel = new THREE.Mesh(new THREE.PlaneGeometry(MW - 0.004, MH - 0.004), new THREE.MeshBasicMaterial({ map: machinePanelTex, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
-    panel.position.set(0, 0.016 + MH / 2, FZ + 0.0012);
+    panel.position.set(0, MB + MH / 2, FZ + 0.0012);
     const side1 = new THREE.Mesh(new THREE.PlaneGeometry(MD * 0.92, MH * 0.9), new THREE.MeshBasicMaterial({ map: machineSideTex, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
-    side1.position.set(MW / 2 + 0.0015, 0.016 + MH / 2, 0);
+    side1.position.set(MW / 2 + 0.0015, MB + MH / 2, 0);
     side1.rotation.y = Math.PI / 2;
     const side2 = side1.clone();
     side2.position.x = -MW / 2 - 0.0015;
@@ -485,16 +494,17 @@
     scene.add(machineDecals);
     N.pop();
     const mw = (x, y, z) => V(x, y, z).applyMatrix4(machineM);
-    const sockAW = mw(-0.04, 0.051, FZ + 0.03), sockBW = mw(0.04, 0.051, FZ + 0.03);
-    const sockAOut = mw(-0.04, 0.051, FZ + 0.09), sockBOut = mw(0.04, 0.051, FZ + 0.09);
+    const sockAW = mw(-0.04, 0.05, FZ + 0.03), sockBW = mw(0.04, 0.05, FZ + 0.03);
+    const sockAOut = mw(-0.04, 0.05, FZ + 0.1), sockBOut = mw(0.04, 0.05, FZ + 0.1);
 
-    N.add(box(0.06, 0.012, 0.03), '#c98b3f', { p: [-0.6, TOP - 0.012, 0.355] });
-    N.add(box(0.06, 0.012, 0.03), '#c98b3f', { p: [-0.6, TOP - 0.048, 0.355] });
-    N.add(box(0.012, 0.05, 0.03), '#aab4bf', { p: [-0.565, TOP - 0.03, 0.355] });
-    BEADS.add(tubeG([V(-0.63, TOP - 0.03, 0.37), V(-0.7, TOP - 0.02, 0.3), V(-0.84, TOP + 0.01, 0.02), sockBOut, sockBW], 0.0105, 30), '#17181b');
+    const GC = V(0.15, BP, PZ - 0.1);
+    N.add(box(0.034, 0.02, 0.05), '#c98b3f', { p: [GC.x, GC.y + 0.01, GC.z] });
+    N.add(box(0.05, 0.012, 0.024), '#c9331f', { p: [GC.x + 0.04, GC.y + 0.02, GC.z], r: [0, 0, 0.35] });
+    N.add(box(0.03, 0.006, 0.04), '#8a8f97', { p: [GC.x - 0.012, GC.y + 0.003, GC.z] });
+    BEADS.add(tubeG([V(GC.x + 0.05, GC.y + 0.016, GC.z), V(0.26, TOP + 0.012, PZ - 0.05), sockBOut, sockBW], 0.0105, 70), '#17181b');
 
-    const eBoxLabel = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.046), new THREE.MeshBasicMaterial({ map: labelTex }));
-    eBoxLabel.position.set(BOX.x, BOX.y + 0.026, BOX.z + 0.0452);
+    const eBoxLabel = new THREE.Mesh(new THREE.PlaneGeometry(0.292, 0.034), new THREE.MeshBasicMaterial({ map: labelTex }));
+    eBoxLabel.position.set(BOX.x, BOX.y + 0.021, BOX.z + 0.0302);
     scene.add(eBoxLabel);
 
     const farMesh = new THREE.Mesh(F.geometry(), vcol(0));
@@ -596,8 +606,8 @@
     const gloveMat = toon({ vertexColors: true, side: THREE.DoubleSide }, 0.3);
     function cuffMesh() {
       const G = Builder(true);
-      G.add(sph(0.04, 12, 8), GLOVE, {});
-      G.add(new THREE.CylinderGeometry(0.049, 0.039, 0.1, 14, 1, true), CUFF, { p: [0, 0.045, 0] });
+      G.add(sph(0.036, 12, 8), GLOVE, {});
+      G.add(new THREE.CylinderGeometry(0.047, 0.042, 0.1, 14, 1, true), CUFF, { p: [0, 0.045, 0] });
       const m = outlined(new THREE.Mesh(G.geometry(), gloveMat), OUT_THIN);
       m.castShadow = true;
       scene.add(m);
@@ -625,9 +635,9 @@
     scene.add(holder);
 
     const HL = Builder(true);
-    HL.add(box(0.078, 0.072, 0.024), GLOVE, { p: [0, 0.036, 0] });
-    [[-0.029, 0.036], [-0.0097, 0.047], [0.0097, 0.05], [0.029, 0.044]].forEach((f, i) => HL.add(cap(0.0122, f[1]), i % 2 ? GLOVE : GLOVE_D, { p: [f[0], 0.072 + f[1] / 2 + 0.006, 0.002], r: [0, 0, f[0] * -1.2] }));
-    HL.add(cap(0.0135, 0.034), GLOVE, { p: [0.052, 0.034, 0], r: [0, 0, -0.9] });
+    HL.add(box(0.066, 0.064, 0.02), GLOVE, { p: [0, 0.032, 0] });
+    [[-0.024, 0.032], [-0.008, 0.042], [0.008, 0.045], [0.024, 0.038]].forEach((f, i) => HL.add(cap(0.0105, f[1]), i % 2 ? GLOVE : GLOVE_D, { p: [f[0], 0.064 + f[1] / 2 + 0.006, 0.002], r: [0, 0, f[0] * -1.2] }));
+    HL.add(cap(0.0118, 0.03), GLOVE, { p: [0.044, 0.03, 0], r: [0, 0, -0.9] });
     const handL = outlined(new THREE.Mesh(HL.geometry(), vcol(0.3)), OUT);
     handL.castShadow = true;
     scene.add(handL);
@@ -671,8 +681,8 @@
     key.shadow.normalBias = 0.02;
     scene.add(key, key.target);
 
-    const CX = -TS / 2, Z0 = PZ + TS / 2 - 0.008, Z1 = PZ - TS / 2 + 0.008;
-    const STEP = 0.0018;
+    const CX = -TS / 2, Z0 = PZ + PL / 2 - 0.016, Z1 = PZ - PL / 2 + 0.016;
+    const STEP = 0.0014;
     const N_BEAD = Math.floor((Z0 - Z1) / STEP);
     const beadT = new Float32Array(N_BEAD);
     const beadGeo = new THREE.SphereGeometry(1, 8, 6);
@@ -680,11 +690,11 @@
     const heatAttr = new THREE.InstancedBufferAttribute(heatArr, 1);
     heatAttr.setUsage(THREE.DynamicDrawUsage);
     beadGeo.setAttribute('aHeat', heatAttr);
-    const beadMat = toon({ color: '#6b5a44' });
+    const beadMat = toon({ color: '#807a70' });
     beadMat.onBeforeCompile = (sh) => {
       sh.vertexShader = 'attribute float aHeat;\nvarying float vHeat;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nvHeat = aHeat;');
       sh.fragmentShader = 'varying float vHeat;\n' + sh.fragmentShader
-        .replace('#include <color_fragment>', '#include <color_fragment>\nfloat hh = clamp(vHeat, 0.0, 1.0);\nvec3 tmp = mix(vec3(0.05,0.12,0.4), vec3(0.62,0.42,0.18), smoothstep(0.08,0.22,hh));\ndiffuseColor.rgb = mix(diffuseColor.rgb, tmp, smoothstep(0.0,0.06,hh) * (1.0 - smoothstep(0.25,0.4,hh)));')
+        .replace('#include <color_fragment>', '#include <color_fragment>\nfloat hh = clamp(vHeat, 0.0, 1.0);\nvec3 tmp = mix(vec3(0.1,0.085,0.075), vec3(0.3,0.2,0.12), smoothstep(0.12,0.3,hh));\ndiffuseColor.rgb = mix(diffuseColor.rgb, tmp, smoothstep(0.0,0.05,hh) * (1.0 - smoothstep(0.2,0.34,hh)));')
         .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\nvec3 hotC = mix(vec3(0.9,0.14,0.0), vec3(1.0,0.82,0.4), smoothstep(0.55,1.0,hh));\ntotalEmissiveRadiance += hotC * pow(hh, 1.6) * 1.6;');
     };
     const bead = new THREE.InstancedMesh(beadGeo, beadMat, N_BEAD);
@@ -703,7 +713,7 @@
         beadT[i] = T_START + ((i * STEP) / (Z0 - Z1)) * (T_END - T_START);
         const wv = 0.0012 * Math.sin(2 * Math.PI * 2.6 * (beadT[i] - T_START));
         p.set(CX - 0.0036 + wv, BP + 0.0036 + wv, Z0 - i * STEP);
-        s.set(0.0058 * (1 + 0.1 * r()), 0.0058 * (1 + 0.1 * r()), 0.0068 * (1 + 0.1 * r()));
+        s.set(0.0068 * (1 + 0.1 * r()), 0.0068 * (1 + 0.1 * r()), 0.0072 * (1 + 0.1 * r()));
         q.setFromAxisAngle(V(0, 0, 1), Math.PI / 4 + (r() - 0.5) * 0.3);
         mt.compose(p, q, s);
         bead.setMatrixAt(i, mt);
@@ -740,7 +750,7 @@
     }
     let smHead = 0;
 
-    const E_DIR = V(-0.68, 0.7, -0.3).normalize();
+    const E_DIR = V(-0.7, 0.7, -0.15).normalize();
     const HB = V(-0.1, 0.35, -1.0).normalize();
     const FWD = HB.clone().negate();
     const WRIST_LIFT = V(0, 0.018, 0);
@@ -829,7 +839,7 @@
       spMax[i] = spL[i] = 0.3 + rng() * 0.6;
     }
     function surfaceY(x, z) {
-      if (Math.abs(x) < 0.15 && Math.abs(z - PZ) < 0.15) return BP;
+      if (Math.abs(x) < 0.16 && Math.abs(z - PZ) < 0.16) return BP;
       if (Math.abs(x) < 0.7 && Math.abs(z) < 0.36) return TOP;
       return 0;
     }
@@ -849,7 +859,7 @@
         spV[j + 1] -= g;
         spV[j] *= drag; spV[j + 1] *= drag; spV[j + 2] *= drag;
         spP[j] += spV[j] * dt; spP[j + 1] += spV[j + 1] * dt; spP[j + 2] += spV[j + 2] * dt;
-        if (spP[j] > CX && spP[j] < -CX && Math.abs(spP[j + 2] - PZ) < TS / 2 && spP[j + 1] < BP + TH) {
+        if (spP[j] > CX && spP[j] < -CX && Math.abs(spP[j + 2] - PZ) < PL / 2 && spP[j + 1] < BP + TH) {
           spP[j] = CX - 0.001;
           spV[j] = -Math.abs(spV[j]) * 0.4;
         }
@@ -954,7 +964,7 @@
     const _hc = V(0, 0, 0);
 
     const CSEG = 48, CRAD = 6, CR = 0.0105;
-    const cablePts = [V(0, 0, 0), V(0, 0, 0), V(-0.45, 0.99, -0.36), V(-0.6, 0.95, -0.12), sockAOut, sockAW];
+    const cablePts = [V(0, 0, 0), V(0, 0, 0), V(0, 0, 0), V(0, 0, 0), V(0, 0, 0), sockAOut, sockAW];
     const cableCurve = new THREE.CatmullRomCurve3(cablePts, false, 'centripetal');
     const cPos = new Float32Array((CSEG + 1) * (CRAD + 1) * 3), cNor = new Float32Array((CSEG + 1) * (CRAD + 1) * 3);
     const cIdx = [];
@@ -984,6 +994,15 @@
     function updateCable() {
       cablePts[0].copy(_H).addScaledVector(HB, 0.095);
       cablePts[1].copy(cablePts[0]).addScaledVector(HB, 0.1).add(V(0, -0.05, 0));
+      const dd = cablePts[1].distanceTo(sockAOut), slack = Math.sqrt(Math.max(0, 1.5 * 1.5 - dd * dd));
+      for (let k = 2; k <= 4; k++) {
+        const f = (k - 1) / 4, pt = cablePts[k];
+        pt.lerpVectors(cablePts[1], sockAOut, f);
+        pt.y -= slack * 0.55 * Math.sin(Math.PI * f);
+        pt.z = Math.min(pt.z, -0.1 - 0.15 * Math.sin(Math.PI * f)) + 0;
+        const onBench = pt.x > -0.7 && pt.x < 0.7 && pt.z > -0.36 && pt.z < 0.36;
+        pt.y = Math.max(pt.y, onBench ? TOP + 0.014 : 0.02);
+      }
       for (let i = 0; i <= CSEG; i++) cableCurve.getPoint(i / CSEG, cP[i]);
       for (let i = 0; i <= CSEG; i++) cT[i].subVectors(cP[Math.min(CSEG, i + 1)], cP[Math.max(0, i - 1)]).normalize();
       _n.set(0, 1, 0);
