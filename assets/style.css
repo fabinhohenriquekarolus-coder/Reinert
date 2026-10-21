@@ -123,19 +123,28 @@ section{padding-block:clamp(56px,8vw,104px)}
   -webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);opacity:.4}
 .bead-wrap{padding-inline:var(--gut);max-width:var(--wrap);margin-inline:auto}
 
-.hero{padding-block:clamp(36px,5vw,80px) clamp(36px,5vw,72px);background:var(--bg)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(28px,5vw,72px);align-items:center}
+.hero{position:relative;overflow:hidden;padding-block:clamp(48px,7vw,104px);background:var(--bg)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr)}
 .hero h1{font-size:clamp(2.4rem,4.2vw,4rem);line-height:1.02;color:var(--fg);text-wrap:balance}
 .hero h1 .ln{display:block}
-.hero-copy{display:grid;gap:22px;min-width:0;align-content:center}
+.hero-copy{position:relative;z-index:2;display:grid;gap:22px;min-width:0;align-content:center;max-width:min(560px,100%)}
 .hero .lead{max-width:44ch;color:var(--soft)}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px}
 .proof-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;color:var(--fg);font-weight:600}
 .hero .stars{color:var(--accent-text)}
 .hero .hint{font-size:1rem;color:var(--muted);max-width:none}
-.hero-pic{margin:0;min-width:0;width:100%;aspect-ratio:4/5;max-height:640px;border-radius:var(--r);overflow:hidden;background:var(--panel-2)}
-.hero-pic img{display:block;width:100%;height:100%;object-fit:cover}
-@media (max-width:860px){.hero .wrap{grid-template-columns:1fr;row-gap:28px}.hero-pic{aspect-ratio:16/10;max-height:none}.hero h1 .ln{display:inline}}
+.hero-pic{position:absolute;z-index:1;top:0;right:0;bottom:0;width:62%;margin:0;overflow:hidden}
+.hero-pic img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 40%;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 48%),linear-gradient(180deg,#000 82%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.55) 22%,#000 48%),linear-gradient(180deg,#000 82%,transparent 100%);mask-composite:intersect;animation:hero-zoom 1.8s cubic-bezier(.2,.7,.2,1) both}
+@keyframes hero-zoom{from{transform:scale(1.07);opacity:.0}to{transform:none;opacity:1}}
+@keyframes hero-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.hero-copy>*{animation:hero-rise .7s cubic-bezier(.2,.7,.2,1) both}
+.hero-copy>:nth-child(2){animation-delay:.08s}.hero-copy>:nth-child(3){animation-delay:.16s}.hero-copy>:nth-child(4){animation-delay:.24s}.hero-copy>:nth-child(5){animation-delay:.32s}
+@media (max-width:860px){
+  .hero{padding-block:clamp(32px,6vw,56px) 0}
+  .hero-pic{position:relative;width:100%;height:300px;margin-top:28px}
+  .hero-pic img{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%);-webkit-mask-composite:initial;mask-composite:initial}
+  .hero h1 .ln{display:inline}
+}
 
 .works{padding-block:clamp(48px,7vw,96px) clamp(36px,5vw,64px)}
 .works-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 28px;margin-bottom:clamp(20px,3vw,34px)}
@@ -190,7 +199,7 @@ section{padding-block:clamp(56px,8vw,104px)}
 .nums strong{font-family:var(--f-display);font-weight:800;font-size:2.6rem;line-height:1}
 .nums strong span{color:var(--star)}
 .nums div>span{color:var(--muted);font-size:1rem}
-@media (max-width:560px){.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 14px;width:100%}.nums strong{font-size:2.1rem}.nums div>span{font-size:.92rem;line-height:1.3}}
+@media (max-width:560px){.nums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px;width:100%}.nums strong{font-size:2.1rem}.nums div>span{font-size:.92rem;line-height:1.3}}
 
 .tech{padding-block:clamp(52px,7vw,104px)}
 .tech h2{margin-bottom:clamp(20px,3vw,34px)}
@@ -526,3 +535,32 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 .nf-code{font-family:var(--f-display);font-weight:800;font-size:clamp(8rem,46vw,26rem);line-height:.82;letter-spacing:.02em;color:var(--accent);margin:0}
 .nf-text{font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:clamp(2rem,8vw,5.5rem);line-height:1;letter-spacing:.12em;color:#fff;margin:0}
 .nf-bead{width:min(520px,70vw);height:22px;margin-top:clamp(16px,3vw,32px);background:radial-gradient(ellipse 11px 10px at 11px 11px,#8d877b 0%,#6e695f 38%,#4a463f 62%,transparent 64%) 0 0/16px 22px repeat-x;-webkit-mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);opacity:.7}
+
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease var(--d,0s),transform .6s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+.pcard,.ccard.ch,.review,.vals>div,.rail li,.qa,.gloss div,.how-list li,.cols2>div,.flow li,.step{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background-color .25s ease}
+.qa[open] p{animation:qa-in .3s ease both}
+@keyframes qa-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ticks li::before,.svc-body li::before{transition:width .25s ease}
+.flow .num{transition:transform .25s ease,background-color .25s ease}
+.tbl tbody tr td{transition:background-color .2s ease}
+@media (hover:hover){
+  .pcard:hover,.ccard.ch:hover,.cols2>div:hover{transform:translateY(-4px);box-shadow:0 2px 4px rgba(20,23,26,.06),0 16px 32px rgba(20,23,26,.1);border-color:var(--line-strong)}
+  .pcard:hover{border-top-color:var(--accent)}
+  .ccard.ch:hover{border-color:var(--accent)}
+  .qa:hover{border-color:var(--line-strong);box-shadow:0 6px 16px rgba(20,23,26,.07)}
+  .step:hover{background:var(--panel-2)}
+  .step:hover::before{color:var(--fg)}
+  .review:hover{transform:translateY(-3px)}
+  .review:hover p{color:var(--fg)}
+  .vals>div:hover{border-top-color:var(--accent);transform:translateY(-3px)}
+  .rail li:hover b{color:var(--accent-text)}
+  .rail li:hover{transform:translateY(-3px)}
+  .how-list li:hover{transform:translateY(-3px)}
+  .gloss div:hover{border-bottom-color:var(--accent)}
+  .gloss div:hover b{color:var(--accent-text)}
+  .flow li:hover .num{transform:scale(1.1) rotate(-5deg)}
+  .ticks li:hover::before,.svc-body li:hover::before{width:16px}
+  .tbl tbody tr:hover td{background:var(--panel-2)}
+  .insta .btn:hover{transform:translateY(-2px)}
+}

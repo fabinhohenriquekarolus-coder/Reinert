@@ -19,6 +19,28 @@
     else if(subBox&&subBox.classList.contains("open")){closeSub();subBtn.focus()}
   });
 
+  var calm=window.matchMedia("(prefers-reduced-motion: reduce)");
+  if("IntersectionObserver" in window&&!calm.matches){
+    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ccard,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
+    var seen=0, rvIo=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting)return;
+        var t=e.target;rvIo.unobserve(t);
+        t.classList.add("in");
+        setTimeout(function(){t.classList.remove("rv","in");t.style.removeProperty("--d")},1100);
+      });
+    },{threshold:0.12,rootMargin:"0px 0px -5% 0px"});
+    document.querySelectorAll(rvSel).forEach(function(el){
+      if(el.closest("#grid,dialog"))return;
+      var r=el.getBoundingClientRect();
+      if(r.top<window.innerHeight*0.95)return;
+      var sib=Array.prototype.indexOf.call(el.parentNode.children,el);
+      el.style.setProperty("--d",(Math.min(sib,5)*0.07).toFixed(2)+"s");
+      el.classList.add("rv");
+      rvIo.observe(el);
+    });
+  }
+
   var dock=document.getElementById("dock"), ctas=document.querySelectorAll("[data-cta]");
   if(dock){
     var vis=new Set(), mobile=window.matchMedia("(max-width:760px)"), tick=false;
