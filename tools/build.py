@@ -629,7 +629,7 @@ def build_servicos():
 def svchero(crumbs, eyebrow, h1, lead, ctx, img=None, alt=""):
     bc = " ".join(f'<a href="{p}">{n}</a>' if p else f'<span aria-current="page">{n}</span>' for n, p in crumbs)
     fig = f'<figure class="svchero-pic"><img src="/img/{img}" alt="{esc(alt)}" width="800" height="600" fetchpriority="high"></figure>' if img else ""
-    return f"""  <section class="svchero dark{' has-pic' if img else ''}">
+    return f"""  <section class="svchero{' has-pic' if img else ''}">
     <div class="wrap">
       <div class="svchero-copy">
         <nav class="crumbs" aria-label="Você está em">{bc}</nav>

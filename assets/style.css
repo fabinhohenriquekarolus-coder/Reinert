@@ -449,18 +449,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   .tbl td[data-label]::before{content:attr(data-label);display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:2px}
 }
 
-.svchero{padding-block:clamp(36px,5vw,72px) clamp(36px,5vw,64px);background:radial-gradient(120% 90% at 85% 100%,#262420 0%,#1a1917 55%,#151412 100%)}
+.svchero{padding-block:clamp(36px,5vw,72px) clamp(36px,5vw,64px);background:var(--bg)}
 .svchero .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vw,48px);align-items:center}
 .svchero.has-pic .wrap{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
 .svchero-copy{display:grid;gap:18px;min-width:0;align-content:start}
-.svchero .crumbs,.svchero .crumbs a,.svchero .crumbs span{color:#a9a69c}
-.svchero .crumbs a:hover{color:#fff}
-.svchero .crumbs span{color:#d3d1c8}
-.svchero .eyebrow{color:var(--accent)}
-.svchero h1{color:#fff;font-size:clamp(2.4rem,5.2vw,4.4rem);line-height:1.03;text-wrap:balance}
-.svchero .lead{max-width:56ch;color:#d3d1c8}
-.svchero .stars{color:var(--accent)}
-.svchero-pic{margin:0;border:1px solid rgba(232,227,8,.5);border-radius:var(--r);overflow:hidden;background:#15130f}
+.svchero .eyebrow{color:var(--accent-text)}
+.svchero h1{color:var(--fg);font-size:clamp(2.4rem,5.2vw,4.4rem);line-height:1.03;text-wrap:balance}
+.svchero .lead{max-width:56ch;color:var(--soft)}
+.svchero .stars{color:var(--accent-text)}
+.svchero-pic{margin:0;border-radius:var(--r);overflow:hidden;background:var(--panel-2)}
 .svchero-pic img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 .svc-all{padding-block:0}
 .svc-all .tiles{max-width:none}
@@ -485,7 +482,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 .also a{display:inline-flex;align-items:center;min-height:44px}
 @media (max-width:860px){
   .svchero.has-pic .wrap{grid-template-columns:1fr}
-  .svchero-pic{order:-1}
   .svchero-pic img{aspect-ratio:16/10}
   .svc-cols{grid-template-columns:1fr}
   .pics{columns:2}
