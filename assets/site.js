@@ -19,15 +19,6 @@
     else if(subBox&&subBox.classList.contains("open")){closeSub();subBtn.focus()}
   });
 
-  var hv=document.getElementById("heroVideo");
-  if(hv){
-    var net=navigator.connection, calm=window.matchMedia("(prefers-reduced-motion: reduce)");
-    var still=function(){return calm.matches||(net&&(net.saveData||/2g/.test(net.effectiveType||"")))};
-    if(still()){hv.removeAttribute("autoplay");hv.pause()}
-    calm.addEventListener("change",function(){if(still())hv.pause();else hv.play().catch(function(){})});
-    document.addEventListener("visibilitychange",function(){if(document.hidden)hv.pause();else if(!still())hv.play().catch(function(){})});
-  }
-
   var dock=document.getElementById("dock"), ctas=document.querySelectorAll("[data-cta]");
   if(dock){
     var vis=new Set(), mobile=window.matchMedia("(max-width:760px)"), tick=false;
