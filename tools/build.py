@@ -11,6 +11,7 @@ import json
 import re
 import sys
 import urllib.parse
+from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -34,6 +35,7 @@ ADDRESS = {
 }
 MAPS = "https://www.google.com/maps/search/Reinert+Solu%C3%A7%C3%B5es+em+Solda+Joinville"
 INSTA = "https://www.instagram.com/reinert.soldas/"
+WA_LABEL = "Fazer orçamento"
 
 # ---------------------------------------------------------------- WhatsApp
 def wa(context=None):
@@ -222,7 +224,7 @@ PAGES_META = {
     "contato": ("Contato e orçamento", "Fale com a Reinert pelo WhatsApp (47) 98802-4265 ou venha à oficina na Rua Leopoldo Beninca, 108, Vila Nova, Joinville/SC. Sem agendamento."),
 }
 
-NAV = [("/", "Início"), ("/servicos", "Serviços"), ("/guia-de-soldas", "Guia"), ("/portfolio", "Portfólio"), ("/sobre", "Sobre"), ("/contato", "Contato")]
+NAV = [("/servicos", "Serviços"), ("/portfolio", "Trabalhos"), ("/guia-de-soldas", "Guia de soldas"), ("/sobre", "Sobre"), ("/contato", "Contato")]
 
 SVG_DEFS = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -241,7 +243,39 @@ def url(path):
     return (SITE_URL + "/" + path).rstrip("/") if SITE_URL else None
 
 
-def jsonld_business():
+def plain_text(s):
+    return unescape(re.sub(r"<[^>]+>", "", s)).strip()
+
+
+def reviews_from(body):
+    """Avaliações exibidas na página (blocos .review), na mesma ordem e com o mesmo texto."""
+    out = []
+    for block in re.findall(r'<blockquote class="review">(.*?)</blockquote>', body, flags=re.S):
+        stars = re.search(r'aria-label="(\d) estrelas"', block)
+        text = re.search(r'</p><p>(.*?)</p>', block, flags=re.S)
+        author = re.search(r"<footer>(.*?), avaliação no Google</footer>", block, flags=re.S)
+        assert stars and text and author, block
+        out.append({
+            "@type": "Review",
+            "author": {"@type": "Person", "name": plain_text(author.group(1))},
+            "reviewRating": {"@type": "Rating", "ratingValue": stars.group(1), "bestRating": "5", "worstRating": "1"},
+            "reviewBody": plain_text(text.group(1)).strip("“”\""),
+        })
+    return out
+
+
+def jsonld_faq(faq):
+    return {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": plain_text(q), "acceptedAnswer": {"@type": "Answer", "text": plain_text(a)}}
+            for q, a in faq
+        ],
+    }
+
+
+def jsonld_business(reviews=None):
     data = {
         "@context": "https://schema.org",
         "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
@@ -265,6 +299,8 @@ def jsonld_business():
         "hasMap": MAPS,
         "sameAs": [INSTA],
     }
+    if reviews:
+        data["review"] = reviews
     if SITE_URL:
         data["url"] = SITE_URL + "/"
         data["logo"] = SITE_URL + "/img/logo-512.png"
@@ -334,22 +370,37 @@ def head(title, desc, path, ld, extra=""):
 
 
 def header(active):
+    svc_active = active == "/servicos" or active in {"/" + x["slug"] for x in SERVICES}
     links = []
     for href, label in NAV:
         cur = ' aria-current="page"' if active == href else ""
-        links.append(f'<a href="{href}"{cur}>{label}</a>')
+        if href == "/servicos":
+            sub = "".join(
+                f'<a href="/{x["slug"]}"{" aria-current=\"page\"" if active == "/" + x["slug"] else ""}>{x["name"]}</a>' for x in SERVICES
+            )
+            links.append(
+                f'<div class="has-sub{" is-current" if svc_active else ""}">'
+                f'<a class="sub-link" href="{href}"{cur}>{label}</a>'
+                f'<button type="button" class="sub-btn" aria-expanded="false" aria-controls="sub" aria-label="Abrir lista de serviços"><svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>'
+                f'<div class="sub" id="sub"><a class="sub-all" href="/servicos">Todos os serviços</a>{sub}</div></div>'
+            )
+        else:
+            links.append(f'<a href="{href}"{cur}>{label}</a>')
     return f"""<a class="skip" href="#main">Pular para o conteúdo</a>
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/" aria-label="{NAME}, página inicial">
       <img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60">
     </a>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">MENU</button>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav"><span class="menu-open">MENU</span><span class="menu-close">FECHAR</span></button>
     <nav class="nav" id="nav" aria-label="Principal">
+      <div class="nav-top">
+        <a class="btn btn-accent" href="{wa('menu')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+        <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
+      </div>
       {chr(10).join('      ' + l for l in links).strip()}
-      <a class="btn btn-accent nav-cta" href="{wa('menu')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento</a>
     </nav>
-    <a class="btn btn-accent hd-cta" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Orçamento</a>
+    <a class="btn btn-accent hd-cta" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
   </div>
 </header>
 <main id="main">
@@ -367,14 +418,14 @@ def footer(ctx):
       <p><a href="{INSTA}" target="_blank" rel="noopener">Instagram @reinert.soldas</a></p>
     </div>
     <div><p class="foot-title">Serviços</p><ul>{svc_links}</ul></div>
-    <div><p class="foot-title">Site</p><ul><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/portfolio">Portfólio</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
+    <div><p class="foot-title">Site</p><ul><li><a href="/portfolio">Trabalhos</a></li><li><a href="/guia-de-soldas">Guia de soldas</a></li><li><a href="/sobre">Sobre</a></li><li><a href="/contato">Contato</a></li></ul></div>
     <div><p class="foot-title">Oficina</p><ul><li>{ADDRESS["street"]}</li><li>{ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</li><li><a href="tel:{PHONE_E164}">{PHONE_FMT}</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li>{"".join("<li>" + l + "</li>" for l in config.hours_lines())}</ul></div>
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
 <div class="dock" id="dock">
   <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
-  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="Pedir orçamento no WhatsApp"><svg><use href="#wa"/></svg><span>Pedir orçamento</span></a>
+  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="{WA_LABEL}"><svg><use href="#wa"/></svg><span class="t-long">{WA_LABEL}</span><span class="t-short" aria-hidden="true">{WA_LABEL}</span></a>
 </div>
 <script src="/assets/config.js?v={_ver("assets/config.js")}" defer></script>
 <script src="/assets/track.js?v={_ver("assets/track.js")}" defer></script>
@@ -384,13 +435,14 @@ def footer(ctx):
 """
 
 
-def band(title, text, ctx, btn="Pedir orçamento no WhatsApp"):
+def band(title, text, ctx):
     return f"""  <div class="band" data-cta>
     <div class="wrap">
-      <div style="display:grid;gap:14px"><h2>{title}</h2><p>{text}</p></div>
-      <div style="display:grid;gap:16px;justify-items:start">
-        <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{btn}</a>
-        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_inline()} Sem agendamento.</span></div>
+      <div class="band-copy"><h2>{title}</h2><p>{text}</p></div>
+      <div class="band-act">
+        <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+        <a class="band-call" href="tel:{PHONE_E164}">Ligar {PHONE_FMT}</a>
+        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_lines()[0]}. Sem agendamento.</span></div>
       </div>
     </div>
   </div>
@@ -414,7 +466,9 @@ def fix_links(h, ctx):
     spans = "".join("<span>" + l + "</span>" for l in config.hours_lines())
     return (
         h.replace("{WA}", wa(ctx))
+        .replace("{WA_LABEL}", WA_LABEL)
         .replace("{HOURS_INLINE}", config.hours_inline())
+        .replace("{HOURS_FIRST}", config.hours_lines()[0])
         .replace("{HOURS_SPANS}", spans)
     )
 
@@ -486,9 +540,10 @@ def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
     lead_html = f'<p class="lead">{lead}</p>' if lead else ""
     if cta:
         lead_html += f"""
+    <p class="support">Mandou a foto da peça, a gente já avalia.</p>
     <div class="cta-row" data-cta>
-      <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Pedir orçamento no WhatsApp</a>
-      <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar agora</a>
+      <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+      <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
     </div>
     <p class="trust"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google, com 19 avaliações. Envie fotos da peça e a descrição do serviço.</p>"""
     return f"""  <div class="pagehead"><div class="wrap">
@@ -501,105 +556,152 @@ def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
 
 
 # ---------------------------------------------------------------- Páginas
+TILES = {
+    "recuperacao-de-pecas": ("portfolio/componente-mecanico-reparo-01.webp", "Reconstruímos peças desgastadas ou trincadas, com sobremetal para usinar."),
+    "soldas-especiais": ("portfolio/cordao-solda-macro-01.webp", "TIG em alumínio, inox, titânio e aço ferramenta, onde o acabamento conta."),
+    "estruturas-metalicas": ("portfolio/mesas-rodizio-lote-01.webp", "Estruturas sob medida em aço, inox e alumínio, do protótipo ao lote."),
+    "moveis-estilo-industrial": ("DVMtWookW2N.webp", "Estruturas em aço e metalon para estantes, mesas e vitrines."),
+    "reparos-e-serralheria": ("C6EWpD9rqHY.webp", "Rodas, embarcações, quadros e serralheria com solda de oficina."),
+}
+PF_CAT = {
+    "recuperacao-de-pecas": "industria",
+    "soldas-especiais": "soldas-especiais",
+    "estruturas-metalicas": "estruturas",
+    "moveis-estilo-industrial": "moveis",
+    "reparos-e-serralheria": "reparos",
+}
+
+
+def tiles_html():
+    out = []
+    for sv in SERVICES:
+        img, desc = TILES[sv["slug"]]
+        out.append(
+            f'''      <a class="tile" href="/{sv["slug"]}">
+        <img src="/img/{img}" alt="" loading="lazy" decoding="async">
+        <span class="tile-body"><span class="tile-name">{sv["name"]}</span><span class="tile-more"><span><span class="tile-desc">{desc}</span><span class="tile-go">Ver serviço</span></span></span></span>
+      </a>'''
+        )
+    return "\n".join(out)
+
+
+def portfolio_pics(slug, limit=8):
+    cat = PF_CAT[slug]
+    html = read("portfolio")
+    pics = []
+    for m in re.finditer(r'<article class="case" data-cat="([a-z-]+)"[^>]*data-title="([^"]*)".*?<img src="([^"]+)" alt="([^"]*)"', html, re.S):
+        if m.group(1) == cat:
+            pics.append((m.group(3), m.group(4)))
+    return pics[:limit]
+
+
 def build_home():
     ctx = "início"
     meta = PAGES_META[""]
     body = fix_links(read("inicio"), ctx)
-    # links dos três pilares para as páginas de serviço
-    targets = [("/recuperacao-de-pecas", "Ver recuperação de peças"), ("/soldas-especiais", "Ver soldas especiais"), ("/estruturas-metalicas", "Ver estruturas sob medida")]
-    parts = body.split("</ul>\n          </div>\n        </article>")
-    assert len(parts) == 4, len(parts)
-    body = ""
-    for i, p in enumerate(parts[:-1]):
-        body += p + f'</ul>\n            <a class="more" href="{targets[i][0]}">{targets[i][1]}</a>\n          </div>\n        </article>'
-    body += parts[-1]
-    body = body.replace('<a href="/servicos">móveis estilo industrial, serralheria e reparos automotivos e náuticos</a>',
-                        '<a href="/moveis-estilo-industrial">móveis estilo industrial</a>, <a href="/reparos-e-serralheria">serralheria e reparos automotivos e náuticos</a>')
-    html = head(meta[0], meta[1], "", [jsonld_business()], extra='<link rel="preload" as="image" href="/img/Cxz5OvfOaRE.webp" fetchpriority="high">') + header("/") + body + "\n" + footer(ctx)
+    body = body.replace("{TILES}", tiles_html())
+    html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))]) + header("/") + body + "\n" + footer(ctx)
     write("", html)
 
 
 def build_servicos():
     ctx = "serviços"
     meta = PAGES_META["servicos"]
-    cards = ""
-    for s in SERVICES:
-        cards += f"""      <article class="svc{' flip' if SERVICES.index(s) % 2 else ''}">
-        <figure><a href="/{s['slug']}"><img src="/img/{s['img']}" alt="{esc(s['alt'])}" loading="lazy" width="800" height="600"></a></figure>
-        <div class="txt">
-          <p class="tag">{s['tag']}</p>
-          <h2><a href="/{s['slug']}" style="text-decoration:none">{s['short']}</a></h2>
-          <p class="lead">{s['lead']}</p>
-          <ul>{''.join('<li>' + b + '</li>' for b in s['bullets'][:4])}</ul>
-          <div class="cta-row"><a class="btn btn-ghost" href="/{s['slug']}">Ver detalhes</a><a class="btn btn-accent" href="{wa(s['name'])}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Orçamento</a></div>
-        </div>
-      </article>
-"""
-    seg = '<div class="segments"><span>Metalurgia e usinagem</span><span>Ferramentarias e injeção plástica</span><span>Hidráulica e agronegócio</span><span>Transportadoras</span><span>Indústria moveleira e marcenarias</span><span>Arquitetura e design</span><span>Náutico</span><span>Automotivo</span></div>'
+    seg = "Atendemos metalurgia e usinagem, ferramentarias e injeção plástica, hidráulica e agronegócio, transportadoras, indústria moveleira, arquitetura e design, náutico e automotivo."
     html = (
         head(meta[0], meta[1], "servicos", [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos")])])
         + header("/servicos")
-        + pagehead([("Início", "/"), ("Serviços", None)], "Serviços", "Soldagem para quem não pode parar",
-                   "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina, sem agendamento, e serviços no local quando a peça não pode sair da máquina.")
-        + f'  <section style="padding-top:40px">\n    <div class="wrap">\n{cards}    </div>\n  </section>\n'
-        + f'  <section style="padding-top:0">\n    <div class="wrap">\n      <div class="sec-head"><p class="eyebrow">Para quem trabalhamos</p><h2>Segmentos atendidos</h2></div>\n      {seg}\n    </div>\n  </section>\n'
+        + svchero([("Início", "/"), ("Serviços", None)], "Serviços", "Soldagem para quem não pode parar",
+                  "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina, sem agendamento, e serviços no local quando a peça não pode sair da máquina.", ctx)
+        + f'''  <section class="svc-sec svc-all" aria-label="Serviços">
+    <div class="tiles">
+{tiles_html()}
+    </div>
+    <div class="wrap"><p class="seg-line">{seg}</p></div>
+  </section>
+'''
         + band("Não achou o seu caso?", "Se é metal e precisa de solda, mande a foto. A gente diz se dá para fazer e como.", ctx)
         + footer(ctx)
     )
     write("servicos", html)
 
 
+def svchero(crumbs, eyebrow, h1, lead, ctx, img=None, alt=""):
+    bc = " ".join(f'<a href="{p}">{n}</a>' if p else f'<span aria-current="page">{n}</span>' for n, p in crumbs)
+    fig = f'<figure class="svchero-pic"><img src="/img/{img}" alt="{esc(alt)}" width="800" height="600" fetchpriority="high"></figure>' if img else ""
+    return f"""  <section class="svchero{' has-pic' if img else ''}">
+    <div class="wrap">
+      <div class="svchero-copy">
+        <nav class="crumbs" aria-label="Você está em">{bc}</nav>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{h1}</h1>
+        <p class="lead">{lead}</p>
+        <div class="cta-row" data-cta>
+          <a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+          <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
+        </div>
+        <p class="proof-line"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google · 19 avaliações · Sem agendamento</p>
+      </div>
+      {fig}
+    </div>
+  </section>
+"""
+
+
 def build_service(s):
     ctx = s["name"]
     crumbs = [("Início", "/"), ("Serviços", "/servicos"), (s["name"], None)]
-    steps = "".join(f'<div class="step"><h3>{t}</h3><p>{d}</p></div>' for t, d in s["how"])
-    gal = "".join(
-        f'<img src="/img/{g}" alt="{esc(s["name"])}: trabalho realizado" loading="lazy" width="800" height="800">' for g in s["gallery"]
+    steps = "".join(f'<li><span class="num" aria-hidden="true">{i}</span><div><h3>{t}</h3><p>{d}</p></div></li>' for i, (t, d) in enumerate(s["how"], 1))
+    pics = "".join(
+        f'<img src="{src}" alt="{esc(alt)}" loading="lazy" decoding="async">' for src, alt in portfolio_pics(s["slug"])
     )
-    others = "".join(
-        f'<a class="ocard" href="/{o["slug"]}"><img src="/img/{o["img"]}" alt="{esc(o["alt"])}" loading="lazy" width="400" height="300"><span>{o["name"]}</span></a>'
-        for o in SERVICES if o["slug"] != s["slug"]
-    )
+    others = "".join(f'<a href="/{o["slug"]}">{o["name"]}</a>' for o in SERVICES if o["slug"] != s["slug"])
     html = (
-        head(s["title"], s["desc"], s["slug"], [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]) ])
-        + header(None)
-        + pagehead(crumbs, s["tag"], s["h1"], s["lead"], cta=ctx)
-        + f"""  <section style="padding-top:36px">
-    <div class="wrap svc-top">
-      <figure><img src="/img/{s['img']}" alt="{esc(s['alt'])}" width="800" height="600"></figure>
-      <div class="txt">
+        head(s["title"], s["desc"], s["slug"], [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]), jsonld_faq(s["faq"])])
+        + header("/" + s["slug"])
+        + svchero(crumbs, s["tag"], s["h1"], s["lead"], ctx, s["img"], s["alt"])
+        + f"""  <section class="svc-body">
+    <div class="wrap svc-cols">
+      <div>
         <h2>O que fazemos</h2>
         <ul class="ticks">{''.join('<li>' + b + '</li>' for b in s['bullets'])}</ul>
       </div>
+      <div>
+        <h2>Como fazemos</h2>
+        <ol class="flow">{steps}</ol>
+      </div>
     </div>
   </section>
-  <section style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Como fazemos</p><h2>Do pedido à entrega</h2></div>
-      <div class="steps">{steps}</div>
-    </div>
-  </section>
-  <section style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Trabalhos</p><h2>Alguns exemplos</h2></div>
-      <div class="gal">{gal}</div>
-      <p class="insta">Veja mais no <a href="/portfolio">portfólio</a> e no Instagram <a class="btn btn-ghost" href="{INSTA}" target="_blank" rel="noopener">@reinert.soldas</a></p>
-    </div>
+  <section class="svc-pics" aria-label="Trabalhos deste serviço">
+    <div class="pics">{pics}</div>
+    <div class="wrap"><p class="insta">Veja todos em <a href="/portfolio">trabalhos</a> e no Instagram <a class="btn btn-ghost" href="{INSTA}" target="_blank" rel="noopener">@reinert.soldas</a></p></div>
   </section>
 """
         + faq_html(s["faq"])
-        + f"""  <section style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head"><p class="eyebrow">Outros serviços</p><h2>Veja também</h2></div>
-      <div class="others">{others}</div>
-      <p class="also">Quer entender melhor os processos? Leia o <a href="/guia-de-soldas">guia de soldas</a>.</p>
-    </div>
+        + f"""  <section class="svc-more">
+    <div class="wrap"><p class="also"><span>Outros serviços:</span> {others}</p><p class="also">Quer entender melhor os processos? Leia o <a href="/guia-de-soldas">guia de soldas</a>.</p></div>
   </section>
 """
-        + band("Tem uma peça para avaliar?", "Mande as fotos e a descrição pelo WhatsApp. Ou traga direto na oficina, sem precisar agendar.", ctx)
+        + band("Tem uma peça para avaliar?", "Mandou a foto da peça, a gente já avalia. Ou traga direto na oficina, sem precisar agendar.", ctx)
         + footer(ctx)
     )
     write(s["slug"], html)
+
+
+def build_sobre():
+    ctx = "sobre"
+    meta = PAGES_META["sobre"]
+    lead = "A Reinert Soluções em Solda nasceu da experiência de um soldador especializado em soldagem industrial multiprocesso, com mais de 15 anos de profissão e trabalhos em diversos segmentos."
+    html = (
+        head(meta[0], meta[1], "sobre", [jsonld_breadcrumb([("Início", "/"), ("Sobre", "/sobre")])])
+        + header("/sobre")
+        + svchero([("Início", "/"), ("Sobre", None)], "Sobre", "Uma oficina feita por quem vive a solda", lead, ctx,
+                  "DcUKDsGqjK3.webp", "Fachada da nova sede da Reinert Soldas")
+        + fix_links(read("sobre"), ctx)
+        + band("Quer conhecer a oficina?", "Mande a foto da peça pelo WhatsApp ou venha até a Vila Nova, sem precisar agendar.", ctx)
+        + footer(ctx)
+    )
+    write("sobre", html)
 
 
 def build_guia():
@@ -621,7 +723,7 @@ def build_guia():
     html = (
         head(meta[0], meta[1], "guia-de-soldas", [jsonld_breadcrumb([("Início", "/"), ("Guia de soldas", "/guia-de-soldas")]) ])
         + header("/guia-de-soldas")
-        + body.replace('  <div class="band">', faq_html(faq) + '  <div class="band">', 1)
+        + body.replace('  <div class="band" data-cta>', faq_html(faq) + '  <div class="band" data-cta>', 1)
         + "\n"
         + footer(ctx)
     )
@@ -629,21 +731,13 @@ def build_guia():
 
 
 def build_simple(slug, active, h_eyebrow, h1, lead, ctx, title_key=None, extra_ld=None):
-    quick = ""
-    if slug == "contato":
-        quick = f"""  <div class="wrap quick" data-cta>
-    <a class="btn btn-accent" href="{wa('contato')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Chamar no WhatsApp</a>
-    <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar {PHONE_FMT}</a>
-    <a class="btn btn-ghost" href="{MAPS}" target="_blank" rel="noopener">Como chegar</a>
-  </div>
-"""
     meta = PAGES_META[slug]
     body = fix_links(read(slug), ctx)
     body = re.sub(r'<div class="pagehead">.*?</div></div>\n',
                   pagehead([("Início", "/"), (h_eyebrow, None)], h_eyebrow, h1, lead), body, count=1, flags=re.S)
     html = (
         head(meta[0], meta[1], slug, ([jsonld_business()] if slug == "contato" else []) + [jsonld_breadcrumb([("Início", "/"), (h_eyebrow, "/" + slug)])] + (extra_ld or []))
-        + header(active) + body.replace("</div></div>\n", "</div></div>\n" + quick, 1) + "\n" + footer(ctx)
+        + header(active) + body + "\n" + footer(ctx)
     )
     write(slug, html)
 
@@ -652,14 +746,18 @@ def build_404():
     html = (
         head("Página não encontrada", "Página não encontrada.", "404", [])
         .replace('<meta name="description"', '<meta name="robots" content="noindex">\n<meta name="description"')
-        + header("")
-        + f"""  <section><div class="wrap" style="display:grid;gap:20px;justify-items:start">
-    <p class="eyebrow">Erro 404</p><h1>Essa página não existe</h1>
-    <p class="lead">O endereço pode ter mudado. Volte ao início ou fale direto com a oficina.</p>
-    <div class="cta-row"><a class="btn btn-ghost" href="/">Ir para o início</a><a class="btn btn-accent" href="{wa('404')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>WhatsApp</a></div>
-  </div></section>
+        .replace("<body", '<body class="nf-body"', 1)
+        + f"""<main class="nf" id="main">
+  <a class="nf-brand" href="/" aria-label="{NAME}, página inicial"><img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60"></a>
+  <div class="nf-box">
+    <h1 class="nf-code">404</h1>
+    <p class="nf-text">Not found</p>
+    <div class="nf-bead" aria-hidden="true"></div>
+  </div>
+</main>
+</body>
+</html>
 """
-        + footer("404")
     )
     (ROOT / "404.html").write_text(html, encoding="utf-8")
 
@@ -714,9 +812,9 @@ def main():
     for s in SERVICES:
         build_service(s)
     build_guia()
-    build_simple("portfolio", "/portfolio", "Portfólio", "Trabalhos realizados",
-                 "Uma parte do que passou pela oficina. Cada trabalho traz o material e o processo usados.", "portfólio")
-    build_simple("sobre", "/sobre", "Sobre", "Uma oficina feita por quem vive a solda", "", "sobre")
+    build_simple("portfolio", "/portfolio", "Trabalhos", "Trabalhos realizados",
+                 "Uma parte do que passou pela oficina. Toque numa foto para ampliar e ver o processo usado.", "portfólio")
+    build_sobre()
     build_simple("contato", "/contato", "Contato", "Fale com a oficina",
                  "O jeito mais rápido é o WhatsApp com fotos da peça e a descrição do serviço. Se preferir, venha direto: atendemos sem agendamento.", "contato")
     build_404()
