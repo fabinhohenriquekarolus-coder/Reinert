@@ -21,7 +21,7 @@
 
   var calm=window.matchMedia("(prefers-reduced-motion: reduce)");
   if("IntersectionObserver" in window&&!calm.matches){
-    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ccard,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
+    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ct-row,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
     var seen=0, rvIo=new IntersectionObserver(function(es){
       es.forEach(function(e){
         if(!e.isIntersecting)return;
@@ -144,7 +144,6 @@
     var fallback=function(){select(el);flash(btn,"Selecionado, copie")};
     try{navigator.clipboard.writeText(text).then(function(){flash(btn,"Copiado")},fallback)}catch(e){fallback()}
   }
-  document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copy(document.getElementById(b.dataset.copy),b)})});
 
   var form=document.getElementById("orc");
   if(form){
