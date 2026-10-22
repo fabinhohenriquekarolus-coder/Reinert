@@ -658,7 +658,19 @@ def build_service(s):
   </section>
   <section class="svc-pics" aria-label="Trabalhos deste serviço">
     <div class="pics">{pics}</div>
-    <div class="wrap"><p class="insta">Veja todos em <a href="/portfolio">trabalhos</a> e no Instagram <a class="btn btn-ghost" href="{INSTA}" target="_blank" rel="noopener">@reinert.soldas</a></p></div>
+    <div class="wrap">
+      <div class="pf-end">
+        <div class="pf-end-q">
+          <h2>Gostou de algum trabalho? Peça seu orçamento.</h2>
+          <p>Mande a foto da peça e o que precisa ser feito, e a gente avalia.</p>
+        </div>
+        <div class="pf-end-act">
+          <a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+          <a class="btn btn-ghost" href="{INSTA}" target="_blank" rel="noopener">Ver mais no Instagram</a>
+        </div>
+        <p class="pf-end-note">Veja mais exemplos em <a href="/portfolio">Trabalhos</a>. Novos trabalhos são publicados toda semana em @reinert.soldas.</p>
+      </div>
+    </div>
   </section>
 """
         + faq_html(s["faq"])

@@ -302,8 +302,8 @@ figure{margin:0}
 .pf-end-q p{color:var(--soft)}
 .pf-end-act{display:flex;flex-wrap:wrap;gap:12px}
 .pf-end-note{grid-column:1/-1;color:var(--muted);font-size:1rem}
+.pf-end-note a{color:var(--fg);font-weight:600;text-underline-offset:3px}
 @media (max-width:760px){.pf-end{grid-template-columns:1fr}.pf-end-act .btn{flex:1 1 100%;justify-content:center;min-height:54px}}
-.insta{margin-top:32px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;color:var(--muted)}
 html.lb-open,html.lb-open body{overflow:hidden}
 .lb{--focus:var(--accent);position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--lb-bg);color:var(--lb-fg)}
 .lb::backdrop{background:var(--lb-bg)}
@@ -410,7 +410,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   input,select,textarea{min-height:52px}
   textarea{min-height:140px}
   form{padding:20px 16px}
-  .insta .btn{width:100%;justify-content:center}
 
   .tbl{border:0;background:none;overflow:visible}
   .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block;min-width:0;width:100%}
@@ -447,8 +446,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 .svc-pics{padding-block:0 clamp(40px,6vw,72px)}
 .pics{columns:3;column-gap:5px;max-width:1400px;margin-inline:auto}
 .pics img{display:block;width:100%;height:auto;margin-bottom:5px;break-inside:avoid;background:#e9e7e0}
-.svc-pics .insta{margin-top:24px}
-.svc-more{padding-block:0 clamp(36px,5vw,64px)}
+.svc-pics .svc-more{padding-block:0 clamp(36px,5vw,64px)}
 .also{color:var(--soft);display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin-bottom:10px}
 .also+.also{display:block}
 .also span{font-weight:600;color:var(--fg)}
@@ -524,7 +522,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   .flow li:hover .num{transform:scale(1.1) rotate(-5deg)}
   .ticks li:hover::before,.svc-body li:hover::before{width:16px}
   .tbl tbody tr:hover td{background:var(--panel-2)}
-  .insta .btn:hover{transform:translateY(-2px)}
 }
 
 .ct-main{padding-block:clamp(28px,4vw,56px) clamp(40px,6vw,80px)}
