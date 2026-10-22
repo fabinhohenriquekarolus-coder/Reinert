@@ -529,19 +529,11 @@ def read(name):
     return (CONTENT / f"{name}.html").read_text(encoding="utf-8")
 
 
-def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
+def pagehead(crumbs, eyebrow, h1, lead=""):
     bc = " ".join(
         f'<a href="{p}">{n}</a>' if p else f'<span aria-current="page">{n}</span>' for n, p in crumbs
     )
     lead_html = f'<p class="lead">{lead}</p>' if lead else ""
-    if cta:
-        lead_html += f"""
-    <p class="support">Mandou a foto da peça, a gente já avalia.</p>
-    <div class="cta-row">
-      <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
-      <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
-    </div>
-    <p class="trust"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google, com 19 avaliações. Envie fotos da peça e a descrição do serviço.</p>"""
     return f"""  <div class="pagehead"><div class="wrap">
     <nav class="crumbs" aria-label="Você está em">{bc}</nav>
     <p class="eyebrow">{eyebrow}</p>
@@ -632,10 +624,6 @@ def svchero(crumbs, eyebrow, h1, lead, ctx, img=None, alt=""):
         <p class="eyebrow">{eyebrow}</p>
         <h1>{h1}</h1>
         <p class="lead">{lead}</p>
-        <div class="cta-row">
-          <a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
-          <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
-        </div>
         <p class="proof-line"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google · 19 avaliações</p>
       </div>
       {fig}

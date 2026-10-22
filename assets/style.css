@@ -454,7 +454,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
   .svc-cols{grid-template-columns:1fr}
   .pics{columns:2}
 }
-@media (max-width:520px){.svchero .btn{width:100%;justify-content:center;min-height:54px;font-size:1.05rem}}
 
 .ab-story{padding-block:clamp(44px,6vw,88px) clamp(28px,4vw,56px)}
 .ab-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,6vw,88px);align-items:center}
