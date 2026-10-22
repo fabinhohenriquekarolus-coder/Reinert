@@ -83,7 +83,7 @@ SERVICES = [
             ("Vale mais a pena recuperar ou comprar uma peça nova?", "Depende do material, do tamanho do desgaste e do prazo de uma peça nova. Quando recuperar não compensa, avisamos antes de começar."),
             ("É possível soldar ferro fundido trincado?", "Em muitos casos sim. O ferro fundido é frágil e pede aquecimento e resfriamento controlados, com eletrodo ou brasagem adequados. Envie fotos da trinca para confirmarmos."),
             ("A peça volta pronta para usinar?", "Sim. A solda deixa sobremetal, ou seja, material a mais, para que a usinagem de acabamento devolva a medida original."),
-            ("Como peço o orçamento?", "Pelo WhatsApp, enviando fotos da peça de vários ângulos e uma descrição do que precisa ser feito (material, medidas e prazo). Também atendemos na oficina, sem agendamento."),
+            ("Como peço o orçamento?", "Pelo WhatsApp, enviando fotos da peça de vários ângulos e uma descrição do que precisa ser feito (material, medidas e prazo). Também atendemos na oficina."),
         ],
     },
     {
@@ -217,11 +217,11 @@ SERVICES = [
 
 PAGES_META = {
     "": ("Solda, reparo e fabricação em metal em Joinville/SC", "Recuperação de peças, soldas especiais e estruturas metálicas sob medida em Joinville/SC. TIG, MIG/MAG e eletrodo em alumínio, inox e aço. Nota 5,0 no Google."),
-    "servicos": ("Serviços de solda e serralheria em Joinville/SC", "Recuperação de peças, soldas especiais, estruturas metálicas sob medida, móveis estilo industrial e reparos em Joinville/SC. Atendimento sem agendamento."),
+    "servicos": ("Serviços de solda e serralheria em Joinville/SC", "Recuperação de peças, soldas especiais, estruturas metálicas sob medida, móveis estilo industrial e reparos em Joinville/SC. Atendimento na oficina e serviços no local."),
     "guia-de-soldas": ("Guia de soldas: TIG, MIG/MAG, eletrodo e oxiacetileno", "Qual solda usar em cada metal: alumínio, inox, aço carbono, ferro fundido e aço ferramenta. Processos TIG, MIG/MAG e eletrodo, defeitos comuns e glossário."),
     "portfolio": ("Portfólio de soldas e estruturas metálicas", "Trabalhos realizados pela Reinert em Joinville/SC: recuperação de peças, estruturas em inox, proteções em alumínio, móveis estilo industrial e reparos."),
     "sobre": ("Sobre a Reinert Soluções em Solda", "Conheça a Reinert: oficina de soldagem em Joinville/SC criada a partir de mais de 15 anos de profissão em soldagem industrial, nova sede na Vila Nova."),
-    "contato": ("Contato e orçamento", "Fale com a Reinert pelo WhatsApp (47) 98802-4265 ou venha à oficina na Rua Leopoldo Beninca, 108, Vila Nova, Joinville/SC. Sem agendamento."),
+    "contato": ("Contato e orçamento", "Fale com a Reinert pelo WhatsApp (47) 98802-4265 ou venha à oficina na Rua Leopoldo Beninca, 108, Vila Nova, Joinville/SC."),
 }
 
 NAV = [("/servicos", "Serviços"), ("/portfolio", "Trabalhos"), ("/guia-de-soldas", "Guia de soldas"), ("/sobre", "Sobre"), ("/contato", "Contato")]
@@ -438,7 +438,7 @@ def band(title, text, ctx):
       <div class="band-act">
         <a class="btn btn-dark" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
         <a class="band-call" href="tel:{PHONE_E164}">Ligar {PHONE_FMT}</a>
-        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_lines()[0]}. Sem agendamento.</span></div>
+        <div class="meta"><span>{ADDRESS["street"]}, {ADDRESS["district"]}, {ADDRESS["city"]}/{ADDRESS["state"]}</span><span>{config.hours_lines()[0]}.</span></div>
       </div>
     </div>
   </div>
@@ -608,7 +608,7 @@ def build_servicos():
         head(meta[0], meta[1], "servicos", [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos")])])
         + header("/servicos")
         + svchero([("Início", "/"), ("Serviços", None)], "Serviços", "Soldagem para quem não pode parar",
-                  "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina, sem agendamento, e serviços no local quando a peça não pode sair da máquina.", ctx)
+                  "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina e serviços no local quando a peça não pode sair da máquina.", ctx)
         + f'''  <section class="svc-sec svc-all" aria-label="Serviços">
     <div class="tiles">
 {tiles_html()}
@@ -636,7 +636,7 @@ def svchero(crumbs, eyebrow, h1, lead, ctx, img=None, alt=""):
           <a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
           <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
         </div>
-        <p class="proof-line"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google · 19 avaliações · Sem agendamento</p>
+        <p class="proof-line"><span class="stars"><span role="img" aria-label="5 estrelas">★★★★★</span></span> 5,0 no Google · 19 avaliações</p>
       </div>
       {fig}
     </div>
@@ -678,7 +678,7 @@ def build_service(s):
     <div class="wrap"><p class="also"><span>Outros serviços:</span> {others}</p><p class="also">Quer entender melhor os processos? Leia o <a href="/guia-de-soldas">guia de soldas</a>.</p></div>
   </section>
 """
-        + band("Tem uma peça para avaliar?", "Mandou a foto da peça, a gente já avalia. Ou traga direto na oficina, sem precisar agendar.", ctx)
+        + band("Tem uma peça para avaliar?", "Mandou a foto da peça, a gente já avalia. Ou traga direto na oficina.", ctx)
         + footer(ctx)
     )
     write(s["slug"], html)
@@ -694,7 +694,7 @@ def build_sobre():
         + svchero([("Início", "/"), ("Sobre", None)], "Sobre", "Uma oficina feita por quem vive a solda", lead, ctx,
                   "DcUKDsGqjK3.webp", "Fachada da nova sede da Reinert Soldas")
         + fix_links(read("sobre"), ctx)
-        + band("Quer conhecer a oficina?", "Mande a foto da peça pelo WhatsApp ou venha até a Vila Nova, sem precisar agendar.", ctx)
+        + band("Quer conhecer a oficina?", "Mande a foto da peça pelo WhatsApp ou venha até a Vila Nova.", ctx)
         + footer(ctx)
     )
     write("sobre", html)
@@ -812,7 +812,7 @@ def main():
                  "Uma parte do que passou pela oficina. Toque numa foto para ampliar e ver o processo usado.", "portfólio")
     build_sobre()
     build_simple("contato", "/contato", "Contato", "Fale com a oficina",
-                 "O jeito mais rápido é o WhatsApp com fotos da peça e a descrição do serviço. Se preferir, venha direto: atendemos sem agendamento.", "contato")
+                 "O jeito mais rápido é o WhatsApp com fotos da peça e a descrição do serviço. Se preferir, venha direto à oficina.", "contato")
     build_404()
     build_misc()
     print("ok")
