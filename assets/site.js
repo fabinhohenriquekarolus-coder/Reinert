@@ -21,7 +21,7 @@
 
   var calm=window.matchMedia("(prefers-reduced-motion: reduce)");
   if("IntersectionObserver" in window&&!calm.matches){
-    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ccard,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
+    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ct-row,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.mat,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
     var seen=0, rvIo=new IntersectionObserver(function(es){
       es.forEach(function(e){
         if(!e.isIntersecting)return;
@@ -39,30 +39,6 @@
       el.classList.add("rv");
       rvIo.observe(el);
     });
-  }
-
-  var dock=document.getElementById("dock"), ctas=document.querySelectorAll("[data-cta]");
-  if(dock){
-    var vis=new Set(), mobile=window.matchMedia("(max-width:760px)"), tick=false;
-    var update=function(){
-      var seen=vis.size>0;
-      if(mobile.matches){dock.classList.remove("is-shown","is-hidden")}
-      else{dock.classList.remove("is-hidden");dock.classList.toggle("is-shown",!seen&&window.scrollY>window.innerHeight)}
-    };
-    if("IntersectionObserver" in window&&ctas.length){
-      var io=new IntersectionObserver(function(es){
-        es.forEach(function(e){e.isIntersecting?vis.add(e.target):vis.delete(e.target)});
-        update();
-      },{threshold:0.6});
-      ctas.forEach(function(c){io.observe(c)});
-    }
-    window.addEventListener("scroll",function(){
-      if(tick)return;
-      tick=true;
-      requestAnimationFrame(function(){tick=false;update()});
-    },{passive:true});
-    window.addEventListener("resize",update);
-    update();
   }
 
   var tiles=document.querySelectorAll(".tile");
@@ -168,7 +144,6 @@
     var fallback=function(){select(el);flash(btn,"Selecionado, copie")};
     try{navigator.clipboard.writeText(text).then(function(){flash(btn,"Copiado")},fallback)}catch(e){fallback()}
   }
-  document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copy(document.getElementById(b.dataset.copy),b)})});
 
   var form=document.getElementById("orc");
   if(form){
