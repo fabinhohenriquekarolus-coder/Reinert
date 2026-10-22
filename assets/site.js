@@ -21,7 +21,7 @@
 
   var calm=window.matchMedia("(prefers-reduced-motion: reduce)");
   if("IntersectionObserver" in window&&!calm.matches){
-    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ct-row,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
+    var rvSel=".works .mosaic figure,.tile,.how-list li,.review,.pcard,.step,.qa,.ct-row,.cols2>div,.tbl,.gloss div,.rail li,.vals>div,.mat,.flow li,.svc-pics .pics img,.svc-cols h2,.sec-head,.ab-time h2,.ab-values h2";
     var seen=0, rvIo=new IntersectionObserver(function(es){
       es.forEach(function(e){
         if(!e.isIntersecting)return;
