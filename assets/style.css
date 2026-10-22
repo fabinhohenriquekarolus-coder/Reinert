@@ -504,7 +504,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
 .mats-more a{font-weight:600;color:var(--fg);text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:2px;display:inline-flex;align-items:center;min-height:44px}
 .mats-more a:hover{background:var(--accent)}
 @media (hover:hover){.mat:hover{border-top-color:var(--accent)}.mat li:hover{color:var(--fg);padding-left:8px}}
-@media (max-width:760px){.mats{grid-template-columns:1fr}}
+@media (max-width:760px){.mats{grid-template-columns:1fr;gap:26px}.mat ul{display:grid;grid-template-columns:1fr 1fr;column-gap:20px}}
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease var(--d,0s),transform .6s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
 .rv.in{opacity:1;transform:none}
 .pcard,.review,.vals>div,.rail li,.qa,.gloss div,.how-list li,.cols2>div,.flow li,.step{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease,background-color .25s ease}
