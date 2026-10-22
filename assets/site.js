@@ -41,30 +41,6 @@
     });
   }
 
-  var dock=document.getElementById("dock"), ctas=document.querySelectorAll("[data-cta]");
-  if(dock){
-    var vis=new Set(), mobile=window.matchMedia("(max-width:760px)"), tick=false;
-    var update=function(){
-      var seen=vis.size>0;
-      if(mobile.matches){dock.classList.remove("is-shown","is-hidden")}
-      else{dock.classList.remove("is-hidden");dock.classList.toggle("is-shown",!seen&&window.scrollY>window.innerHeight)}
-    };
-    if("IntersectionObserver" in window&&ctas.length){
-      var io=new IntersectionObserver(function(es){
-        es.forEach(function(e){e.isIntersecting?vis.add(e.target):vis.delete(e.target)});
-        update();
-      },{threshold:0.6});
-      ctas.forEach(function(c){io.observe(c)});
-    }
-    window.addEventListener("scroll",function(){
-      if(tick)return;
-      tick=true;
-      requestAnimationFrame(function(){tick=false;update()});
-    },{passive:true});
-    window.addEventListener("resize",update);
-    update();
-  }
-
   var tiles=document.querySelectorAll(".tile");
   if(tiles.length){
     var noHover=window.matchMedia("(hover: none)");

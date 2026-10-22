@@ -423,10 +423,6 @@ def footer(ctx):
     <div class="legal"><span>Reinert – Soluções em Solda LTDA, CNPJ 41.449.969/0001-21</span><span>© 2026 Reinert. Todos os direitos reservados.</span></div>
   </div>
 </footer>
-<div class="dock" id="dock">
-  <a class="dock-call" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg><span>Ligar</span></a>
-  <a class="dock-wa" href="{wa(ctx)}" target="_blank" rel="noopener" aria-label="{WA_LABEL}"><svg><use href="#wa"/></svg><span class="t-long">{WA_LABEL}</span><span class="t-short" aria-hidden="true">{WA_LABEL}</span></a>
-</div>
 <script src="/assets/config.js?v={_ver("assets/config.js")}" defer></script>
 <script src="/assets/track.js?v={_ver("assets/track.js")}" defer></script>
 <script src="/assets/site.js?v={_ver("assets/site.js")}" defer></script>
@@ -436,7 +432,7 @@ def footer(ctx):
 
 
 def band(title, text, ctx):
-    return f"""  <div class="band" data-cta>
+    return f"""  <div class="band">
     <div class="wrap">
       <div class="band-copy"><h2>{title}</h2><p>{text}</p></div>
       <div class="band-act">
@@ -541,7 +537,7 @@ def pagehead(crumbs, eyebrow, h1, lead="", cta=None):
     if cta:
         lead_html += f"""
     <p class="support">Mandou a foto da peça, a gente já avalia.</p>
-    <div class="cta-row" data-cta>
+    <div class="cta-row">
       <a class="btn btn-accent" href="{wa(cta)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
       <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
     </div>
@@ -636,7 +632,7 @@ def svchero(crumbs, eyebrow, h1, lead, ctx, img=None, alt=""):
         <p class="eyebrow">{eyebrow}</p>
         <h1>{h1}</h1>
         <p class="lead">{lead}</p>
-        <div class="cta-row" data-cta>
+        <div class="cta-row">
           <a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
           <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
         </div>
@@ -723,7 +719,7 @@ def build_guia():
     html = (
         head(meta[0], meta[1], "guia-de-soldas", [jsonld_breadcrumb([("Início", "/"), ("Guia de soldas", "/guia-de-soldas")]) ])
         + header("/guia-de-soldas")
-        + body.replace('  <div class="band" data-cta>', faq_html(faq) + '  <div class="band" data-cta>', 1)
+        + body.replace('  <div class="band">', faq_html(faq) + '  <div class="band">', 1)
         + "\n"
         + footer(ctx)
     )
