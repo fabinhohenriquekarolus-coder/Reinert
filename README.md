@@ -8,7 +8,7 @@ Endereço: https://www.reinertsoldas.com.br
 2. Blocos de conteúdo das páginas (início, guia, portfólio, sobre, contato): `tools/content/*.html`.
 3. Domínio, horário de funcionamento e IDs de medição: `tools/config.py`.
 4. Estilo: `assets/style.css` (a versão usada pelas páginas é gerada).
-5. Depois de qualquer mudança, rode `python3 tools/build.py` e faça commit dos arquivos gerados.
+5. Depois de qualquer mudança, rode `python3 tools/build.py` (Python 3.12 ou mais novo) e faça commit dos arquivos gerados.
    Não edite os `.html` da raiz à mão: o próximo build os sobrescreve.
 
 ## Estrutura
@@ -38,7 +38,7 @@ Sexta confirmada às 17h. Se algum dia mudar, altere só `SEXTA_FECHA`.
 
 ## Medição de cliques (GA4 e Google Ads)
 Todo link `wa.me`, `api.whatsapp.com` e `tel:` dispara, por delegação de eventos (`assets/track.js`):
-- GA4: `whatsapp_click` ou `phone_click`, com `location` (menu, cabecalho, hero, rodape, servicos, contato, formulario, faixa_final, topo_pagina, botao_flutuante, barra_fixa), `page_path` e, no WhatsApp, `origin_page` (o texto "(página: ...)" da mensagem).
+- GA4: `whatsapp_click` ou `phone_click`, com `location` (menu, cabecalho, faixa_final, fecho_pagina, contato, formulario, rodape, e conteudo para o que não se encaixa), `page_path` e, no WhatsApp, `origin_page` (o texto "(página: ...)" da mensagem).
 - Google Ads: evento `conversion` com `send_to` = `ADS_ID/ROTULO`.
 
 IDs (um dos dois jeitos, depois rode o build e faça commit):
@@ -49,8 +49,10 @@ Com os IDs vazios nenhum script de medição é carregado e o site funciona norm
 Não há aviso de consentimento de cookies; avalie isso (LGPD) ao ativar a medição.
 
 ## Imagens
-- Para trocar uma foto: substitua o arquivo em `img/` e rode o build. O build coloca largura e altura reais e um `?v=` no endereço, então o cache de 1 ano não prende a versão antiga.
+- Fotos do portfólio ficam em `img/portfolio/` (originais de 788 a 1400 px). Para cada uma, `tools/img_variants.py` gera versões menores (`-480w`, `-768w`, `-1000w`), e o build monta o `srcset`: o celular baixa a menor que serve, e a galeria ampliada abre a original.
+- Para trocar ou adicionar uma foto: coloque o arquivo em `img/portfolio/`, rode `pip install pillow` (uma vez), `python3 tools/img_variants.py` e depois `python3 tools/build.py`. O build também coloca largura e altura reais e um `?v=` no endereço, então o cache de 1 ano não prende a versão antiga.
+- Tamanho recomendado de uma foto nova: cerca de 1000 a 1400 px no lado maior, em WebP qualidade 75 a 80. Acima disso só pesa mais, sem ganho visível.
 - Imagem de compartilhamento (`img/og.jpg`, 1200x630): edite `tools/og/og.html` e gere a captura de 1200x630 em JPG.
 
 ## Desempenho
-Lighthouse mobile (simulado, servidor local): desempenho 96 a 98, acessibilidade 100, boas práticas 100, SEO 100. Fontes, CSS e imagens são servidos pelo próprio site.
+Lighthouse mobile (simulado, com compressão Brotli como na Vercel): desempenho 94 a 100 em todas as páginas, acessibilidade 100, boas práticas 100, SEO 100. Fontes, CSS e imagens são servidos pelo próprio site; as fotos do portfólio chegam em versões do tamanho da tela.

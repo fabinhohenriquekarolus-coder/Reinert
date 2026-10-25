@@ -490,8 +490,33 @@ def webp_size(path):
 _DIMS = {}
 
 
+WIDTHS = (480, 768, 1000)  # mesmas larguras de tools/img_variants.py
+
+SIZES = {
+    "ph": "(max-width:760px) 46vw, (max-width:1100px) 31vw, 360px",
+    "hero": "(max-width:760px) 100vw, 920px",
+    "tile": "(max-width:760px) 100vw, 700px",
+    "figure": "(max-width:760px) 46vw, 360px",
+    "default": "(max-width:760px) 100vw, 720px",
+}
+
+
+def _contexto(html, pos, tag):
+    """Onde a imagem aparece, para escolher o atributo sizes."""
+    if 'fetchpriority="high"' in tag:
+        return "hero"
+    janela = html[max(0, pos - 260):pos]
+    if janela.rfind('class="ph"') > janela.rfind("</button>"):
+        return "ph"
+    if janela.rfind('<a class="tile"') > janela.rfind("</a>"):
+        return "tile"
+    if janela.rstrip().endswith("<figure>"):
+        return "figure"
+    return "default"
+
+
 def set_img_dims(html):
-    """Troca width/height de cada <img> local pelas dimensões reais do arquivo."""
+    """Largura/altura reais em cada <img> local e srcset com as versões menores das fotos do portfólio."""
     def fix(m):
         tag = m.group(0)
         src = re.search(r'src="/img/([^"]+)"', tag)
@@ -504,15 +529,36 @@ def set_img_dims(html):
             return tag
         w, h = _DIMS[name]
         tag = re.sub(r'\s(width|height)="[^"]*"', "", tag)
-        return tag.replace("<img ", f'<img width="{w}" height="{h}" ', 1)
+        tag = tag.replace("<img ", f'<img width="{w}" height="{h}" ', 1)
+        # versões menores (tools/img_variants.py): o navegador escolhe pelo tamanho da tela
+        if name.startswith("portfolio/") and "srcset=" not in tag:
+            base = name[: -len(".webp")]
+            vs = []
+            for vw in WIDTHS:
+                if (ROOT / "img" / f"{base}-{vw}w.webp").exists():
+                    vs.append((vw, f"/img/{base}-{vw}w.webp"))
+            if vs:
+                ctx = _contexto(m.string, m.start(), tag)
+                vs.append((w, f"/img/{name}"))
+                srcset = ", ".join(f"{u} {x}w" for x, u in vs)
+                fallback = vs[1][1] if len(vs) > 2 else vs[0][1]
+                extra = f' data-full="/img/{name}"' if ctx == "ph" else ""
+                tag = tag.replace(f'src="/img/{name}"', f'src="{fallback}" srcset="{srcset}" sizes="{SIZES[ctx]}"{extra}', 1)
+        return tag
 
     html = re.sub(r"<img\b[^>]*>", fix, html)
-    # versão no endereço das imagens locais (cache longo seguro, inclusive no preload do hero)
-    def ver(m):
-        rel = "img/" + m.group(2)
-        return f'{m.group(1)}"/{rel}?v={_ver(rel)}"' if (ROOT / rel).exists() else m.group(0)
 
-    return re.sub(r'(src=|href=)"/img/([^"?]+)"', ver, html)
+    # versão no endereço das imagens locais (cache longo seguro, inclusive no preload do hero)
+    def ver_url(u):
+        rel = u.lstrip("/")
+        return f"/{rel}?v={_ver(rel)}" if (ROOT / rel).exists() and "?" not in u else u
+
+    html = re.sub(r'(src=|href=|data-full=)"(/img/[^"?]+)"', lambda m: f'{m.group(1)}"{ver_url(m.group(2))}"', html)
+    return re.sub(
+        r'srcset="([^"]+)"',
+        lambda m: 'srcset="' + ", ".join(ver_url(p.split()[0]) + " " + p.split()[1] for p in m.group(1).split(", ")) + '"',
+        html,
+    )
 
 
 def write(path, html):
@@ -560,13 +606,14 @@ PF_CAT = {
 }
 
 
-def tiles_html():
+def tiles_html(eager_first=False):
+    """Lista de serviços em mosaico. Na página /servicos a 1ª foto está na primeira tela: carrega já e com prioridade."""
     out = []
-    for sv in SERVICES:
+    for i, sv in enumerate(SERVICES):
         img, desc = TILES[sv["slug"]]
         out.append(
             f'''      <a class="tile" href="/{sv["slug"]}">
-        <img src="/img/{img}" alt="" loading="lazy" decoding="async">
+        <img src="/img/{img}" alt="" {'fetchpriority="high" decoding="async"' if eager_first and i == 0 else 'loading="lazy" decoding="async"'}>
         <span class="tile-body"><span class="tile-name">{sv["name"]}</span><span class="tile-more"><span><span class="tile-desc">{desc}</span><span class="tile-go">Ver serviço</span></span></span></span>
       </a>'''
         )
@@ -603,7 +650,7 @@ def build_servicos():
                   "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina e serviços no local quando a peça não pode sair da máquina.", ctx)
         + f'''  <section class="svc-sec svc-all" aria-label="Serviços">
     <div class="tiles">
-{tiles_html()}
+{tiles_html(eager_first=True)}
     </div>
     <div class="wrap"><p class="seg-line">{seg}</p></div>
   </section>

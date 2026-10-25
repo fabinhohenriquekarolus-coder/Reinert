@@ -103,7 +103,7 @@
       big.width=+im.getAttribute("width")||0;
       big.height=+im.getAttribute("height")||0;
       big.alt=im.alt;
-      big.src=im.currentSrc||im.src;
+      big.src=im.dataset.full||im.currentSrc||im.src;
       lb.dataset.cat=c.dataset.cat;
       lc.textContent=c.dataset.label;
       lt.textContent=c.dataset.title;

@@ -29,8 +29,9 @@
     if(a.closest(".foot"))return "rodape";
     if(a.closest(".band"))return "faixa_final";
     if(a.closest(".pagehead"))return "topo_pagina";
-    if(a.closest("#orc,.out"))return "formulario";
-    if(a.closest(".quick,.ccard,.contact"))return "contato";
+    if(a.closest("#orc,.out,.ct-form-sec"))return "formulario";
+    if(a.closest(".pf-end"))return "fecho_pagina";
+    if(a.closest(".quick,.ccard,.contact,.ct-main"))return "contato";
     if(a.closest(".svc"))return "servicos";
     return "conteudo";
   }
