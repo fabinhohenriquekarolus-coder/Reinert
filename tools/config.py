@@ -15,7 +15,7 @@ def _env(name, default=""):
 SITE_URL = _env("SITE_URL", "https://www.reinertsoldas.com.br").rstrip("/")
 
 # Google Analytics 4, no formato G-XXXXXXXXXX
-GA_ID = _env("GA_ID", "")
+GA_ID = _env("GA_ID", "G-NJN1MJFGDC")
 # Google Ads, no formato AW-XXXXXXXXX
 ADS_ID = _env("ADS_ID", "")
 # Rótulo da conversão de clique no WhatsApp (a parte depois da barra em AW-XXXXXXXXX/ROTULO)
