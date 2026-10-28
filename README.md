@@ -30,7 +30,9 @@ Endereço: https://www.reinertsoldas.com.br
 - Para o redirecionamento sem www para www funcionar, os dois domínios precisam estar no projeto da Vercel.
 
 ## WhatsApp e telefone
-Todos os botões abrem `wa.me/5547988024265` com uma mensagem completa (sem campo em branco para preencher) que avisa que as fotos e a descrição seguem na conversa e informa a página de origem, no formato `(página: ...)`, que o `track.js` lê. O formulário de contato monta a própria mensagem, só com os campos preenchidos. Todos os links `tel:` usam `+5547988024265`.
+Todos os botões abrem `wa.me/5547988024265` com uma mensagem completa (sem campo em branco): nas páginas de serviço cita o serviço ("preciso de ajuda com estruturas metálicas"), nas demais é genérica, e avisa que as fotos e os detalhes seguem na conversa. O texto vem de `wa()` em `tools/build.py`.
+A página de origem, para o GA4, não vai mais no texto do cliente: fica em `data-origin` no `<header class="top">` e o `track.js` lê de lá (ainda entende o antigo "(página: ...)" se existir). O formulário de contato monta a própria mensagem, só com os campos preenchidos.
+Todos os links `tel:` usam `+5547988024265`.
 
 ## Horário de funcionamento
 Única fonte: `tools/config.py` (`SEMANA_FECHA`, `SEXTA_FECHA`, `HORARIO`). Alimenta hero, faixa de chamada, rodapé, contato e dados estruturados. Dias com o mesmo horário são agrupados sozinhos.
@@ -56,3 +58,17 @@ Não há aviso de consentimento de cookies; avalie isso (LGPD) ao ativar a medi�
 
 ## Desempenho
 Lighthouse mobile (simulado, com compressão Brotli como na Vercel): desempenho 94 a 100 em todas as páginas, acessibilidade 100, boas práticas 100, SEO 100. Fontes, CSS e imagens são servidos pelo próprio site; as fotos do portfólio chegam em versões do tamanho da tela.
+
+## Mensagem de boas-vindas sugerida (WhatsApp Business)
+Configurar em WhatsApp Business > Ferramentas > Mensagem de saudação (fora do site). Pede o que a oficina precisa para responder rápido:
+
+> Olá! Aqui é a Reinert Soluções em Solda. Recebemos sua mensagem e já respondemos.
+> Para agilizar, se puder, mande:
+> • Fotos da peça ou do local, de mais de um ângulo
+> • O que precisa ser feito
+> • Material e medidas, se souber
+> • Para quando precisa
+>
+> Atendemos de segunda a sexta, das 8h às 12h e das 13h às 17h.
+
+Se o horário mudar, atualize também esse texto (a fonte do site é `tools/config.py`).

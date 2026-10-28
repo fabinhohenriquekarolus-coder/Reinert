@@ -172,7 +172,7 @@
       if(emp)det.push("*Empresa:* "+emp);
       if(tipo)det.push("*Serviço:* "+tipo);
       if(mat)det.push("*Material:* "+mat);
-      return "Olá, Reinert! Meu nome é "+one("f-nome")+". Vim pelo site e gostaria de um orçamento."
+      return "Olá! Meu nome é "+one("f-nome")+". Vim pelo site da Reinert e gostaria de um orçamento."
         +(det.length?"\n\n"+det.join("\n"):"")
         +"\n\n*O que preciso:*\n"+many("f-desc")
         +"\n\nVou enviar as fotos da peça por aqui.";

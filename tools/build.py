@@ -39,13 +39,13 @@ WA_LABEL = "Fazer orçamento"
 
 # ---------------------------------------------------------------- WhatsApp
 def wa(context=None):
-    # O trecho "(página: ...)" é lido por assets/track.js (origin_page); não mude o formato.
-    # A mensagem é completa de propósito: quem envia sem editar não manda campo em branco.
-    origem = f" (página: {context})" if context else ""
-    msg = (
-        f"Olá, Reinert! Vim pelo site{origem} e gostaria de um orçamento.\n\n"
-        "Vou enviar por aqui as fotos da peça ou do local e o que precisa ser feito."
-    )
+    # Mensagem completa, sem campo em branco: quem envia sem editar não manda nada pela metade.
+    # Nas páginas de serviço cita o serviço; nas demais fica genérica. Não prometa orçamento:
+    # nem todo contato é pedido de orçamento. A origem (para o GA4) vai em data-origin no
+    # cabeçalho, lido por assets/track.js, e não no texto do cliente.
+    servico = next((s["name"] for s in SERVICES if s["name"] == context), None)
+    assunto = f"preciso de ajuda com {servico[0].lower() + servico[1:]}" if servico else "preciso de ajuda com um serviço de solda"
+    msg = f"Olá! Vim pelo site da Reinert e {assunto}. Já te mando as fotos e os detalhes por aqui."
     return f"https://wa.me/{PHONE_WA}?text=" + urllib.parse.quote(msg, safe="")
 
 
@@ -386,7 +386,7 @@ def header(active, ctx=None):
         else:
             links.append(f'<a href="{href}"{cur}>{label}</a>')
     return f"""<a class="skip" href="#main">Pular para o conteúdo</a>
-<header class="top">
+<header class="top" data-origin="{ctx or ''}">
   <div class="wrap">
     <a class="brand" href="/" aria-label="{NAME}, página inicial">
       <img class="logo" src="/img/logo-fundo-escuro.svg" alt="Reinert Soluções em Solda" width="273" height="60">
