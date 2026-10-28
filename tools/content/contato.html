@@ -51,14 +51,14 @@
         <p>Preencha e a mensagem fica pronta para enviar no WhatsApp da oficina. Lembre de anexar as fotos da peça na conversa.</p>
       </div>
       <form id="orc" novalidate aria-labelledby="orc-t">
-        <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" autocomplete="name" autocapitalize="words" enterkeyhint="next" required aria-required="true"></div>
-        <div class="field"><label for="f-tipo">Tipo de serviço</label>
-            <select id="f-tipo" name="tipo"><option>Recuperação de peça</option><option>Solda especial</option><option>Estrutura sob medida</option><option>Móvel estilo industrial</option><option>Reparo automotivo ou náutico</option><option>Serralheria</option><option>Outro</option></select></div>
-        <div class="field"><label for="f-desc">Descreva a peça ou o projeto</label><textarea id="f-desc" name="descricao" placeholder="Ex.: olhal de cilindro hidráulico trincado, Ø 60 mm, preciso até sexta." required aria-required="true" aria-describedby="f-err"></textarea></div>
-        <details class="more"><summary>Mais detalhes (opcional)</summary><div class="row2"><div class="field"><label for="f-emp">Empresa</label><input id="f-emp" name="empresa" autocomplete="organization" enterkeyhint="next"></div><div class="field"><label for="f-mat">Material</label>
-            <select id="f-mat" name="material"><option>Não sei</option><option>Aço carbono</option><option>Aço inox</option><option>Alumínio</option><option>Ferro fundido</option><option>Aço ferramenta</option><option>Outro</option></select></div></div></details>
+        <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" autocomplete="name" autocapitalize="words" enterkeyhint="next" maxlength="80" required aria-required="true" aria-describedby="e-nome"><p class="field-err" id="e-nome" hidden></p></div>
+        <div class="field"><label for="f-tipo">Tipo de serviço <span class="opt">(opcional)</span></label>
+            <select id="f-tipo" name="tipo"><option value="">Selecione</option><option>Recuperação de peça</option><option>Solda especial</option><option>Estrutura sob medida</option><option>Móvel estilo industrial</option><option>Reparo automotivo ou náutico</option><option>Serralheria</option><option>Outro</option></select></div>
+        <div class="field"><label for="f-desc">Descreva a peça ou o projeto</label><textarea id="f-desc" name="descricao" maxlength="600" placeholder="Ex.: olhal de cilindro hidráulico trincado, Ø 60 mm, preciso até sexta." required aria-required="true" aria-describedby="e-desc"></textarea><p class="field-err" id="e-desc" hidden></p></div>
+        <details class="more"><summary>Mais detalhes (opcional)</summary><div class="row2"><div class="field"><label for="f-emp">Empresa</label><input id="f-emp" name="empresa" autocomplete="organization" enterkeyhint="next" maxlength="80"></div><div class="field"><label for="f-mat">Material</label>
+            <select id="f-mat" name="material"><option value="">Selecione</option><option>Aço carbono</option><option>Aço inox</option><option>Alumínio</option><option>Ferro fundido</option><option>Aço ferramenta</option><option>Outro</option><option>Não sei</option></select></div></div></details>
         <button class="btn btn-accent btn-block" type="submit">Gerar mensagem para o WhatsApp</button>
-        <p class="form-note err" id="f-err" role="alert" hidden>Preencha seu nome e a descrição da peça para gerar a mensagem.</p>
+        <p class="form-note err" id="f-err" role="alert" hidden></p>
         <div class="out" id="out" aria-live="polite" hidden>
           <pre id="msg"></pre>
           <div class="cta-row"><a class="btn btn-accent" id="waLink" href="https://wa.me/5547988024265" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Abrir no WhatsApp</a><button type="button" class="btn btn-ghost" id="copyMsg">Copiar mensagem</button></div>
