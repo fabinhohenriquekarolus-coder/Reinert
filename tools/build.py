@@ -39,13 +39,12 @@ WA_LABEL = "Fazer orçamento"
 
 # ---------------------------------------------------------------- WhatsApp
 def wa(context=None):
+    # O trecho "(página: ...)" é lido por assets/track.js (origin_page); não mude o formato.
+    # A mensagem é completa de propósito: quem envia sem editar não manda campo em branco.
     origem = f" (página: {context})" if context else ""
     msg = (
         f"Olá, Reinert! Vim pelo site{origem} e gostaria de um orçamento.\n\n"
-        "Vou enviar aqui na conversa:\n"
-        "1) Fotos da peça ou do local (de vários ângulos)\n"
-        "2) Descrição do que precisa ser feito (material, medidas e prazo)\n\n"
-        "Meu nome: "
+        "Vou enviar por aqui as fotos da peça ou do local e o que precisa ser feito."
     )
     return f"https://wa.me/{PHONE_WA}?text=" + urllib.parse.quote(msg, safe="")
 
@@ -369,7 +368,7 @@ def head(title, desc, path, ld, extra=""):
 """
 
 
-def header(active):
+def header(active, ctx=None):
     svc_active = active == "/servicos" or active in {"/" + x["slug"] for x in SERVICES}
     links = []
     for href, label in NAV:
@@ -395,12 +394,12 @@ def header(active):
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav"><span class="menu-open">MENU</span><span class="menu-close">FECHAR</span></button>
     <nav class="nav" id="nav" aria-label="Principal">
       <div class="nav-top">
-        <a class="btn btn-accent" href="{wa('menu')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+        <a class="btn btn-accent" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
         <a class="btn btn-ghost" href="tel:{PHONE_E164}"><svg><use href="#ph"/></svg>Ligar</a>
       </div>
       {chr(10).join('      ' + l for l in links).strip()}
     </nav>
-    <a class="btn btn-accent hd-cta" href="{wa('cabeçalho')}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
+    <a class="btn btn-accent hd-cta" href="{wa(ctx)}" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>{WA_LABEL}</a>
   </div>
 </header>
 <main id="main">
@@ -635,7 +634,7 @@ def build_home():
     meta = PAGES_META[""]
     body = fix_links(read("inicio"), ctx)
     body = body.replace("{TILES}", tiles_html())
-    html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))]) + header("/") + body + "\n" + footer(ctx)
+    html = head(meta[0], meta[1], "", [jsonld_business(reviews_from(body))]) + header("/", ctx) + body + "\n" + footer(ctx)
     write("", html)
 
 
@@ -645,7 +644,7 @@ def build_servicos():
     seg = "Atendemos metalurgia e usinagem, ferramentarias e injeção plástica, hidráulica e agronegócio, transportadoras, indústria moveleira, arquitetura e design, náutico e automotivo."
     html = (
         head(meta[0], meta[1], "servicos", [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos")])])
-        + header("/servicos")
+        + header("/servicos", ctx)
         + svchero([("Início", "/"), ("Serviços", None)], "Serviços", "Soldagem para quem não pode parar",
                   "Da manutenção de uma peça única à produção de estruturas em lote. Atendimento na oficina e serviços no local quando a peça não pode sair da máquina.", ctx)
         + f'''  <section class="svc-sec svc-all" aria-label="Serviços">
@@ -689,7 +688,7 @@ def build_service(s):
     others = "".join(f'<a href="/{o["slug"]}">{o["name"]}</a>' for o in SERVICES if o["slug"] != s["slug"])
     html = (
         head(s["title"], s["desc"], s["slug"], [jsonld_breadcrumb([("Início", "/"), ("Serviços", "/servicos"), (s["name"], "/" + s["slug"])]), jsonld_faq(s["faq"])])
-        + header("/" + s["slug"])
+        + header("/" + s["slug"], ctx)
         + svchero(crumbs, s["tag"], s["h1"], s["lead"], ctx, s["img"], s["alt"])
         + f"""  <section class="svc-body">
     <div class="wrap svc-cols">
@@ -737,7 +736,7 @@ def build_sobre():
     lead = "A Reinert Soluções em Solda nasceu da experiência de um soldador especializado em soldagem industrial multiprocesso, com mais de 15 anos de profissão e trabalhos em diversos segmentos."
     html = (
         head(meta[0], meta[1], "sobre", [jsonld_breadcrumb([("Início", "/"), ("Sobre", "/sobre")])])
-        + header("/sobre")
+        + header("/sobre", ctx)
         + svchero([("Início", "/"), ("Sobre", None)], "Sobre", "Uma oficina feita por quem vive a solda", lead, ctx,
                   "DcUKDsGqjK3.webp", "Fachada da nova sede da Reinert Soldas")
         + fix_links(read("sobre"), ctx)
@@ -765,7 +764,7 @@ def build_guia():
     ]
     html = (
         head(meta[0], meta[1], "guia-de-soldas", [jsonld_breadcrumb([("Início", "/"), ("Guia de soldas", "/guia-de-soldas")]) ])
-        + header("/guia-de-soldas")
+        + header("/guia-de-soldas", ctx)
         + body.replace('  <div class="band">', faq_html(faq) + '  <div class="band">', 1)
         + "\n"
         + footer(ctx)
@@ -780,7 +779,7 @@ def build_simple(slug, active, h_eyebrow, h1, lead, ctx, title_key=None, extra_l
                   pagehead([("Início", "/"), (h_eyebrow, None)], h_eyebrow, h1, lead), body, count=1, flags=re.S)
     html = (
         head(meta[0], meta[1], slug, ([jsonld_business()] if slug == "contato" else []) + [jsonld_breadcrumb([("Início", "/"), (h_eyebrow, "/" + slug)])] + (extra_ld or []))
-        + header(active) + body + "\n" + footer(ctx)
+        + header(active, ctx) + body + "\n" + footer(ctx)
     )
     write(slug, html)
 

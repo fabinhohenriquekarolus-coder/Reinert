@@ -30,7 +30,7 @@ Endereço: https://www.reinertsoldas.com.br
 - Para o redirecionamento sem www para www funcionar, os dois domínios precisam estar no projeto da Vercel.
 
 ## WhatsApp e telefone
-Todos os botões abrem `wa.me/5547988024265` com mensagem que pede fotos da peça e a descrição do serviço, e já informa a página de origem. Todos os links `tel:` usam `+5547988024265`.
+Todos os botões abrem `wa.me/5547988024265` com uma mensagem completa (sem campo em branco para preencher) que avisa que as fotos e a descrição seguem na conversa e informa a página de origem, no formato `(página: ...)`, que o `track.js` lê. O formulário de contato monta a própria mensagem, só com os campos preenchidos. Todos os links `tel:` usam `+5547988024265`.
 
 ## Horário de funcionamento
 Única fonte: `tools/config.py` (`SEMANA_FECHA`, `SEXTA_FECHA`, `HORARIO`). Alimenta hero, faixa de chamada, rodapé, contato e dados estruturados. Dias com o mesmo horário são agrupados sozinhos.
