@@ -149,20 +149,67 @@
   if(form){
     var nome=document.getElementById("f-nome"), desc=document.getElementById("f-desc");
     var err=document.getElementById("f-err"), out=document.getElementById("out");
+    var wl=document.getElementById("waLink"), sent=false;
+    var one=function(id){return document.getElementById(id).value.replace(/\s+/g," ").trim()};
+    var many=function(id){return document.getElementById(id).value.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim()};
+    var fieldErr=function(el,txt){
+      var p=document.getElementById("e-"+el.id.slice(2));
+      el.setAttribute("aria-invalid",txt?"true":"false");
+      p.textContent=txt||"";
+      p.hidden=!txt;
+    };
+    var check=function(){
+      var n=one("f-nome"), d=many("f-desc"), bad=[];
+      var nt=!n?"Informe seu nome.":n.length<2?"Informe seu nome completo.":"";
+      var dt=!d?"Descreva a peça ou o serviço.":d.replace(/\s/g,"").length<10?"Conte um pouco mais: o que precisa ser feito, o material e o prazo, se souber.":"";
+      fieldErr(nome,nt);fieldErr(desc,dt);
+      if(nt)bad.push(nome);
+      if(dt)bad.push(desc);
+      return bad;
+    };
+    var compose=function(){
+      var emp=one("f-emp"), tipo=one("f-tipo"), mat=one("f-mat"), det=[];
+      if(emp)det.push("*Empresa:* "+emp);
+      if(tipo)det.push("*Serviço:* "+tipo);
+      if(mat)det.push("*Material:* "+mat);
+      return "Olá! Meu nome é "+one("f-nome")+". Vim pelo site da Reinert e gostaria de um orçamento."
+        +(det.length?"\n\n"+det.join("\n"):"")
+        +"\n\n*O que preciso:*\n"+many("f-desc")
+        +"\n\nVou enviar as fotos da peça por aqui.";
+    };
+    var render=function(){
+      var m=compose();
+      document.getElementById("msg").textContent=m;
+      wl.href="https://wa.me/5547988024265?text="+encodeURIComponent(m);
+    };
+    var summary=function(n){
+      err.hidden=!n;
+      if(n)err.textContent=n>1?"Falta preencher "+n+" campos para gerar a mensagem.":"Falta preencher um campo para gerar a mensagem.";
+    };
     form.addEventListener("submit",function(e){
       e.preventDefault();
-      var g=function(id){return document.getElementById(id).value.trim()};
-      var bad=[nome,desc].filter(function(el){return !el.value.trim()});
-      [nome,desc].forEach(function(el){el.setAttribute("aria-invalid",bad.indexOf(el)>=0?"true":"false")});
-      if(bad.length){err.hidden=false;bad[0].focus();return}
+      var bad=check();
+      if(bad.length){
+        summary(bad.length);out.hidden=true;sent=false;
+        bad[0].focus();
+        return;
+      }
       err.hidden=true;
-      var m="Olá, Reinert! Vim pelo site e gostaria de um orçamento.\n\nVou enviar aqui na conversa as fotos da peça ou do local.\n\nNome: "+g("f-nome")+(g("f-emp")?"\nEmpresa: "+g("f-emp"):"")+"\nServiço: "+g("f-tipo")+"\nMaterial: "+g("f-mat")+"\n\n"+g("f-desc");
-      document.getElementById("msg").textContent=m;
-      var wl=document.getElementById("waLink");
-      wl.href="https://wa.me/5547988024265?text="+encodeURIComponent(m);
+      render();
+      sent=true;
       out.hidden=false;
       out.scrollIntoView({behavior:"smooth",block:"center"});
       wl.focus({preventScroll:true});
+    });
+    form.addEventListener("input",function(e){
+      if(e.target.getAttribute("aria-invalid")==="true"){
+        if(e.target===nome&&one("f-nome").length>=2)fieldErr(nome,"");
+        else if(e.target===desc&&many("f-desc").replace(/\s/g,"").length>=10)fieldErr(desc,"");
+        summary(form.querySelectorAll("[aria-invalid=true]").length);
+      }
+      if(!sent)return;
+      if(check().length){out.hidden=true;sent=false}
+      else render();
     });
     var cm=document.getElementById("copyMsg");
     if(cm){cm.addEventListener("click",function(){copy(document.getElementById("msg"),cm)})}

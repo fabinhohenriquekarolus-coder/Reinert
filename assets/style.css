@@ -337,6 +337,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent-t
 input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-color:var(--accent-text)}
 .form-note{font-size:1rem;color:var(--muted)}
 .err{color:#b3261e;font-weight:500}
+.field-err{margin:0;font-size:.95rem;color:#b3261e;font-weight:500}
+.field-err[hidden]{display:none}
+input[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:#b3261e}
+label .opt{text-transform:none;letter-spacing:0;font-family:inherit}
 .out{display:grid;gap:12px;border-top:1px dashed var(--line-strong);padding-top:16px}
 .out pre{white-space:pre-wrap;font-family:var(--f-mono);font-size:.82rem;color:var(--soft);background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:12px;margin:0;overflow-wrap:anywhere}
 .out[hidden]{display:none}

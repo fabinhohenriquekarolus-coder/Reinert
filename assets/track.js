@@ -36,6 +36,8 @@
     return "conteudo";
   }
   function origem(href){
+    var h=document.querySelector("header.top");
+    if(h&&h.dataset.origin)return h.dataset.origin;
     try{
       var t=new URL(href).searchParams.get("text")||"";
       var m=t.match(/\(página:\s*([^)]+)\)/i);
